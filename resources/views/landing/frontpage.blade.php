@@ -18,7 +18,7 @@
 <!--== bootstrap -->
 <link href="{{ asset('landing/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
 
-<link href="https://fonts.googleapis.com/css?family=Work+Sans:300,400,500,600,700,800,900" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Be+Vietnam+Pro:300,400,500,600,700,800,900" rel="stylesheet">
 
 <!--== animate -->
 <link href="{{ asset('landing/css/animate.css') }}" rel="stylesheet" type="text/css" />
