@@ -2,8 +2,7 @@
 
 @section('content')
     <!--About-->
-    <section id="about" class="text-center position-relative wow fadeInUp" data-wow-duration="2s"
-        data-bg-img="{{ asset('landing/images/pattern/03.png') }}">
+    <section id="about" class="text-center position-relative overflow-hidden wow fadeInUp" data-wow-duration="3s" data-bg-img="{{ asset('landing/images/pattern/03.png') }}">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 col-md-10 mx-auto">
@@ -70,7 +69,7 @@
     </section>
     <!--#About-->
 
-    <section class="position-relative wow fadeInUp" data-wow-duration="2s">
+    <section class="position-relative overflow-hidden wow fadeInUp" data-wow-duration="2s">
         <div class="bg-animation">
             <img class="zoom-fade" src="{{ asset('landing/images/pattern/03.png') }}" alt="">
         </div>
@@ -282,6 +281,9 @@
                                         @endif
                                     @endforeach
                                 </div>
+                                <a class="btn btn-theme" href="/daftar" data-text="Read More">
+                                    <span>D</span><span>e</span><span>t</span><span>a</span><span>i</span><span>l</span>
+                                </a>
                             </div>
                             <!--#Private-->
 
@@ -327,6 +329,9 @@
                                         @endif
                                     @endforeach
                                 </div>
+                                <a class="btn btn-theme" href="/daftar" data-text="Read More">
+                                    <span>D</span><span>e</span><span>t</span><span>a</span><span>i</span><span>l</span>
+                                </a>
                             </div>
                             <!--#Buddy-Small-->
 
@@ -360,6 +365,9 @@
                                         @endif
                                     @endforeach
                                 </div>
+                                <a class="btn btn-theme" href="/daftar" data-text="Read More">
+                                    <span>D</span><span>e</span><span>t</span><span>a</span><span>i</span><span>l</span>
+                                </a>
                             </div>
                             <!--Special Groups-->
 
@@ -393,6 +401,9 @@
                                         @endif
                                     @endforeach
                                 </div>
+                                <a class="btn btn-theme" href="/daftar" data-text="Read More">
+                                    <span>D</span><span>e</span><span>t</span><span>a</span><span>i</span><span>l</span>
+                                </a>
                             </div>
                             <!--#Large Groups-->
 
@@ -424,6 +435,9 @@
                                         </ul>
                                     </div>
                                 </div>
+                                <a class="btn btn-theme" href="/daftar" data-text="Read More">
+                                    <span>D</span><span>e</span><span>t</span><span>a</span><span>i</span><span>l</span>
+                                </a>
                             </div>
                             <!--#Nutritionist-->
                         </div>
@@ -561,7 +575,7 @@
         <div class="container">
             <div class="row subscribe-inner align-items-center">
             <div class="col-md-8 col-sm-12">
-                <h4>Daftar Sekarang!</h4>
+                <h2>Daftar Sekarang!</h2>
                 <p class="lead mb-0">Tunggu apa lagi? ayo segera bergabung bersama kami</p>
             </div>
             <div class="col-md-4 col-sm-12 mt-3 mt-md-0">
@@ -590,7 +604,7 @@
                         <div class="contact-media">
                             <i class="lab la-instagram"></i>
                             <span>Instagram</span>
-                            @idnboardingschool
+                            @reeactive_id
                         </div>
                     </a>
                 </div>
