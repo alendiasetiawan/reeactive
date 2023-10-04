@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\CompanyProfile\PricelistController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LandingPageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,10 +16,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [LandingPageController::class, 'index']);
+Route::controller(PricelistController::class)->group(function() {
+    Route::get('/private-1-on-1', 'private');
+    Route::get('/buddy-small-groups', 'buddySmall');
+    Route::get('/special-case-groups', 'specialCase');
+    Route::get('/large-groups', 'large');
+});
