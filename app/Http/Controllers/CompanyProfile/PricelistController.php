@@ -1,0 +1,17 @@
+<?php
+
+namespace App\Http\Controllers\CompanyProfile;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class PricelistController extends Controller
+{
+    public function private() {
+        $data = [
+            'title' => 'Program Private 1 on 1',
+        ];
+
+        return view('landing.private', $data);
+    }
+}

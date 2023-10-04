@@ -79,6 +79,7 @@
         <i class="fa fa-whatsapp my-float"></i>
     </a>
 
+@livewireStyles
 </head>
 
 <body class="home-3" data-bs-spy="scroll" data-bs-target="#navbarNav">
@@ -86,7 +87,7 @@
 <div class="page-wrapper">
 
     <!-- preloader start -->
-    <div id="ht-preloader">
+    {{-- <div id="ht-preloader">
         <div class="loader clear-loader">
             <div class="loader-box"></div>
             <div class="loader-box"></div>
@@ -98,7 +99,7 @@
             </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- preloader end -->
 
     <!--header start-->
@@ -157,6 +158,7 @@
 
 <!-- inject js end -->
 
+@livewireScripts
 </body>
 
 </html>

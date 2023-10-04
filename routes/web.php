@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CompanyProfile\PricelistController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LandingPageController;
@@ -17,4 +18,6 @@ use App\Http\Controllers\LandingPageController;
 
 Auth::routes();
 Route::get('/', [LandingPageController::class, 'index']);
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::controller(PricelistController::class)->group(function() {
+    Route::get('/private-1-on-1', 'private');
+});
