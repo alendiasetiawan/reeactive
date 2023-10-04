@@ -27,14 +27,60 @@ class Coach extends Model
         return $this->hasMany(CoachCertificate::class, 'coach_code', 'code');
     }
 
-    public static function coachPricing() {
+    public static function privatePricing() {
         return Coach::with([
-            'pricelists' => function ($query) {
-                $query->where('program_id', 1);
-            },
             'coach_skills',
             'coach_certificates',
         ])
+        ->join('pricelists', 'coaches.code', 'pricelists.coach_code')
+        ->where('program_id', 1)
+        ->where('coach_status', 'Aktif')
+        ->orderBy('coach_name', 'asc')
+        ->get();
+    }
+
+    public static function buddyPricing() {
+        return Coach::with([
+            'coach_skills',
+            'coach_certificates',
+        ])
+        ->join('pricelists', 'coaches.code', 'pricelists.coach_code')
+        ->where('program_id', 2)
+        ->where('coach_status', 'Aktif')
+        ->orderBy('coach_name', 'asc')
+        ->get();
+    }
+
+    public static function smallPricing() {
+        return Coach::with([
+            'coach_skills',
+            'coach_certificates',
+        ])
+        ->join('pricelists', 'coaches.code', 'pricelists.coach_code')
+        ->where('program_id', 3)
+        ->where('coach_status', 'Aktif')
+        ->orderBy('coach_name', 'asc')
+        ->get();
+    }
+
+    public static function specialCasePricing() {
+        return Coach::with([
+            'coach_skills',
+            'coach_certificates',
+        ])
+        ->join('pricelists', 'coaches.code', 'pricelists.coach_code')
+        ->where('program_id', 4)
+        ->where('coach_status', 'Aktif')
+        ->orderBy('coach_name', 'asc')
+        ->get();
+    }
+    public static function largePricing() {
+        return Coach::with([
+            'coach_skills',
+            'coach_certificates',
+        ])
+        ->join('pricelists', 'coaches.code', 'pricelists.coach_code')
+        ->where('program_id', 5)
         ->where('coach_status', 'Aktif')
         ->orderBy('coach_name', 'asc')
         ->get();

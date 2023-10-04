@@ -13,7 +13,7 @@ class CoachSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('coachs')->insert([
+        DB::table('coaches')->insert([
             [
                 'code' => '81284746374',
                 'coach_name' => 'Nuritia Septiantry',

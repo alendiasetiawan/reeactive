@@ -365,7 +365,7 @@
                                         @endif
                                     @endforeach
                                 </div>
-                                <a class="btn btn-theme" href="/daftar" data-text="Read More">
+                                <a wire:navigate class="btn btn-theme" href="/special-case-groups" data-text="Read More">
                                     <span>D</span><span>e</span><span>t</span><span>a</span><span>i</span><span>l</span>
                                 </a>
                             </div>
@@ -401,7 +401,7 @@
                                         @endif
                                     @endforeach
                                 </div>
-                                <a class="btn btn-theme" href="/daftar" data-text="Read More">
+                                <a wire:navigate class="btn btn-theme" href="/large-groups" data-text="Read More">
                                     <span>D</span><span>e</span><span>t</span><span>a</span><span>i</span><span>l</span>
                                 </a>
                             </div>
@@ -411,6 +411,17 @@
                             <div role="tabpanel" class="tab-pane fade" id="tab1-5">
                                 <div class="row text-center mb-4">
                                     <h3 class="text-theme"><em>Rp 450.000/bulan</em></h3>
+                                </div>
+                                <div class="row">
+                                    <b class="text-theme">Facilities</b>
+                                    <ul class="custom-li list-unstyled list-icon-2 d-inline-block">
+                                        <li>Konseling</li>
+                                        <li>Assesment</li>
+                                        <li>Personalized Diet Program</li>
+                                        <li>Meal Plan</li>
+                                        <li>Free Consultation via Whatsapp</li>
+                                        <li>Basic Macro Nutrient Education</li>
+                                    </ul>
                                 </div>
                                 <div class="row align-items-center">
                                     <div class="col-lg-6 col-md-12 mt-3 mt-lg-0">
@@ -435,9 +446,6 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <a class="btn btn-theme" href="/daftar" data-text="Read More">
-                                    <span>D</span><span>e</span><span>t</span><span>a</span><span>i</span><span>l</span>
-                                </a>
                             </div>
                             <!--#Nutritionist-->
                         </div>
