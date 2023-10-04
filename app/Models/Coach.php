@@ -26,4 +26,17 @@ class Coach extends Model
     {
         return $this->hasMany(CoachCertificate::class, 'coach_code', 'code');
     }
+
+    public static function coachPricing() {
+        return Coach::with([
+            'pricelists' => function ($query) {
+                $query->where('program_id', 1);
+            },
+            'coach_skills',
+            'coach_certificates',
+        ])
+        ->where('coach_status', 'Aktif')
+        ->orderBy('coach_name', 'asc')
+        ->get();
+    }
 }

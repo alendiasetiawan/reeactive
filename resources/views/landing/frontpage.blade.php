@@ -87,7 +87,7 @@
 <div class="page-wrapper">
 
     <!-- preloader start -->
-    {{-- <div id="ht-preloader">
+    <div id="ht-preloader">
         <div class="loader clear-loader">
             <div class="loader-box"></div>
             <div class="loader-box"></div>
@@ -99,7 +99,7 @@
             </div>
             </div>
         </div>
-    </div> --}}
+    </div>
     <!-- preloader end -->
 
     <!--header start-->
