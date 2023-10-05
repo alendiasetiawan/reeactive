@@ -35,7 +35,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <a class="btn btn-theme btn-sm" href="login.html" data-text="Login">
+                        <a class="btn btn-theme btn-sm" href="/login" data-text="Login">
                             <span>L</span><span>o</span><span>g</span><span>i</span><span>n</span>
                         </a>
                     </nav>

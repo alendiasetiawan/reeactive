@@ -15,7 +15,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Login Cover - Pages | Vuexy - Bootstrap Admin Template</title>
+    <title>Halaman Login - Reeactive | Fit For Deen</title>
 
     <meta name="description" content="" />
 

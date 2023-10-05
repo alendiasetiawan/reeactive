@@ -18,8 +18,8 @@
 
     <!-- User -->
     @php
-        $users = DB::table('users')
-        ->join('role', 'users.role_id', 'role.id')
+        $user = DB::table('users')
+        ->join('roles', 'users.role_id', 'roles.id')
         ->where('role_id', Auth::user()->role_id)
         ->first();
     @endphp
@@ -39,8 +39,8 @@
                 </div>
                 </div>
                 <div class="flex-grow-1">
-                <span class="fw-semibold d-block">{{ Auth::user()->nama }}</span>
-                <small class="text-muted">{{ $users->nama_role }}</small>
+                <span class="fw-semibold d-block">{{ $user->full_name }}</span>
+                <small class="text-muted">{{ $user->role_name }}</small>
                 </div>
             </div>
             </a>
