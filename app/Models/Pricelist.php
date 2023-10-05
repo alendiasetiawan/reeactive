@@ -33,4 +33,11 @@ class Pricelist extends Model
         return $this->hasMany(CoachCertificate::class, 'coach_code', 'coach_code');
     }
 
+    public static function showCoachBasedOnProgram($programId) {
+        return Pricelist::join('coaches', 'pricelists.coach_code', 'coaches.code')
+        ->where('pricelists.program_id', $programId)
+        ->orderBy('coaches.coach_name', 'asc')
+        ->get();
+    }
+
 }

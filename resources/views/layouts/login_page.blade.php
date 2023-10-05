@@ -217,7 +217,7 @@
                 event.preventDefault();
             }
             else {
-                $(this).find(':submit').html('<span class="spinner-border spinner-border-sm p-1" role="status"></span> <span class="ms-25 align-middle"> Bersiap Masuk...</span>');
+                $(this).find(':submit').html('<span class="spinner-border spinner-border-sm p-1" role="status"></span> <span class="ms-25 align-middle"></span>');
                 $(this).addClass('submitted');
                 document.getElementById("submit").disabled = true;
             }

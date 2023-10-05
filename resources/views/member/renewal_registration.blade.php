@@ -1,8 +1,8 @@
 @extends('layouts.master')
 
 @section('breadcrumb')
-<h4 class="fw-bold py-3 mb-4">
-    <span class="text-muted fw-light">Form Registrasi /</span> Renewal Member
+<h4 class="fw-bold py-2 mb-3">
+    <span class="text-muted fw-light">Registrasi /</span> Renewal Member
 </h4>
 @endsection
 
