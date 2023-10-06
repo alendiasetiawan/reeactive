@@ -5,6 +5,8 @@ use App\Http\Controllers\CompanyProfile\PricelistController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LandingPageController;
+use App\Livewire\TesDashboard;
+use App\Livewire\TesRegistrasi;
 
 /*
 |--------------------------------------------------------------------------

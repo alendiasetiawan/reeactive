@@ -1,1 +1,1 @@
-<input {{ $attributes->class(['form-control'])->merge(['type' => '', 'placeholder' => '']) }}/>
+<input {{ $attributes->class(['form-control form-control-sm'])->merge(['type' => '', 'placeholder' => '']) }}>

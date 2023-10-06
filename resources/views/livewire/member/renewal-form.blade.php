@@ -1,5 +1,5 @@
 <div>
-    <div class="col-lg-7 col-12">
+    <div class="col-12">
         <x-cards.basic-card>
             <x-slot name="cardTitle">Form Renewal Member</x-slot>
             <small class="text-muted">Apabila anda ingin tetap mengikuti program Reeactive, silahkan isi form di bawah ini!</small>
@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="col-lg-6 col-12 mb-2">
                         <x-inputs.label>Nama Lengkap</x-inputs.label>
-                        <x-inputs.readonly placeholder="{{ Auth::user()->full_name }}"></x-inputs.readonly>
+                        <x-inputs.disable-text placeholder="{{ Auth::user()->full_name }}"></x-inputs.disable-text>
                     </div>
                     <div class="col-lg-6 col-12 mb-2">
                         <x-inputs.label>Jenis Registrasi</x-inputs.label>
@@ -62,7 +62,7 @@
                 <div class="row">
                     <div class="col-lg-6 col-12 mb-3">
                         <x-inputs.label>Harga</x-inputs.label>
-                        <x-inputs.basic type="text" wire:model="price" readonly/>
+                        <x-inputs.disable-text wire:model="price"/>
                     </div>
                     <div class="col-lg-6 col-12 mb-3">
                         <x-inputs.label>Bukti Transfer</x-inputs.label>

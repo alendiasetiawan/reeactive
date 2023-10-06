@@ -49,7 +49,7 @@ class LoginController extends Controller
                     Cookie::queue('saveuser',$request->email,20160);
                     Cookie::queue('savepwd',$request->password,20160);
                 }
-                return redirect()->route('member::dashboard_member');
+                return redirect()->route('member::dashboard');
             }
             elseif(auth()->user()->role_id==2) {
                 if($request->has('simpanpwd')) {
