@@ -51,7 +51,6 @@
         @if (Auth::user()->role_id == 3)
             @include('layouts.elements.member_sidebar')
         @endif
-
         <!--  END SIDEBAR  -->
 
         <!--  BEGIN CONTENT AREA  -->
@@ -59,7 +58,9 @@
             <div class="layout-px-spacing">
 
                 <div class="middle-content container-xxl p-0">
-                    {{ $slot }}
+                    @yield('breadcrumb')
+
+                    @yield('content')
                 </div>
 
             </div>

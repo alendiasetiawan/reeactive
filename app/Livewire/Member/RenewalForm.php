@@ -2,15 +2,16 @@
 
 namespace App\Livewire\Member;
 
-use App\Models\User;
 use App\Models\Batch;
 use App\Models\Program;
 use Livewire\Component;
 use App\Models\Pricelist;
 use App\Models\ClassModel;
-use Livewire\Attributes\Rule;
+use App\Models\Coach;
+use App\Models\Registration;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Locked;
+use Illuminate\Support\Facades\Auth;
 
 class RenewalForm extends Component
 {
@@ -19,6 +20,7 @@ class RenewalForm extends Component
     #[Locked]
     public $batchId;
 
+    public $batchName;
     public $fileUpload;
     public $programs = [];
     public $coaches = [];
@@ -28,11 +30,16 @@ class RenewalForm extends Component
     public $selectedClass;
     public $price;
     public $showProgressBar = false;
+    public $uploadedFileName;
+    public $registrationCategory;
+    public $checkBatch;
 
     public function mount() {
         $this->programs = Program::all();
         $batch = Batch::orderBy('id', 'desc')->first();
         $this->batchId = $batch->id;
+        $this->batchName = $batch->batch_name;
+        $this->checkBatch = Batch::checkRegisteredBatch();
     }
 
     public function updated($property) {
@@ -66,6 +73,35 @@ class RenewalForm extends Component
                 'fileUpload.mimes' => 'File harus dalam format gambar: .jpg/.jpeg/.png, silahkan upload ulang!',
             ]
         );
+
+        $this->coaches = Pricelist::showCoachBasedOnProgram($this->selectedProgram);
+        $this->classes = ClassModel::where('coach_code', $this->selectedCoach)->get();
+
+        $this->uploadedFileName = time().'.'.$this->fileUpload->extension();
+    }
+
+    public function saveData() {
+        $coach = Coach::where('code', $this->selectedCoach)->first();
+        $registration = Registration::lastRegistrationData();
+        $priceStr = preg_replace("/[^0-9]/","", $this->price);
+        $priceInt = (int) $priceStr;
+
+        Registration::insert([
+            'member_code' => Auth::user()->email,
+            'batch_id' => $this->batchId,
+            'amount_pay' => $priceInt,
+            'file_upload' => $this->fileUpload->storeAs($this->batchName, $this->uploadedFileName, 'public'),
+            'payment_status' => 'Process',
+            'registration_category' => $this->registrationCategory,
+            'program_id' => $this->selectedProgram,
+            'level_id' => $registration->level_id,
+            'coach_id' => $coach->id,
+            'class_id' => $this->selectedClass,
+        ]);
+
+        session()->flash('registrationSuccess', true);
+        $this->redirect('/member/renewal-registration', navigate:true);
+
     }
 
     public function render()

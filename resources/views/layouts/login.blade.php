@@ -38,23 +38,17 @@
 
             <div class="row">
 
-                <div
-                    class="col-6 d-lg-flex d-none h-100 my-auto top-0 start-0 text-center justify-content-center flex-column">
+                <div class="col-6 d-lg-flex d-none h-100 my-auto top-0 start-0 text-center justify-content-center flex-column">
                     <div class="auth-cover-bg-image"></div>
                     <div class="auth-overlay"></div>
 
-                    <div class="auth-cover">
+                    <div class="position-relative">
 
-                        <div class="position-relative">
+                        <img src="{{ asset('template/src/assets/img/logo/reeactive-3d.png') }}" alt="auth-img">
 
-                            <img src="{{ asset('template/src/assets/img/auth-cover.svg') }}" alt="auth-img">
-
-                            <h2 class="mt-5 text-white font-weight-bolder px-2">Join the community of expert developers
-                            </h2>
-                            <p class="text-white px-2">It is easy to setup with great customer experience. Start your
-                                7-day free trial</p>
-                        </div>
-
+                        <h2 class="mt-5 text-white font-weight-bolder px-2">Fitness is Easy!
+                        </h2>
+                        <p class="text-white px-2">Mari bergabung bersama komunitas bugar muslimah di seluruh penjuru dunia</p>
                     </div>
 
                 </div>
@@ -85,7 +79,7 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <x-inputs.label>Email</x-inputs.label>
+                                            <x-inputs.label>Username</x-inputs.label>
                                             <input class="form-control" type="text" name="email" autofocus required
                                             @if(\Cookie::has('saveuser')) value="{{ \Cookie::get('saveuser') }}" @endif/>
                                         </div>
