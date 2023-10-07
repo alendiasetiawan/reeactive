@@ -24,6 +24,8 @@ class DatabaseSeeder extends Seeder
             ProgramSeeder::class,
             CoachSeeder::class,
             PricelistSeeder::class,
+            LevelSeeder::class,
+            ClassSeeder::class,
         ]);
     }
 }

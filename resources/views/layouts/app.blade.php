@@ -1,80 +1,92 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <title>{{ $title ?? 'Home' }} - Reeactive | Fit For Deen </title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('template/src/assets/img/favicon.ico') }}"/>
+    <link href="{{ asset('template/layouts/modern-light-menu/css/light/loader.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('template/layouts/modern-light-menu/css/dark/loader.css') }}" rel="stylesheet" type="text/css" />
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+    <link href="{{ asset('template/src/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('template/layouts/modern-light-menu/css/light/plugins.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('template/layouts/modern-light-menu/css/dark/plugins.css') }}" rel="stylesheet" type="text/css" />
+    <!-- END GLOBAL MANDATORY STYLES -->
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-
-    <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+    @stack('customCss')
+    <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+    <style>
+        body.dark .layout-px-spacing, .layout-px-spacing {
+            min-height: calc(100vh - 155px) !important;
+        }
+    </style>
+    @livewireStyles()
 </head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+<body class="layout-boxed" page="starter-pack">
+    <!--Query For Checking User Data-->
+    @php
+        $fullName = Auth::user()->full_name;
+        $user = DB::table('users')
+        ->join('roles', 'users.role_id', 'roles.id')
+        ->where('email', Auth::user()->email)
+        ->first();
+    @endphp
+    <!--#Query For Checking User Data-->
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
+    <!--  BEGIN NAVBAR  -->
+    @include('layouts.elements.header')
+    <!--  END NAVBAR  -->
 
-                    </ul>
+    <!--  BEGIN MAIN CONTAINER  -->
+    <div class="main-container" id="container">
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
+        <div class="overlay"></div>
+        <div class="search-overlay"></div>
 
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
+        <!--  BEGIN SIDEBAR  -->
+        @if (Auth::user()->role_id == 3)
+            @include('layouts.elements.member_sidebar')
+        @endif
+        <!--  END SIDEBAR  -->
 
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
+        <!--  BEGIN CONTENT AREA  -->
+        <div id="content" class="main-content">
+            <div class="layout-px-spacing">
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
+                <div class="middle-content container-xxl p-0">
+                    @yield('breadcrumb')
+
+                    @yield('content')
                 </div>
-            </div>
-        </nav>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
+            </div>
+
+            @include('layouts.elements.footer')
+
+        </div>
+        <!--  END CONTENT AREA  -->
+
     </div>
+    <!-- END MAIN CONTAINER -->
+
+    <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
+    <script src="{{ asset('template/src/bootstrap/js/bootstrap.main.js') }}"></script>
+    <script src="{{ asset('template/src/plugins/src/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ asset('template/src/plugins/src/mousetrap/mousetrap.min.js') }}"></script>
+    <script src="{{ asset('template/src/plugins/src/waves/waves.min.js') }}"></script>
+    <script src="{{ asset('template/layouts/modern-light-menu/app.js') }}"></script>
+    <script type="text/javascript">
+        feather.replace();
+    </script>
+    <!-- END GLOBAL MANDATORY SCRIPTS -->
+
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+    @stack('customScripts')
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+    @livewireScripts()
 </body>
 </html>

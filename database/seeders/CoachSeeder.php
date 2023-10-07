@@ -62,7 +62,7 @@ class CoachSeeder extends Seeder
             [
                 'code' => '82127788784',
                 'coach_name' => 'Rahayu Nuryaningrum',
-                'nick_name' => 'Rahayu',
+                'nick_name' => 'Uno',
                 'gender' => 'Perempuan',
                 'birth_place' => 'Bandung',
                 'birth_date' => '1989-01-03',

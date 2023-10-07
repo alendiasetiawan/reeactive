@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -36,5 +39,43 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public function login(Request $request) {
+        $input = $request->all();
+        if(auth()->attempt(array('email'=>$input['email'],'password'=>$input['password']))){
+            if(auth()->user()->role_id==3) {
+                if($request->has('simpanpwd')) {
+                    Cookie::queue('saveuser',$request->email,20160);
+                    Cookie::queue('savepwd',$request->password,20160);
+                }
+                return redirect()->route('member::dashboard');
+            }
+            elseif(auth()->user()->role_id==2) {
+                if($request->has('simpanpwd')) {
+                    Cookie::queue('saveuser',$request->email,20160);
+                    Cookie::queue('savepwd',$request->password,20160);
+                }
+                return redirect()->route('santri::dashboardSantri');
+            }
+            else {
+                if($request->has('simpanpwd')) {
+                    Cookie::queue('saveuser',$request->email,20160);
+                    Cookie::queue('savepwd',$request->password,20160);
+                }
+                return redirect()->route('home');
+            }
+        } else {
+            return redirect()->route('login')->with('flash_message_error','GAGAL Login, Username/Password Salah!');
+        }
+    }
+
+    public function redirect() {
+        return redirect()->route('login');
+    }
+
+    public function logout(){
+        Auth::logout();
+        return redirect('/login');
     }
 }
