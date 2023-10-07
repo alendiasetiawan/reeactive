@@ -34,4 +34,19 @@ class Registration extends Model
         ->first();
     }
 
+    public static function infoProgramActive($batchId) {
+        return Registration::join('batches', 'registrations.batch_id', 'batches.id')
+        ->join('programs', 'registrations.program_id', 'programs.id')
+        ->join('levels', 'registrations.level_id', 'levels.id')
+        ->join('coaches', 'registrations.coach_id', 'coaches.id')
+        ->join('classes', 'registrations.class_id', 'classes.id')
+        ->where('registrations.batch_id', $batchId)
+        ->where('member_code', Auth::user()->email)
+        ->select('registrations.*', 'batches.batch_name', 'programs.program_name', 'levels.level_name', 'coaches.nick_name', 'coaches.coach_name',
+        'classes.day', 'classes.start_time', 'classes.end_time', 'classes.link_wa')
+        ->orderBy('registrations.id', 'desc')
+        ->limit(1)
+        ->first();
+    }
+
 }
