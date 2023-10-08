@@ -19,7 +19,11 @@ class Batch extends Model
     }
 
     public static function checkRegisteredBatch() {
-        return Batch::with('registrations')
+        return Batch::with([
+            'registrations' => function ($query) {
+                $query->where('member_code', Auth::user()->email);
+            }
+        ])
         ->where('batch_status', 'Open')
         ->get();
     }

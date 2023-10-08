@@ -20,6 +20,7 @@ class RenewalForm extends Component
     #[Locked]
     public $batchId;
 
+    public $batchOpen;
     public $batchName;
     public $fileUpload;
     public $programs = [];
@@ -32,14 +33,12 @@ class RenewalForm extends Component
     public $showProgressBar = false;
     public $uploadedFileName;
     public $registrationCategory;
-    public $checkBatch;
 
-    public function mount() {
+    public function boot() {
         $this->programs = Program::all();
         $batch = Batch::orderBy('id', 'desc')->first();
         $this->batchId = $batch->id;
         $this->batchName = $batch->batch_name;
-        $this->checkBatch = Batch::checkRegisteredBatch();
     }
 
     public function updated($property) {
@@ -57,27 +56,34 @@ class RenewalForm extends Component
             $priceNumber = $pricelist->price_per_person;
             $this->price = 'Rp '.number_format($priceNumber,0,',','.');
         }
+
+        if ($property == 'fileUpload') {
+            $this->validate(
+                [
+                    'fileUpload' => 'mimes:png,jpg,jpeg|max:1024',
+                ],
+                [
+                    'fileUpload.max' => 'Ukuran file tidak boleh lebih dari 1 MB, silahkan upload ulang!',
+                    'fileUpload.mimes' => 'File harus dalam format gambar: .jpg/.jpeg/.png, silahkan upload ulang!',
+                ]
+            );
+
+            $this->coaches = Pricelist::showCoachBasedOnProgram($this->selectedProgram);
+            $this->classes = ClassModel::where('coach_code', $this->selectedCoach)->get();
+            $this->uploadedFileName = time().'.'.$this->fileUpload->extension();
+        }
     }
 
     public function selectFile() {
         $this->showProgressBar = true;
-    }
-
-    public function updatedfileUpload() {
-        $this->validate(
-            [
-                'fileUpload' => 'mimes:png,jpg,jpeg|max:1024',
-            ],
-            [
-                'fileUpload.max' => 'Ukuran file tidak boleh lebih dari 1 MB, silahkan upload ulang!',
-                'fileUpload.mimes' => 'File harus dalam format gambar: .jpg/.jpeg/.png, silahkan upload ulang!',
-            ]
-        );
-
         $this->coaches = Pricelist::showCoachBasedOnProgram($this->selectedProgram);
         $this->classes = ClassModel::where('coach_code', $this->selectedCoach)->get();
+    }
 
-        $this->uploadedFileName = time().'.'.$this->fileUpload->extension();
+    public function getCheckBatchProperty() {
+        $checkBatch = Batch::checkRegisteredBatch();
+
+        return $checkBatch;
     }
 
     public function saveData() {
@@ -90,7 +96,7 @@ class RenewalForm extends Component
             'member_code' => Auth::user()->email,
             'batch_id' => $this->batchId,
             'amount_pay' => $priceInt,
-            'file_upload' => $this->fileUpload->storeAs($this->batchName, $this->uploadedFileName, 'public'),
+            'file_upload' => $this->fileUpload->storeAs('3', $this->uploadedFileName, 'public'),
             'payment_status' => 'Process',
             'registration_category' => $this->registrationCategory,
             'program_id' => $this->selectedProgram,
@@ -99,13 +105,17 @@ class RenewalForm extends Component
             'class_id' => $this->selectedClass,
         ]);
 
-        session()->flash('registrationSuccess', true);
+        session()->flash('registrationSuccess', 'Success');
         $this->redirect('/member/renewal-registration', navigate:true);
 
     }
 
     public function render()
     {
-        return view('livewire.member.renewal-form');
+        $data = [
+            'checkBatch' => $this->checkBatch,
+        ];
+
+        return view('livewire.member.renewal-form', $data);
     }
 }

@@ -46,7 +46,7 @@
 
                         <img src="{{ asset('template/src/assets/img/logo/reeactive-3d.png') }}" alt="auth-img">
 
-                        <h2 class="mt-5 text-white font-weight-bolder px-2">Fitness is Easy!
+                        <h2 class="mt-5 text-white font-weight-bolder px-2">FIT FOR DEEN
                         </h2>
                         <p class="text-white px-2">Mari bergabung bersama komunitas bugar muslimah di seluruh penjuru dunia</p>
                     </div>
