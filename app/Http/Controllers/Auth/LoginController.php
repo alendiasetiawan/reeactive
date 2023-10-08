@@ -51,12 +51,12 @@ class LoginController extends Controller
                 }
                 return redirect()->route('member::dashboard');
             }
-            elseif(auth()->user()->role_id==2) {
+            elseif(auth()->user()->role_id==1) {
                 if($request->has('simpanpwd')) {
                     Cookie::queue('saveuser',$request->email,20160);
                     Cookie::queue('savepwd',$request->password,20160);
                 }
-                return redirect()->route('santri::dashboardSantri');
+                return redirect()->route('admin::dashboard');
             }
             else {
                 if($request->has('simpanpwd')) {

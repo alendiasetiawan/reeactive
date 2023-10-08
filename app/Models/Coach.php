@@ -27,6 +27,16 @@ class Coach extends Model
         return $this->hasMany(CoachCertificate::class, 'coach_code', 'code');
     }
 
+    public function registrations(): HasMany
+    {
+        return $this->hasMany(Registration::class, 'coach_id', 'id');
+    }
+
+
+
+
+
+
     public static function privatePricing() {
         return Coach::with([
             'coach_skills',
@@ -82,6 +92,17 @@ class Coach extends Model
         ->join('pricelists', 'coaches.code', 'pricelists.coach_code')
         ->where('program_id', 5)
         ->where('coach_status', 'Aktif')
+        ->orderBy('coach_name', 'asc')
+        ->get();
+    }
+
+    public static function memperPerCoach($batchId) {
+        return Coach::with([
+            'registrations' => function ($query) use($batchId) {
+                $query->where('batch_id', $batchId);
+            }
+        ])
+        ->select('id', 'coach_name', 'nick_name')
         ->orderBy('coach_name', 'asc')
         ->get();
     }

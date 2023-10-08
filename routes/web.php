@@ -5,8 +5,6 @@ use App\Http\Controllers\CompanyProfile\PricelistController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LandingPageController;
-use App\Livewire\TesDashboard;
-use App\Livewire\TesRegistrasi;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,3 +28,5 @@ Route::controller(PricelistController::class)->group(function() {
 });
 
 require __DIR__ . '/member.php';
+
+require __DIR__ . '/admin.php';

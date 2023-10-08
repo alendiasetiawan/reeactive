@@ -10,8 +10,8 @@
 <link href="{{ asset('template/src/plugins/src/animate/animate.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('template/src/assets/css/light/components/carousel.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('template/src/assets/css/light/components/modal.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ asset('template/src/assets/css/light/components/tabs.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ asset('template/src/assets/css/light/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('template/src/plugins/src/apex/apexcharts.css') }}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="{{ asset('template/src/assets/css/light/widgets/modules-widgets.css') }}">
 @endpush
 
 @section('content')
@@ -182,6 +182,7 @@
 @endsection
 
 @push('customScripts')
+<script src="{{ asset('template/src/plugins/src/apex/apexcharts.min.js') }}"></script>
 <script src="{{ asset('template/src/assets/js/widgets/modules-widgets.js') }}"></script>
 <script src="{{ asset('template/src/assets/js/elements/tooltip.js') }}"></script>
 <script src="{{ asset('template/src/assets/js/scrollspyNav.js') }}"></script>

@@ -17,6 +17,11 @@ class Program extends Model
         return $this->hasMany(Pricelist::class, 'program_id', 'id');
     }
 
+    public function registrations(): HasMany
+    {
+        return $this->hasMany(Registration::class, 'program_id', 'id');
+    }
+
     public static function allProgramPricelists() {
         return Program::with([
             'pricelists' => function ($query) {
@@ -85,6 +90,16 @@ class Program extends Model
         ->join('coaches', 'pricelists.coach_code', 'coaches.code')
         ->where('program_id', 6)
         ->orderBy('pricelists.id', 'asc')
+        ->get();
+    }
+
+    public static function membersPerProgram($batchId) {
+        return Program::with([
+            'registrations' => function($query) use($batchId) {
+                $query->where('batch_id', $batchId)
+                ->where('payment_status', 'Done');
+            }
+        ])
         ->get();
     }
 }
