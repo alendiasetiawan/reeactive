@@ -12,6 +12,7 @@
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
     <link href="{{ asset('template/src/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('template/src/assets/css/light/scrollspyNav.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('template/layouts/modern-light-menu/css/light/plugins.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('template/layouts/modern-light-menu/css/dark/plugins.css') }}" rel="stylesheet" type="text/css" />
     <!-- END GLOBAL MANDATORY STYLES -->
@@ -74,6 +75,7 @@
     <!-- END MAIN CONTAINER -->
 
     <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
+    <script src="{{ asset('template/src/plugins/src/highlight/highlight.pack.js') }}"></script>
     <script src="{{ asset('template/src/bootstrap/js/bootstrap.main.js') }}"></script>
     <script src="{{ asset('template/src/plugins/src/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('template/src/plugins/src/mousetrap/mousetrap.min.js') }}"></script>
