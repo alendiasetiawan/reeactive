@@ -96,7 +96,7 @@ class RenewalForm extends Component
             'member_code' => Auth::user()->email,
             'batch_id' => $this->batchId,
             'amount_pay' => $priceInt,
-            'file_upload' => $this->fileUpload->storeAs($this->batchName, $this->uploadedFileName, 'public'),
+            'file_upload' => $this->fileUpload->storeAs('3', $this->uploadedFileName, 'public'),
             'payment_status' => 'Process',
             'registration_category' => $this->registrationCategory,
             'program_id' => $this->selectedProgram,

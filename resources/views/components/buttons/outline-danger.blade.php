@@ -1,3 +1,3 @@
-<button {{ $attributes->class(['btn btn-outline-danger btn-sm'])->merge(['']) }}>
+<button {{ $attributes->class(['btn btn-outline-danger'])->merge(['']) }}>
     {{ $slot }}
 </button>
