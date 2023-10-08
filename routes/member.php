@@ -12,6 +12,7 @@ Route::group(['middleware' => ['auth', 'member'], 'as' => 'member::'], function(
         // Registrasi Member Lama
         Route::controller(RenewalRegistrationController::class)->group(function() {
             Route::get('/renewal-registration', 'index')->name('renewal_registration');
+            Route::get('/renewal-registration/{id}', 'show')->name('renewal_registration.show');
         });
     });
 });

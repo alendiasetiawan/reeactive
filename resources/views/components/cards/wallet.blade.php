@@ -9,9 +9,9 @@
             {{ $mainTitle }}
         </p>
 
-        <a href="#" class="wallet-text">
+        <span href="#" class="wallet-text">
             {{ $info }}
-        </a>
+        </span>
 
     </div>
 
@@ -31,30 +31,6 @@
 
     <ul class="list-group list-group-media">
         {{ $slot }}
-        <li class="list-group-item ">
-            <div class="media">
-                <div class="me-3">
-                    <img alt="avatar" src="../src/assets/img/netflix.svg" class="img-fluid rounded-circle">
-                </div>
-                <div class="media-body">
-                    <h6 class="tx-inverse">Netflix</h6>
-                    <p class="mg-b-0">June 6, 10:34</p>
-                    <p class="amount">- $18.06</p>
-                </div>
-            </div>
-        </li>
-        <li class="list-group-item">
-            <div class="media">
-                <div class="me-3">
-                    <img alt="avatar" src="../src/assets/img/apple-app-store.svg" class="img-fluid rounded-circle">
-                </div>
-                <div class="media-body">
-                    <h6 class="tx-inverse">App Design</h6>
-                    <p class="mg-b-0">June 14, 05:21</p>
-                    <p class="amount">- $90.65</p>
-                </div>
-            </div>
-        </li>
     </ul>
 
     @isset($callToAction)

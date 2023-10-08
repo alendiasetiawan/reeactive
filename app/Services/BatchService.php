@@ -6,9 +6,23 @@ use App\Models\Batch;
 
 class BatchService {
 
-    public function batchId() {
-        $batch = Batch::latest('id')->first();
-        $batchId = $batch->id;
+    public function batchIdActive() {
+        $activeBatch = Batch::where('batch_status', 'Active')->exists();
+        $openBatch = Batch::where('batch_status', 'Open')->exists();
+
+        if($activeBatch) {
+            $batch = Batch::where('batch_status', 'Active')->first();
+            $batchId = $batch->id;
+        } elseif ($openBatch) {
+            $batch = Batch::where('batch_status', 'Open')->first();
+            $batchId = $batch->id;
+        }
+        else {
+            $batch = Batch::orderBy('id', 'desc')
+            ->limit(1)
+            ->first();
+            $batchId = $batch->id;
+        }
 
         return $batchId;
     }

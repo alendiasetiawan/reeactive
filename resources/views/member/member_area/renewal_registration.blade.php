@@ -3,20 +3,17 @@
 @push('customCss')
     <link href="{{ asset('template/src/assets/css/light/components/list-group.css') }}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="{{ asset('template/src/assets/css/light/widgets/modules-widgets.css') }}">
-
-    <link href="{{ asset('template/src/assets/css/dark/components/list-group.css') }}" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="{{ asset('template/src/assets/css/dark/widgets/modules-widgets.css') }}">
-
     <link rel="stylesheet" type="text/css" href="{{ asset('template/src/assets/css/light/elements/alert.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('template/src/assets/css/dark/elements/alert.css') }}">
-
     <link rel="stylesheet" href="{{ asset('template/src/plugins/src/sweetalerts2/sweetalerts2.css') }}">
-
-    <link href="{{ asset('template/src/assets/css/light/scrollspyNav.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('template/src/plugins/css/light/sweetalerts2/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
 
-    <link href="{{ asset('template/src/assets/css/dark/scrollspyNav.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('template/src/plugins/css/dark/sweetalerts2/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('template/src/plugins/src/autocomplete/css/autoComplete.02.css') }}" rel="stylesheet" type="text/css" />
+
+    <link href="{{ asset('template/src/plugins/css/light/autocomplete/css/custom-autoComplete.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('template/src/plugins/css/dark/autocomplete/css/custom-autoComplete.css') }}" rel="stylesheet" type="text/css" />
+
+    <link href="{{ asset('template/src/assets/css/light/pages/knowledge_base.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('template/src/assets/css/dark/pages/knowledge_base.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('breadcrumb')
@@ -46,7 +43,7 @@
 
         <livewire:member.registration-log />
 
-        <livewire:member.renewal-form />
+        <livewire:member.renewal-form :batchOpen='$batchOpen' :checkBatch='$checkBatch'/>
     </div>
 @endsection
 
@@ -54,4 +51,6 @@
     <script src="{{ asset('template/src/assets/js/widgets/modules-widgets.js') }}"></script>
     <script src="{{ asset('template/src/assets/js/scrollspyNav.js') }}"></script>
     <script src="{{ asset('template/src/plugins/src/sweetalerts2/sweetalerts2.min.js') }}"></script>
+    <script src="{{ asset('template/src/plugins/src/autocomplete/autoComplete.min.js') }}"></script>
+    <script src="{{ asset('template/src/assets/js/pages/knowledge-base.js') }}"></script>
 @endpush

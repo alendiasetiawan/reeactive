@@ -1,4 +1,4 @@
-<div class="col-lg-4 col-md-5 col-12 mb-3">
+<div class="col-lg-4 col-md-5 col-12 layout-spacing">
     <x-cards.activity>
         <x-slot name="cardTitle">Riwayat Registrasi</x-slot>
         @foreach ($registrationLogs as $log)

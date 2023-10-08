@@ -1,8 +1,14 @@
-<div class="col-lg-8 col-md-7 col-12 mb-3">
+<div class="col-lg-8 col-md-7 col-12 layout-spacing">
     <x-cards.basic-card>
         <x-slot name="cardTitle">Form Renewal Member</x-slot>
-        <small class="text-muted">Apabila anda ingin tetap mengikuti program Reeactive, silahkan isi form di bawah
-            ini!</small>
+        <h5>Instruksi Transfer</h5>
+        <p>
+            Pembayaran dapat dilakukan melalui transfer ke rekening berikut :<br>
+            Bank : <b>Bank Syariah Indonesia</b> <br>
+            Rekening : <b>725-1586-521</b> <br>
+            Atas Nama : <b>CV MUSLIMAH BUGAR INDONESIA</b> <br>
+            Kode Bank : <b>451</b>
+        </p>
         <form wire:submit.prevent='saveData' class="mt-3">
             <div class="row">
                 <div class="col-lg-6 col-12 mb-2">
@@ -105,14 +111,18 @@
 
             <div class="row">
                 <div class="col-lg-6 col-12">
-                    @if ($checkBatch[0]->registrations->count() == 0)
-                        @error('fileUpload')
-                            <button class="btn btn-dark" disabled>Tidak Bisa Daftar</button>
+                    @if ($batchOpen == 1)
+                        @if ($checkBatch[0]->registrations->count() == 0)
+                            @error('fileUpload')
+                                <button class="btn btn-dark" disabled>Tidak Bisa Daftar</button>
+                            @else
+                                <button class="btn btn-primary" type="submit">Daftar</button>
+                            @enderror
                         @else
-                            <button class="btn btn-primary" type="submit">Daftar</button>
-                        @enderror
+                            <button class="btn btn-dark" disabled>Anda Sudah Terdaftar</button>
+                        @endif
                     @else
-                        <button class="btn btn-dark" disabled>Anda Sudah Terdaftar</button>
+                        <button class="btn btn-dark" disabled>Pendaftaran Tutup</button>
                     @endif
                 </div>
             </div>
