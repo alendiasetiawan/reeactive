@@ -2,50 +2,67 @@
 
 @push('customCss')
 <link rel="stylesheet" type="text/css" href="{{ asset('template/src/assets/css/light/elements/alert.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('template/src/assets/css/dark/elements/alert.css') }}">
 <link href="{{ asset('template/src/assets/css/light/components/list-group.css') }}" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="{{ asset('template/src/assets/css/light/widgets/modules-widgets.css') }}">
-<link href="{{ asset('template/src/assets/css/dark/components/list-group.css') }}" rel="stylesheet" type="text/css">
-<link rel="stylesheet" type="text/css" href="{{ asset('template/src/assets/css/dark/widgets/modules-widgets.css') }}">
 <link href="{{ asset('template/src/plugins/src/animate/animate.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ asset('template/src/assets/css/light/components/carousel.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('template/src/assets/css/light/components/modal.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ asset('template/src/plugins/src/apex/apexcharts.css') }}" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="{{ asset('template/src/assets/css/light/widgets/modules-widgets.css') }}">
 @endpush
 
 @section('content')
 <div class="row layout-top-spacing">
     <!--Alert Pendaftaran-->
+    @if ($batchOpen == 1)
     <div class="col-12">
-        @if ($batchOpen == 1)
-        <div class="col-12">
-            @if ($checkBatch[0]->registrations->count() == 0)
-            <x-items.alerts.light-info>
-                Pendaftaran <b>"{{ $checkBatch[0]->batch_name }}"</b> telah dibuka, ayo daftar sekarang! Batas
-                waktu sampai {{ \Carbon\Carbon::parse($checkBatch[0]->end_date)->isoFormat('D MMM Y') }}.
-                <a wire:navigate href="{{ route('member::renewal_registration') }}">
-                    <x-buttons.outline-success>Daftar Sekarang</x-buttons.outline-success>
-                </a>
-            </x-items.alerts.light-info>
-            @else
-            @if ($checkBatch[0]->registrations[0]->payment_status == 'Process')
-            <x-items.alerts.light-success>
-                Pendaftaran anda di <b>"{{ $checkBatch[0]->batch_name }}"</b> sedang kami proses, mohon
-                kesediannya untuk menunggu. Terima Kasih
-            </x-items.alerts.light-success>
-            @endif
-            @if ($checkBatch[0]->registrations[0]->payment_status == 'Invalid')
-            <x-items.alerts.light-danger>
-                Status pendaftaran anda di <b>{{ $checkBatch[0]->batch_name }}</b>
-                <b class="text-danger">"Tidak Valid"</b>.
-                <x-buttons.outline-danger>Cek Sekarang</x-buttons.outline-danger>
-            </x-items.alerts.light-danger>
-            @endif
-            @endif
-        </div>
+        @if ($checkBatch[0]->registrations->count() == 0)
+        <x-items.alerts.light-info>
+            Pendaftaran <b>"{{ $checkBatch[0]->batch_name }}"</b> telah dibuka, ayo daftar sekarang! Batas
+            waktu sampai {{ \Carbon\Carbon::parse($checkBatch[0]->end_date)->isoFormat('D MMM Y') }}.
+            <a wire:navigate href="{{ route('member::renewal_registration') }}">
+                <x-buttons.outline-success class="btn-sm">Daftar Sekarang</x-buttons.outline-success>
+            </a>
+        </x-items.alerts.light-info>
+        @else
+        @if ($checkBatch[0]->registrations[0]->payment_status == 'Process')
+        <x-items.alerts.light-success>
+            Pendaftaran anda di <b>"{{ $checkBatch[0]->batch_name }}"</b> sedang kami proses, mohon
+            kesediannya untuk menunggu. Terima Kasih
+        </x-items.alerts.light-success>
+        @endif
+        @if ($checkBatch[0]->registrations[0]->payment_status == 'Invalid')
+        <x-items.alerts.light-danger>
+            Status pendaftaran anda di <b>{{ $checkBatch[0]->batch_name }}</b>
+            <b class="text-danger">"Tidak Valid"</b>.
+            <x-buttons.outline-danger>Cek Sekarang</x-buttons.outline-danger>
+        </x-items.alerts.light-danger>
+        @endif
         @endif
     </div>
+    @endif
+
+    @if (Auth::user()->default_pw == 1)
+    <div class="col-12">
+        <div class="alert alert-light-danger alert-dismissible fade show border-0 mb-4" role="alert">
+            <button type="button" data-bs-toggle="modal" data-bs-target="#confirmDefaultPassword" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <strong>Anda masih menggunakan password asli, untuk keamanan silahkan ganti password anda
+                <a wire:navigate href="{{ route('member::ganti_password') }}">
+                    <x-buttons.outline-danger class="btn-sm">Ganti Password</x-buttons.outline-danger>
+                </a>
+            </strong>
+        </div>
+        <!--Modal Confirm Default PW-->
+        <x-modals.zoomUp id="confirmDefaultPassword">
+            <x-slot name="modalTitle">Konfirmasi Default Password</x-slot>
+            Anda tidak akan melihat notifikasi ini lagi, apakah benar anda ingin tetap menggunakan password asli dari sistem?
+            <x-slot name="okButton">
+                <x-buttons.solid-primary wire:click="">Iya</x-buttons.solid-primary>
+            </x-slot>
+        </x-modals.zoomUp>
+        <!--#Modal Confirm Default PW-->
+    </div>
+    @endif
     <!--#Alert Pendaftaran-->
 
     <!--Info Program-->
@@ -180,10 +197,3 @@
     <!--#Registrations Log-->
 </div>
 @endsection
-
-@push('customScripts')
-<script src="{{ asset('template/src/plugins/src/apex/apexcharts.min.js') }}"></script>
-<script src="{{ asset('template/src/assets/js/widgets/modules-widgets.js') }}"></script>
-<script src="{{ asset('template/src/assets/js/elements/tooltip.js') }}"></script>
-<script src="{{ asset('template/src/assets/js/scrollspyNav.js') }}"></script>
-@endpush

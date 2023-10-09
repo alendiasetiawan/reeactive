@@ -36,7 +36,12 @@
     <!--#Query For Checking User Data-->
 
     <!--  BEGIN NAVBAR  -->
-    @include('layouts.elements.header')
+    @if (Auth::user()->role_id == 1)
+        @include('layouts.elements.headers.admin_header')
+    @else
+        @include('layouts.elements.headers.member_header')
+    @endif
+
     <!--  END NAVBAR  -->
 
     <!--  BEGIN MAIN CONTAINER  -->

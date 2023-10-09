@@ -16,9 +16,7 @@
             <div class="modal-footer md-button">
                 <button class="btn btn-light-dark" data-bs-dismiss="modal">Tutup</button>
                 @isset($okButton)
-                    <button type="button" class="btn btn-primary">
                         {{ $okButton }}
-                    </button>
                 @endisset
             </div>
         </div>

@@ -6,14 +6,6 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('template/src/assets/css/light/elements/alert.css') }}">
     <link rel="stylesheet" href="{{ asset('template/src/plugins/src/sweetalerts2/sweetalerts2.css') }}">
     <link href="{{ asset('template/src/plugins/css/light/sweetalerts2/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
-
-    <link href="{{ asset('template/src/plugins/src/autocomplete/css/autoComplete.02.css') }}" rel="stylesheet" type="text/css" />
-
-    <link href="{{ asset('template/src/plugins/css/light/autocomplete/css/custom-autoComplete.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('template/src/plugins/css/dark/autocomplete/css/custom-autoComplete.css') }}" rel="stylesheet" type="text/css" />
-
-    <link href="{{ asset('template/src/assets/css/light/pages/knowledge_base.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('template/src/assets/css/dark/pages/knowledge_base.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('breadcrumb')
