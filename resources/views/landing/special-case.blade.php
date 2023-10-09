@@ -62,7 +62,7 @@
                 </div>
             </div>
             <div class="row text-center mb-4">
-                <h2 class="text-theme"><em>Rp 1.950.000/orang</em></h2>
+                <h2 class="text-theme"><em>Rp 1.500.000/orang</em></h2>
             </div>
             <div class="row align-items-center">
                 @foreach ($specialCaseCoaches as $coach)

@@ -2,7 +2,6 @@
 
 @push('customCss')
 <link href="{{ asset('template/src/plugins/src/apex/apexcharts.css') }}" rel="stylesheet" type="text/css">
-
 <link href="{{ asset('template/src/assets/css/light/components/list-group.css') }}" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="{{ asset('template/src/assets/css/light/widgets/modules-widgets.css') }}">
 <link href="{{ asset('template/src/plugins/src/animate/animate.css') }}" rel="stylesheet" type="text/css" />
@@ -16,7 +15,7 @@
     <!--Payment Verification-->
     <div class="col-lg-4 col-md-6 col-12 layout-spacing">
         <x-cards.account-box>
-            <x-slot name="image"><img src="{{ asset('template/src/assets/img/money-bag.png') }}" alt="money-bag"></x-slot>
+            <x-slot name="image"><img src="{{ asset('template/src/assets/img/icon/wallet.png') }}" alt="money-bag"></x-slot>
             <x-slot name="title">Total Pemasukan <b class="text-primary">{{ $batch->batch_name }}</b></x-slot>
             <x-slot name="subTitle">{{ 'Rp '.number_format($allRegistrationOpen->where('payment_status', 'Done')->sum('amount_pay'),0,',','.') }}</x-slot>
             <x-slot name="info">
@@ -189,9 +188,11 @@
                     <h5 class="value">Data Member Per Coach <b class="text-primary">{{ $batch->batch_name }}</b></h5>
                 </div>
             </div>
-            <div class="widget-content">
-                {!! $memberChart->container() !!}
-            </div>
+            @persist('chartCoach')
+                <div class="widget-content">
+                    {!! $memberChart->container() !!}
+                </div>
+            @endpersist()
         </div>
     </div>
 
@@ -202,9 +203,11 @@
                     <h5 class="value">Statistik Jenis Registrasi <b class="text-primary">{{ $batch->batch_name }}</b></h5>
                 </div>
             </div>
+            @persist('chartRegistrasi')
             <div class="widget-content">
                 {!! $registerCategoryChart->container() !!}
             </div>
+            @endpersist()
         </div>
     </div>
 </div>
@@ -256,7 +259,9 @@
 
                         </tbody>
                     </table>
-                    <x-buttons.solid-primary>Detail</x-buttons.solid-primary>
+                    <a wire:navigate href="{{ route('admin::payment_verification') }}">
+                        <x-buttons.solid-primary>Detail</x-buttons.solid-primary>
+                    </a>
                 </div>
             </div>
         </div>
@@ -265,12 +270,12 @@
 @endsection
 
 @push('customScripts')
-<script src="{{ asset('template/src/assets/js/widgets/modules-widgets.js') }}"></script>
-<script src="{{ $memberChart->cdn() }}"></script>
+<script src="{{ asset('template/src/assets/js/widgets/modules-widgets.js') }}" data-navigate-once></script>
+<script src="{{ $memberChart->cdn() }}" data-navigate-once></script>
 
 {{ $memberChart->script() }}
 
-<script src="{{ $registerCategoryChart->cdn() }}"></script>
+<script src="{{ $registerCategoryChart->cdn() }}" data-navigate-once></script>
 
 {{ $registerCategoryChart->script() }}
 

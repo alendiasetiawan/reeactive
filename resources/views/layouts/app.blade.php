@@ -12,19 +12,15 @@
     <link href="{{ asset('template/src/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('template/layouts/modern-light-menu/css/light/plugins.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('template/layouts/modern-light-menu/css/dark/plugins.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('template/src/assets/css/light/widgets/modules-widgets.css') }}" rel="stylesheet" type="text/css">
     <!-- END GLOBAL MANDATORY STYLES -->
 
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
     @stack('customCss')
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
-    <style>
-        body.dark .layout-px-spacing, .layout-px-spacing {
-            min-height: calc(100vh - 155px) !important;
-        }
-    </style>
     @livewireStyles()
 </head>
-<body class="layout-boxed" page="starter-pack">
+<body class="layout-sidebar">
     <!--Query For Checking User Data-->
     @php
         $fullName = Auth::user()->full_name;
@@ -37,12 +33,21 @@
 
     <!--  BEGIN NAVBAR  -->
     @include('layouts.elements.header')
+
+    @if (Auth::user()->role_id == 1)
+        @include('layouts.elements.bottom_navbar.admin_bottom_navbar')
+    @else
+        @include('layouts.elements.bottom_navbar.member_bottom_navbar')
+    @endif
+
+
     <!--  END NAVBAR  -->
 
     <!--  BEGIN MAIN CONTAINER  -->
     <div class="main-container" id="container">
 
         <div class="overlay"></div>
+        <div class="cs-overlay"></div>
         <div class="search-overlay"></div>
 
         <!--  BEGIN SIDEBAR  -->
@@ -58,9 +63,10 @@
             <div class="layout-px-spacing">
 
                 <div class="middle-content container-xxl p-0">
-                    @yield('breadcrumb')
+                    {{-- @yield('breadcrumb')
 
-                    @yield('content')
+                    @yield('content') --}}
+                    {{ $slot }}
                 </div>
 
             </div>
@@ -74,11 +80,16 @@
     <!-- END MAIN CONTAINER -->
 
     <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
+    <script src="{{ asset('template/src/plugins/src/global/vendors.min.js') }}" ></script>
     <script src="{{ asset('template/src/bootstrap/js/bootstrap.main.js') }}"></script>
-    <script src="{{ asset('template/src/plugins/src/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ asset('template/src/plugins/src/mousetrap/mousetrap.min.js') }}"></script>
-    <script src="{{ asset('template/src/plugins/src/waves/waves.min.js') }}"></script>
+    <script src="{{ asset('template/src/plugins/src/perfect-scrollbar/perfect-scrollbar.main.js') }}"></script>
+    <script src="{{ asset('template/src/plugins/src/mousetrap/mousetrap.main.js') }}"></script>
+    <script src="{{ asset('template/src/plugins/src/waves/waves.main.js') }}"></script>
     <script src="{{ asset('template/layouts/modern-light-menu/app.js') }}"></script>
+    <script src="{{ asset('template/src/assets/js/widgets/modules-widgets.js') }}"></script>
+    <script>
+        $('.dropdown-toggle').dropdown()
+    </script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->
 
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->

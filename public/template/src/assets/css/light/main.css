@@ -3374,6 +3374,7 @@ fieldset:disabled .btn {
 /*
     Default
 */
+
 .bg-primary {
   background-color: #f8538d !important;
   border-color: #f8538d;
@@ -3415,6 +3416,12 @@ fieldset:disabled .btn {
   border-color: #3b3f5c;
   color: #fff;
 }
+
+.bg-white {
+    background-color: #FFFFFF !important;
+    border-color: #FFFFFF;
+    color: #fff;
+  }
 
 /*
     Light Background
@@ -3705,6 +3712,7 @@ fieldset:disabled .btn {
 }
 
 /*-------text-colors------*/
+
 .text-primary {
   color: #f8538d !important;
 }

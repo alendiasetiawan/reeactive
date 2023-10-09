@@ -59,13 +59,14 @@ class Registration extends Model
     }
 
     public static function showRegistrationDetail($id) {
-        return Registration::join('batches', 'registrations.batch_id', 'batches.id')
+        return Registration::join('members', 'registrations.member_code', 'members.code')
+        ->join('batches', 'registrations.batch_id', 'batches.id')
         ->join('programs', 'registrations.program_id', 'programs.id')
         ->join('levels', 'registrations.level_id', 'levels.id')
         ->join('coaches', 'registrations.coach_id', 'coaches.id')
         ->join('classes', 'registrations.class_id', 'classes.id')
         ->where('registrations.id', $id)
-        ->select('registrations.*', 'batches.batch_name', 'programs.program_name', 'levels.level_name', 'coaches.nick_name', 'coaches.coach_name',
+        ->select('registrations.*', 'members.member_name', 'batches.batch_name', 'programs.program_name', 'levels.level_name', 'coaches.nick_name', 'coaches.coach_name',
         'classes.day', 'classes.start_time', 'classes.end_time', 'classes.link_wa')
         ->first();
     }
