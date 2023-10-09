@@ -6,7 +6,7 @@
       <div class="container">
         <div class="row align-items-center">
           <div class="col-lg-6 col-md-12">
-            <img class="img-fluid wow tada" data-wow-duration="2s" src="{{ asset('landing/images/banner/hero.webp') }}" alt="">
+            <img class="img-fluid wow tada" data-wow-duration="2s" src="{{ asset('landing/images/banner/hero-image.webp') }}" alt="">
           </div>
           <div class="col-lg-6 col-md-12 my-5 my-lg-0">
             <h5 class="wow fadeInDown" data-wow-duration="1.5s">Fit For Deen</h5>

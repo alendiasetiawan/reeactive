@@ -23,7 +23,11 @@ class RedirectIfAuthenticated
             if (Auth::guard($guard)->check()) {
                 if(Auth::user()->role_id==3) {
                     return redirect()->route('member::dashboard');
-                } else {
+                }
+                elseif (Auth::user()->role_id==1) {
+                    return redirect()->route('admin::dashboard');
+                }
+                else {
                     return redirect()->route('/');
                 }
             }

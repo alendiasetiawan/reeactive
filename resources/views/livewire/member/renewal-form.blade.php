@@ -46,7 +46,7 @@
                                 class="text-muted">--Pilih--</b></x-inputs.select-option>
                         @foreach ($coaches as $coach)
                             <x-inputs.select-option
-                                value="{{ $coach->code }}">{{ $coach->coach_name }}</x-inputs.select-option>
+                                value="{{ $coach->code }}">Coach {{ $coach->nick_name }} ({{ $coach->coach_name }})</x-inputs.select-option>
                         @endforeach
                     </x-inputs.select>
                 </div>
@@ -128,17 +128,4 @@
             </div>
         </form>
     </x-cards.basic-card>
-
-    <!--Alert Success-->
-    @if (session('registrationSuccess'))
-        <script>
-                Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Selamat! Pendaftaran Berhasil',
-                showConfirmButton: false,
-                timer: 1500
-                })
-        </script>
-    @endif
 </div>

@@ -19,7 +19,7 @@ class Member
         if(Auth::user()->role_id==3){
             return $next($request);
         } else {
-            return redirect('/');
+            return redirect('/login');
         }
     }
 }

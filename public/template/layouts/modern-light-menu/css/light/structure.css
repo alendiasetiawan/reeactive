@@ -229,7 +229,7 @@ code {
   margin-left: 80px;
 }
 
-/* 
+/*
 =====================
     Navigation Bar
 =====================
@@ -489,7 +489,7 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   color: #515365;
 }
 .navbar .navbar-item .nav-item.dropdown.notification-dropdown .dropdown-menu .dropdown-item:hover .data-info h6 {
-  color: #4361ee;
+  color: #f8538d;
 }
 .navbar .navbar-item .nav-item.dropdown.notification-dropdown .dropdown-menu .data-info p {
   margin-bottom: 0;
@@ -707,7 +707,7 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   font-size: 13px;
   font-weight: 500;
   margin-bottom: 0;
-  color: #4361ee;
+  color: #f8538d;
 }
 .navbar .navbar-item .nav-item.dropdown.user-profile-dropdown .nav-link:after {
   display: none;
@@ -732,7 +732,7 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   border-radius: 8px;
 }
 .navbar .navbar-item .nav-item.user-profile-dropdown .dropdown-menu .dropdown-item:hover a {
-  color: #4361ee;
+  color: #f8538d;
   background: #ebedf2;
 }
 .navbar .navbar-item .nav-item.user-profile-dropdown .dropdown-menu .dropdown-item.active, .navbar .navbar-item .nav-item.user-profile-dropdown .dropdown-menu .dropdown-item:active {
@@ -744,7 +744,7 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   height: 18px;
 }
 
-/* 
+/*
 ===============
     Sidebar
 ===============
@@ -1120,13 +1120,13 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   stroke-width: 1.8;
 }
 #sidebar ul.menu-categories li.menu.active > .dropdown-toggle {
-  background-color: #4361ee;
+  background-color: #f8538d;
 }
 #sidebar ul.menu-categories li.menu.active > .dropdown-toggle svg, #sidebar ul.menu-categories li.menu.active > .dropdown-toggle span {
   color: #fff;
 }
 #sidebar ul.menu-categories li.menu.active > .dropdown-toggle[aria-expanded=true] {
-  background: #4361ee;
+  background: #f8538d;
 }
 #sidebar ul.menu-categories li.menu.active > .dropdown-toggle:hover {
   color: #fff;
@@ -1140,7 +1140,7 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   transition: 0.5s;
 }
 #sidebar ul.menu-categories li.menu > .dropdown-toggle[aria-expanded=true] {
-  background: #4361ee;
+  background: #f8538d;
 }
 #sidebar ul.menu-categories li.menu > .dropdown-toggle[aria-expanded=true] svg {
   color: #fff;
@@ -1162,10 +1162,10 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   fill: rgba(67, 97, 238, 0.0392156863);
 }
 #sidebar ul.menu-categories li.menu > .dropdown-toggle:hover {
-  color: #4361ee;
+  color: #f8538d;
 }
 #sidebar ul.menu-categories li.menu > .dropdown-toggle:hover svg:not(.badge-icon) {
-  color: #4361ee;
+  color: #f8538d;
   fill: rgba(67, 97, 238, 0.0392156863);
 }
 #sidebar ul.menu-categories li.menu > .dropdown-toggle svg.feather-chevron-right {
@@ -1196,29 +1196,29 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   border-radius: 50%;
 }
 #sidebar ul.menu-categories li.menu ul.submenu > li a:hover {
-  color: #4361ee;
+  color: #f8538d;
 }
 #sidebar ul.menu-categories li.menu ul.submenu > li a:hover:before {
-  background: #4361ee !important;
+  background: #f8538d !important;
   box-shadow: 0 0 0px 2px rgba(67, 97, 238, 0.431372549);
   border: 1.9px solid #ffffff;
 }
 #sidebar ul.menu-categories li.menu ul.submenu > li.active a {
-  color: #4361ee;
+  color: #f8538d;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
   font-weight: 500;
 }
 #sidebar ul.menu-categories li.menu ul.submenu > li.active a:before {
-  background-color: #4361ee;
+  background-color: #f8538d;
 }
 #sidebar ul.menu-categories li.menu ul.submenu > li.active a:hover {
-  color: #4361ee !important;
+  color: #f8538d !important;
 }
 #sidebar ul.menu-categories li.menu ul.submenu > li.active a:hover:before {
-  background: #4361ee !important;
+  background: #f8538d !important;
   box-shadow: 0 0 0px 2px rgba(67, 97, 238, 0.431);
-  border: 1.9px solid #4361ee;
+  border: 1.9px solid #f8538d;
 }
 #sidebar ul.menu-categories ul.submenu > li {
   margin-top: 3px;
@@ -1230,7 +1230,7 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   content: "";
   position: absolute;
   background-color: rgba(255, 255, 255, 0.07);
-  background-color: #4361ee;
+  background-color: #f8538d;
   width: 15px;
   height: 42px;
   width: 100%;
@@ -1242,10 +1242,10 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   display: none;
 }
 #sidebar ul.menu-categories ul.submenu > li a:hover {
-  color: #4361ee;
+  color: #f8538d;
 }
 #sidebar ul.menu-categories ul.submenu > li a:hover:before {
-  background-color: #4361ee;
+  background-color: #f8538d;
 }
 #sidebar ul.menu-categories ul.submenu > li a i {
   align-self: center;
@@ -1258,10 +1258,10 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   background-color: #fff;
 }
 #sidebar ul.menu-categories ul.submenu li > a[aria-expanded=true] {
-  color: #4361ee;
+  color: #f8538d;
 }
 #sidebar ul.menu-categories ul.submenu li > a[aria-expanded=true]:before {
-  background-color: #4361ee !important;
+  background-color: #f8538d !important;
 }
 #sidebar ul.menu-categories ul.submenu > li a.dropdown-toggle {
   padding: 10px 32px 10px 33px;
@@ -1283,11 +1283,11 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   color: #fff;
 }
 #sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li a:hover {
-  color: #4361ee;
+  color: #f8538d;
 }
 #sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li a:hover:before {
-  background-color: #4361ee;
-  border: 1.9px solid #4361ee;
+  background-color: #f8538d;
+  border: 1.9px solid #f8538d;
   box-shadow: none;
 }
 #sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li a:before {
@@ -1355,7 +1355,7 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   animation-name: e-fadeInUp;
 }
 
-/*  
+/*
     ======================
         Footer-wrapper
     ======================
@@ -1407,7 +1407,7 @@ body.alt-menu #content {
   transition: none;
 }
 
-/*  
+/*
     ======================
         MEDIA QUERIES
     ======================
