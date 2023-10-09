@@ -1,0 +1,49 @@
+.bottom-bar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    align-content: center;
+    background-color: #eee;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    margin-top: 20em;
+    max-width: 30em;
+    border-radius: 20px 20px 0 0;
+}
+.icon{
+    font-size: 1.5em;
+    padding: .5em;
+    margin: .5em;
+    margin-top: 0;
+    transition: .5s ease-in-out;
+    border-radius: 100%;
+    border: 7px solid #eee;
+}
+.active{
+    transform: scale(1.25) translateY(-1em);
+    background: linear-gradient(135deg, #23f,#6589ff);
+    border: 7px solid #dcdcdc;
+    color: white;
+}
+
+/*=============== HEADER ===============*/
+
+/* @media screen and (max-width: 767px) {
+  .nav__menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: var(--container-color);
+    box-shadow: 0 -1px 12px hsla(var(--hue), var(--sat), 15%, 0.15);
+    width: 100%;
+    height: 4rem;
+    padding: 0 1rem;
+    display: grid;
+    align-content: center;
+    border-radius: 1.25rem 1.25rem 0 0;
+    transition: .4s;
+  }
+} */

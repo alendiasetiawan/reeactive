@@ -18,6 +18,16 @@ class Registration extends Model
         return $this->belongsTo(Batch::class, 'batch_id', 'id');
     }
 
+    public function coach(): BelongsTo
+    {
+        return $this->belongsTo(Coach::class, 'coach_id', 'id');
+    }
+
+    public function program(): BelongsTo
+    {
+        return $this->belongsTo(Program::class, 'program_id', 'id');
+    }
+
     public static function personalRegistrationLogs() {
         return Registration::join('coaches', 'registrations.coach_id', 'coaches.id')
         ->join('batches', 'registrations.batch_id', 'batches.id')
@@ -49,15 +59,29 @@ class Registration extends Model
     }
 
     public static function showRegistrationDetail($id) {
-        return Registration::join('batches', 'registrations.batch_id', 'batches.id')
+        return Registration::join('members', 'registrations.member_code', 'members.code')
+        ->join('batches', 'registrations.batch_id', 'batches.id')
         ->join('programs', 'registrations.program_id', 'programs.id')
         ->join('levels', 'registrations.level_id', 'levels.id')
         ->join('coaches', 'registrations.coach_id', 'coaches.id')
         ->join('classes', 'registrations.class_id', 'classes.id')
         ->where('registrations.id', $id)
-        ->select('registrations.*', 'batches.batch_name', 'programs.program_name', 'levels.level_name', 'coaches.nick_name', 'coaches.coach_name',
+        ->select('registrations.*', 'members.member_name', 'batches.batch_name', 'programs.program_name', 'levels.level_name', 'coaches.nick_name', 'coaches.coach_name',
         'classes.day', 'classes.start_time', 'classes.end_time', 'classes.link_wa')
         ->first();
+    }
+
+    public static function allRegistrationOpen($batchId) {
+        return Registration::join('members', 'registrations.member_code', 'members.code')
+        ->join('programs', 'registrations.program_id', 'programs.id')
+        ->join('levels', 'registrations.level_id', 'levels.id')
+        ->join('coaches', 'registrations.coach_id', 'coaches.id')
+        ->join('classes', 'registrations.class_id', 'classes.id')
+        ->where('registrations.batch_id', $batchId)
+        ->select('registrations.*', 'members.member_name', 'programs.program_name', 'levels.level_name', 'coaches.nick_name', 'coaches.coach_name',
+        'classes.day', 'classes.start_time', 'classes.end_time')
+        ->orderBy('registrations.id', 'desc')
+        ->get();
     }
 
 }

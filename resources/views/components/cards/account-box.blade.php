@@ -28,8 +28,8 @@
                     {{ $badgeLabel }}
                 </div>
                 @endisset
-                <!--Collapse-->
                 {{ $slot }}
+                {{-- <a href="#" data-bs-toggle="modal" data-bs-target="#detailProgram">Detail Program</a> --}}
             </div>
         </div>
     </div>

@@ -243,15 +243,15 @@
                                 </a>
                                 <a class="nav-item nav-link" id="nav-tab2" data-bs-toggle="tab" href="#tab1-2"
                                     role="tab" aria-selected="false"><i class="la la-user-friends"></i>
-                                    <h5>Buddy-Small Groups</h5>
+                                    <h5>Buddy-Small Group</h5>
                                 </a>
                                 <a class="nav-item nav-link" id="nav-tab3" data-bs-toggle="tab" href="#tab1-3"
                                     role="tab" aria-selected="false"><i class="la la-user-injured"></i>
-                                    <h5>Special Case Groups</h5>
+                                    <h5>Special Case Small Group</h5>
                                 </a>
                                 <a class="nav-item nav-link" id="nav-tab4" data-bs-toggle="tab" href="#tab1-4"
                                     role="tab" aria-selected="false"><i class="la la-users"></i>
-                                    <h5>Large Groups</h5>
+                                    <h5>Large Group</h5>
                                 </a>
                                 <a class="nav-item nav-link" id="nav-tab5" data-bs-toggle="tab" href="#tab1-5"
                                     role="tab" aria-selected="false"><i class="la la-heartbeat"></i>
@@ -338,7 +338,7 @@
                             <!--Special Groups-->
                             <div role="tabpanel" class="tab-pane fade" id="tab1-3">
                                 <div class="row text-center mb-4">
-                                    <h3 class="text-theme"><em>Rp 1.950.000/orang</em></h3>
+                                    <h3 class="text-theme"><em>Rp 1.500.000/orang</em></h3>
                                 </div>
                                 <div class="row">
                                     <ul class="custom-li list-unstyled list-icon-2 d-inline-block">

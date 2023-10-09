@@ -1,4 +1,3 @@
-document.addEventListener('livewire:initialized', function() {
 var App = function() {
     var MediaSize = {
         xl: 1200,
@@ -472,8 +471,15 @@ var App = function() {
     }
 
 }();
-})
 
 document.addEventListener('livewire:initialized', function() {
+    App.init('layout');
+})
+
+document.addEventListener('livewire:navigating', function() {
+    App.init('layout');
+})
+
+document.addEventListener('livewire:navigated', function() {
     App.init('layout');
 })
