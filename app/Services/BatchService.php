@@ -27,6 +27,24 @@ class BatchService {
         return $batchId;
     }
 
+    public function batchQuery() {
+        $activeBatch = Batch::where('batch_status', 'Active')->exists();
+        $openBatch = Batch::where('batch_status', 'Open')->exists();
+
+        if($openBatch) {
+            $batch = Batch::where('batch_status', 'Open')->first();
+        } elseif ($activeBatch) {
+            $batch = Batch::where('batch_status', 'Active')->first();
+        }
+        else {
+            $batch = Batch::orderBy('id', 'desc')
+            ->limit(1)
+            ->first();
+        }
+
+        return $batch;
+    }
+
     public function renewalMemberPercent($renewalMember, $qtyLastMember) {
 
         $percent = Round(($renewalMember/$qtyLastMember) * 100,2);

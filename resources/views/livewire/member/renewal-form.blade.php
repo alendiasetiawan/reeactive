@@ -30,7 +30,9 @@
             <div class="row">
                 <div class="col-lg-4 col-12 mb-2">
                     <x-inputs.label>Program</x-inputs.label>
-                    <x-inputs.select wire:model.live="selectedProgram">
+                    <x-inputs.select wire:model.live="selectedProgram" required
+                    oninvalid="this.setCustomValidity('Silahkan pilih 1 program')"
+                    oninput="this.setCustomValidity('')">
                         <x-inputs.select-option value="" selected>--Pilih--</x-inputs.select-option>
                         @foreach ($programs as $program)
                             <x-inputs.select-option
@@ -41,7 +43,9 @@
 
                 <div class="col-lg-4 col-12 mb-2">
                     <x-inputs.label>Coach</x-inputs.label>
-                    <x-inputs.select wire:model.live="selectedCoach">
+                    <x-inputs.select wire:model.live="selectedCoach" required
+                    oninvalid="this.setCustomValidity('Anda belum memilih coach')"
+                    oninput="this.setCustomValidity('')">
                         <x-inputs.select-option value="" selected><b
                                 class="text-muted">--Pilih--</b></x-inputs.select-option>
                         @foreach ($coaches as $coach)
@@ -53,13 +57,16 @@
 
                 <div class="col-lg-4 col-12 mb-2">
                     <x-inputs.label>Kelas</x-inputs.label>
-                    <x-inputs.select wire:model="selectedClass">
+                    <x-inputs.select wire:model="selectedClass" required
+                    oninvalid="this.setCustomValidity('Pilih kelas yang mana?')"
+                    oninput="this.setCustomValidity('')">
                         <x-inputs.select-option value="" selected>--Pilih--</x-inputs.select-option>
                         @foreach ($classes as $class)
                             <x-inputs.select-option value="{{ $class->id }}">
-                                {{ \Carbon\Carbon::parse($class->start_time)->format('H:i') }}
+                                {{ $class->day }}
+                                ({{ \Carbon\Carbon::parse($class->start_time)->format('H:i') }}
                                 -
-                                {{ \Carbon\Carbon::parse($class->end_time)->format('H:i') }}
+                                {{ \Carbon\Carbon::parse($class->end_time)->format('H:i') }})
                             </x-inputs.select-option>
                         @endforeach
                     </x-inputs.select>
@@ -95,7 +102,10 @@
                         @endif
                     </div>
                     @error('fileUpload')
-                        <small class="error">{{ $message }}</small>
+                        <small class="text-danger">
+                            {{ $message }}
+                            Anda bisa mengecilkan ukuran file <a href="https://tinyjpg.com/" target="_blank"><b class="text-info">Disini!</b></a>
+                        </small>
                     @enderror
                 </div>
                 @error('fileUpload')

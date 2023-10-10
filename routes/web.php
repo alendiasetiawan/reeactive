@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\CompanyProfile\PricelistController;
@@ -19,7 +18,7 @@ use App\Http\Controllers\CompanyProfile\PricelistController;
 */
 
 Auth::routes();
-Route::get('/', [LandingPageController::class, 'index']);
+Route::get('/', [LandingPageController::class, 'index'])->name('home_page');
 Route::get('/logout', [LoginController::class, 'logout']);
 Route::controller(PricelistController::class)->group(function() {
     Route::get('/private-1-on-1', 'private');
@@ -28,10 +27,8 @@ Route::controller(PricelistController::class)->group(function() {
     Route::get('/large-groups', 'large');
 });
 
-Route::get('/linkstorage', function () {
-    Artisan::call('storage:link');
-});
-
 require __DIR__ . '/member.php';
 
 require __DIR__ . '/admin.php';
+
+require __DIR__ . '/coach.php';

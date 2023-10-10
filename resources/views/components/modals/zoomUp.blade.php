@@ -9,9 +9,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                    <p class="modal-text">
-                        {{ $slot }}
-                    </p>
+                {{ $slot }}
             </div>
             <div class="modal-footer md-button">
                 <button class="btn btn-light-dark" data-bs-dismiss="modal">Tutup</button>

@@ -63,8 +63,8 @@ class RenewalForm extends Component
                     'fileUpload' => 'mimes:png,jpg,jpeg|max:1024',
                 ],
                 [
-                    'fileUpload.max' => 'Ukuran file tidak boleh lebih dari 1 MB, silahkan upload ulang!',
-                    'fileUpload.mimes' => 'File harus dalam format gambar: .jpg/.jpeg/.png, silahkan upload ulang!',
+                    'fileUpload.max' => 'Ukuran file tidak boleh lebih dari 1 MB.',
+                    'fileUpload.mimes' => 'File harus dalam format gambar: .jpg/.jpeg/.png.',
                 ]
             );
 
