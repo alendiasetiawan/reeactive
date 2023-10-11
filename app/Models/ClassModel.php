@@ -2,13 +2,40 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ClassModel extends Model
 {
     use HasFactory;
 
     protected $table = 'classes';
-    protected $guarde = [];
+    protected $guarded = [];
+
+    public function registrations(): HasMany
+    {
+        return $this->hasMany(Registration::class, 'class_id', 'id');
+    }
+
+    public function program(): BelongsTo
+    {
+        return $this->belongsTo(Program::class, 'program_id', 'id');
+    }
+
+    public static function memberPerCoach($batchId, $coachId) {
+        return ClassModel::with([
+            'registrations' => function ($query) use($batchId, $coachId) {
+                $query->where('batch_id', $batchId)
+                ->where('coach_id', $coachId);
+            }
+        ])
+        ->join('programs', 'classes.program_id', 'programs.id')
+        ->select('classes.*', 'programs.program_name', 'programs.quota_max')
+        ->where('coach_code', Auth::user()->email)
+        ->orderBy('start_time', 'asc')
+        ->get();
+    }
 }

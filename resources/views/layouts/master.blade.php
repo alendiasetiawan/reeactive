@@ -52,9 +52,11 @@
 
         <!--  BEGIN SIDEBAR  -->
         @if (Auth::user()->role_id == 3)
-            @include('layouts.elements.member_sidebar')
+            @include('layouts.elements.sidebars.member_sidebar')
+        @elseif(Auth::user()->role_id == 2)
+            @include('layouts.elements.sidebars.coach_sidebar')
         @else
-            @include('layouts.elements.admin_sidebar')
+            @include('layouts.elements.sidebars.admin_sidebar')
         @endif
 
         @if (Auth::user()->role_id == 1)

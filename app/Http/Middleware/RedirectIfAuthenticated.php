@@ -27,6 +27,9 @@ class RedirectIfAuthenticated
                 elseif (Auth::user()->role_id==1) {
                     return redirect()->route('admin::dashboard');
                 }
+                elseif (Auth::user()->role_id==2) {
+                    return redirect()->route('coach::dashboard');
+                }
                 else {
                     return redirect()->route('/');
                 }

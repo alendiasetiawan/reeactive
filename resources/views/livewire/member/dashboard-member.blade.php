@@ -1,16 +1,12 @@
 <div>
     @push('customCss')
     <link rel="stylesheet" type="text/css" href="{{ asset('template/src/assets/css/light/elements/alert.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('template/src/assets/css/dark/elements/alert.css') }}">
     <link href="{{ asset('template/src/assets/css/light/components/list-group.css') }}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="{{ asset('template/src/assets/css/light/widgets/modules-widgets.css') }}">
-    <link href="{{ asset('template/src/assets/css/dark/components/list-group.css') }}" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="{{ asset('template/src/assets/css/dark/widgets/modules-widgets.css') }}">
     <link href="{{ asset('template/src/plugins/src/animate/animate.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('template/src/assets/css/light/components/carousel.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('template/src/assets/css/light/components/modal.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('template/src/plugins/src/apex/apexcharts.css') }}" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="{{ asset('template/src/assets/css/light/widgets/modules-widgets.css') }}">
     @endpush
 
     <div class="row layout-top-spacing">
@@ -167,7 +163,8 @@
                 </x-slot>
                 <x-items.list-groups.advance>
                     @foreach ($registrations as $register)
-                    @if ($loop->index <= 1) <x-items.list-groups.item-advance>
+                    @if ($loop->index <= 1)
+                    <x-items.list-groups.item-advance>
                         <x-slot name="title">{{ $register->batch_name }}</x-slot>
                         <x-slot name="subTitle">{{ $register->created_at->diffForHumans() }}</x-slot>
                         <x-slot name="info">

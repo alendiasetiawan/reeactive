@@ -28,6 +28,11 @@ class Registration extends Model
         return $this->belongsTo(Program::class, 'program_id', 'id');
     }
 
+    public function class_model(): BelongsTo
+    {
+        return $this->belongsTo(ClassModel::class, 'class_id', 'id');
+    }
+
     public static function personalRegistrationLogs() {
         return Registration::join('coaches', 'registrations.coach_id', 'coaches.id')
         ->join('batches', 'registrations.batch_id', 'batches.id')

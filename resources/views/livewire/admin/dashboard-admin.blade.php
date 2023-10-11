@@ -12,7 +12,7 @@
         <div class="col-lg-4 col-md-6 col-12 layout-spacing">
             <x-cards.account-box>
                 <x-slot name="image"><img src="{{ asset('template/src/assets/img/icon/wallet.png') }}" alt="money-bag"></x-slot>
-                <x-slot name="title">Total Pemasukan <b class="text-primary">{{ $batch->batch_name }}</b></x-slot>
+                <x-slot name="title">Pemasukan <b class="text-primary">{{ $batch->batch_name }}</b></x-slot>
                 <x-slot name="subTitle">{{ 'Rp '.number_format($allRegistrationOpen->where('payment_status', 'Done')->sum('amount_pay'),0,',','.') }}</x-slot>
                 <x-slot name="info">
                     @php
