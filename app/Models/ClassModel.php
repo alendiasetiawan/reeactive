@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ClassModel extends Model
@@ -17,6 +18,11 @@ class ClassModel extends Model
     public function registrations(): HasMany
     {
         return $this->hasMany(Registration::class, 'class_id', 'id');
+    }
+
+    public function program(): BelongsTo
+    {
+        return $this->belongsTo(Program::class, 'program_id', 'id');
     }
 
     public static function memberPerCoach($batchId, $coachId) {

@@ -43,6 +43,21 @@ class Member extends Model
         ->select('registrations.created_at', 'members.member_name', 'members.medical_condition', 'programs.program_name', 'programs.id', 'levels.level_name',
         'classes.day', 'classes.start_time', 'classes.end_time')
         ->orderBy('members.member_name', 'asc')
-        ->get();
+        ->paginate(9);
+    }
+
+    public static function coachActiveMembersSearch($batchId, $coachId, $searchMember) {
+        return Registration::join('members', 'registrations.member_code', 'members.code')
+        ->join('programs', 'registrations.program_id', 'programs.id')
+        ->join('levels', 'registrations.level_id', 'levels.id')
+        ->join('classes', 'registrations.class_id', 'classes.id')
+        ->where('registrations.batch_id', $batchId)
+        ->where('registrations.coach_id', $coachId)
+        ->where('registrations.payment_status', 'Done')
+        ->where('members.member_name', 'like', '%'.$searchMember.'%')
+        ->select('registrations.created_at', 'members.member_name', 'members.medical_condition', 'programs.program_name', 'programs.id', 'levels.level_name',
+        'classes.day', 'classes.start_time', 'classes.end_time')
+        ->orderBy('members.member_name', 'asc')
+        ->paginate(9);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,6 +21,11 @@ class Program extends Model
     public function registrations(): HasMany
     {
         return $this->hasMany(Registration::class, 'program_id', 'id');
+    }
+
+    public function classes(): HasMany
+    {
+        return $this->hasMany(ClassModel::class, 'program_id', 'id');
     }
 
     public static function allProgramPricelists() {
@@ -102,4 +108,14 @@ class Program extends Model
         ])
         ->get();
     }
+
+    public static function classList() {
+        return Program::with([
+            'classes' => function ($query) {
+                $query->where('coach_code', Auth::user()->email);
+            }
+        ])
+        ->get();
+    }
+
 }

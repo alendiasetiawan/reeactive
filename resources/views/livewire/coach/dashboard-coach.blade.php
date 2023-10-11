@@ -1,15 +1,12 @@
 <div>
     @push('customCss')
         <link rel="stylesheet" type="text/css" href="{{ asset('template/src/assets/css/light/elements/alert.css') }}">
-        <link href="{{ asset('template/src/assets/css/light/components/list-group.css') }}" rel="stylesheet" type="text/css">
         <link href="{{ asset('template/src/plugins/src/animate/animate.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('template/src/assets/css/light/components/modal.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ asset('template/src/assets/css/light/components/list-group.css') }}" rel="stylesheet"
-            type="text/css">
     @endpush
 
     <div class="row layout-top-spacing">
-        <div class="col-lg-4 col-6 col-12">
+        <div class="col-lg-4 col-md-6 col-12">
             <x-cards.wallet>
                 <x-slot name="header">Data Member Aktif</x-slot>
                 <x-slot name="mainTitle">{{ $activeMember }} Member</x-slot>
@@ -26,9 +23,11 @@
                     @foreach ($membersInClass as $member)
                         @if ($loop->index <= 1)
                             <x-items.list-groups.item-advance>
-                                <x-slot name="title">{{ $member->program_name }}</x-slot>
-                                <x-slot name="subTitle">{{ $member->day }} ({{ \Carbon\Carbon::parse($member->start_time)->format('H:i') }}
-                                    - {{ \Carbon\Carbon::parse($member->end_time)->format('H:i') }})</x-slot>
+                                <x-slot name="title">{{ $member->day }}</x-slot>
+                                <x-slot name="subTitle">
+                                    ({{ \Carbon\Carbon::parse($member->start_time)->format('H:i') }}
+                                    - {{ \Carbon\Carbon::parse($member->end_time)->format('H:i') }})
+                                </x-slot>
                                 <x-slot name="info">
                                     {{ $member->registrations->count() }} Member
                                 </x-slot>
@@ -47,8 +46,9 @@
                 <x-items.list-groups.label>
                     @foreach ($membersInClass as $member)
                         <x-items.list-groups.item-label>
-                            <x-slot name="title">{{ $member->program_name }}</x-slot>
-                            <x-slot name="subTitle">{{ $member->day }} ({{ \Carbon\Carbon::parse($member->start_time)->format('H:i') }} -
+                            <x-slot name="title">{{ $member->day }}</x-slot>
+                            <x-slot name="subTitle">
+                                ({{ \Carbon\Carbon::parse($member->start_time)->format('H:i') }} -
                                 {{ \Carbon\Carbon::parse($member->end_time)->format('H:i') }})</x-slot>
                             <x-items.badges.solid-info>{{ $member->registrations->count() }} Member</x-items.badges.solid-info>
                         </x-items.list-groups.item-label>

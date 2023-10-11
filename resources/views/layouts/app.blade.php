@@ -11,11 +11,75 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
     <link href="{{ asset('template/src/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('template/layouts/modern-light-menu/css/light/plugins.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('template/layouts/modern-light-menu/css/dark/plugins.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('template/src/assets/css/light/widgets/modules-widgets.css') }}" rel="stylesheet" type="text/css">
     <!-- END GLOBAL MANDATORY STYLES -->
 
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+    <style>
+        .scroller {
+            overflow: auto;
+            padding-right: 3px;
+            height: 280px;
+        }
+
+        .scroller2 {
+        overflow: auto;
+        padding-right: 3px;
+        height: 190px;
+        }
+
+        .scroller3 {
+        overflow: auto;
+        padding-right: 3px;
+        height: 400px;
+        }
+
+        .scroller4 {
+        overflow: auto;
+        padding-right: 3px;
+        height: 300px;
+        }
+
+        .scroller5 {
+        overflow: auto;
+        padding-right: 3px;
+        height: 450px;
+        }
+
+        .scroller6 {
+        overflow: auto;
+        padding-right: 3px;
+        height: 400px;
+        }
+
+        .scroller7 {
+        overflow: auto;
+        padding-right: 3px;
+        height: 700px;
+        }
+
+        /* width */
+        ::-webkit-scrollbar {
+        width: 3px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px grey;
+        border-radius: 3px;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+        background: #1277BF;
+        border-radius: 3px;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+        background: #25A8E0;
+        }
+    </style>
     @stack('customCss')
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
     @livewireStyles()
@@ -33,10 +97,10 @@
 
     <!--  BEGIN NAVBAR  -->
     @if (Auth::user()->role_id == 1)
-    @include('layouts.elements.headers.admin_header')
-@else
-    @include('layouts.elements.headers.member_header')
-@endif
+        @include('layouts.elements.headers.admin_header')
+    @else
+        @include('layouts.elements.headers.member_header')
+    @endif
 
     @if (Auth::user()->role_id == 1)
         @include('layouts.elements.bottom_navbar.admin_bottom_navbar')
@@ -86,16 +150,12 @@
     <!-- END MAIN CONTAINER -->
 
     <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
-    <script src="{{ asset('template/src/plugins/src/global/vendors.min.js') }}" ></script>
+    <script src="{{ asset('template/src/plugins/src/global/vendors.min.js') }}"></script>
     <script src="{{ asset('template/src/bootstrap/js/bootstrap.main.js') }}"></script>
     <script src="{{ asset('template/src/plugins/src/perfect-scrollbar/perfect-scrollbar.main.js') }}"></script>
     <script src="{{ asset('template/src/plugins/src/mousetrap/mousetrap.main.js') }}"></script>
     <script src="{{ asset('template/src/plugins/src/waves/waves.main.js') }}"></script>
     <script src="{{ asset('template/layouts/modern-light-menu/app.js') }}"></script>
-    <script src="{{ asset('template/src/assets/js/widgets/modules-widgets.js') }}"></script>
-    <script>
-        $('.dropdown-toggle').dropdown()
-    </script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->
 
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->

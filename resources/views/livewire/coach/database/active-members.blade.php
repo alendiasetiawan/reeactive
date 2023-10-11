@@ -1,13 +1,25 @@
 <div>
-    @push('customCss')
-    <link href="{{ asset('template/src/assets/css/light/components/media_object.css') }}" rel="stylesheet" type="text/css">
-    @endpush
     <x-items.breadcrumb>
         <x-slot name="mainPage" href="{{ route('coach::dashboard') }}">Dashboard</x-slot>
-        <x-slot name="currentPage">Member Aktif</x-slot>
+        <x-slot name="currentPage">Database Member</x-slot>
     </x-items.breadcrumb>
 
     <div class="row layout-top-spacing">
+        <h4>Data Member Aktif <b class="text-primary">{{ $batchName }}</b></h4>
+        <div class="col-lg-4 col-md-6 col-12 mt-2">
+            <x-inputs.basic type="text" placeholder="Cari nama member..." wire:model.live="searchMember"/>
+        </div>
+        <div class="mt-3 d-md-none d-lg-none d-xl-none">
+
+        </div>
+        <div class="col-lg-4 col-md-6 col-12">
+            <button type="button" class="btn btn-info">
+                Jumlah Member <span class="badge bg-light text-dark ms-2">4</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="row mt-3">
         @foreach ($members as $member)
             <div class="col-lg-4 col-md-6 col-12 mb-3">
                 <x-cards.user>
@@ -41,11 +53,11 @@
                             @endif
                         </li>
                     </ul>
-                    <x-slot name="bottomButton">Detail Member</x-slot>
+                    <x-slot name="bottomButton" href="#">Detail Member</x-slot>
                 </x-cards.user>
             </div>
         @endforeach
-
+        {{ $members->links() }}
     </div>
 
     @push('customScripts')
