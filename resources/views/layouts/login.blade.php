@@ -63,7 +63,7 @@
                                     <div class="col-md-12 mb-3">
 
                                         <h2>Login Aplikasi</h2>
-                                        <p>Ayo masuk dan mulai menjadi muslimah yang "Kuat Untuk Taat"!</p>
+                                        <p>Ayo masuk dan mulai perjalanan "Fit for Deen" kamu</p>
 
                                     </div>
                                     <div class="col-12 mb-3">
@@ -115,8 +115,13 @@
 
                                     <div class="col-12">
                                         <div class="text-center">
-                                            <p class="mb-0">Belum menjadi member ? <a href="javascript:void(0);"
+                                            <p class="mb-0">Belum menjadi member? <a href="javascript:void(0);"
                                                     class="text-warning">Daftar Sekarang</a></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="text-center">
+                                            <p class="mb-0"><a href="/"><b class="text-primary">Beranda</b></a> | <a href="https://wa.me/628111777021"><b class="text-primary">Kontak</b></a></p>
                                         </div>
                                     </div>
 

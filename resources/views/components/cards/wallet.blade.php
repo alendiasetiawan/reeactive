@@ -27,15 +27,11 @@
 
     </div>
 
-    <hr>
+    <hr/>
 
-    <ul class="list-group list-group-media">
-        {{ $slot }}
-    </ul>
+    {{ $slot }}
 
     @isset($callToAction)
-        <button class="btn btn-secondary w-100 mt-3">
-            {{ $callToAction }}
-        </button>
+        {{ $callToAction }}
     @endisset
 </div>
