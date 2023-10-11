@@ -15,10 +15,21 @@ class ChangePassword extends Component
     #[Layout('layouts.app')]
     #[Title('Ganti Password Akun')]
 
-    #[Rule('min:6', message: 'Password minimal 6 digit')]
+    #[Rule([
+        'newPassword' => 'required|min:5',
+    ], message: [
+        'newPassword.required' => 'Anda belum menuliskan password baru',
+        'newPassword.min' => 'Password minimal 6 digit',
+    ])]
     public $newPassword;
 
+    #[Rule([
+        'retypeNewPassword' => 'required',
+    ], message: [
+        'retypeNewPassword.required' => 'Tolong tulis ulang pasword baru anda',
+    ])]
     public $retypeNewPassword;
+
     public $passNotSame;
 
     public function updated($property) {
@@ -32,14 +43,16 @@ class ChangePassword extends Component
     }
 
     public function savePassword() {
+        $this->validate();
+
         User::where('email', Auth::user()->email)
         ->update([
             'password' => Hash::make($this->newPassword),
             'default_pw' => 0,
         ]);
 
-        $this->dispatch('password-success');
-        $this->reset();
+        session()->flash('password-changed', true);
+        $this->redirect(route('ganti_password'), navigate:true);
     }
 
     public function render()
