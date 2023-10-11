@@ -14,7 +14,7 @@
         </div>
         <div class="col-lg-4 col-md-6 col-12">
             <button type="button" class="btn btn-info">
-                Jumlah Member <span class="badge bg-light text-dark ms-2">4</span>
+                Jumlah Member <span class="badge bg-light text-dark ms-2">{{ $members->count() }}</span>
             </button>
         </div>
     </div>
