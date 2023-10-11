@@ -49,7 +49,7 @@ class RenewalForm extends Component
 
         if ($property == 'selectedCoach') {
             $this->coaches = Pricelist::showCoachBasedOnProgram($this->selectedProgram);
-            $this->classes = ClassModel::where('coach_code', $this->selectedCoach)->get();
+            $this->classes = ClassModel::where('coach_code', $this->selectedCoach)->where('class_status','Open')->get();
             $pricelist = Pricelist::where('program_id', $this->selectedProgram)
                 ->where('coach_code', $this->selectedCoach)
                 ->first();
@@ -69,7 +69,7 @@ class RenewalForm extends Component
             );
 
             $this->coaches = Pricelist::showCoachBasedOnProgram($this->selectedProgram);
-            $this->classes = ClassModel::where('coach_code', $this->selectedCoach)->get();
+            $this->classes = ClassModel::where('coach_code', $this->selectedCoach)->where('class_status','Open')->get();
             $this->uploadedFileName = time().'.'.$this->fileUpload->extension();
         }
     }
