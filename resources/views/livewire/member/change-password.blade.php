@@ -16,16 +16,17 @@
                     <h5>Ganti Password Akun</h5>
                 </div>
                 <div class="widget-content">
-                    <form wire:submit.prevent="savePassword">
+                    <form wire:submit="savePassword">
                         <div class="row">
                             <div class="col-lg-6 col-12 mb-3">
                                 <x-inputs.label>Password Baru</x-inputs.label>
-                                <x-inputs.basic type="password" wire:model.blur="newPassword"/>
+                                <x-inputs.basic type="password" wire:model.live="newPassword" />
                                 @error('newPassword') <small class="text-danger">{{ $message }}</small> @enderror
                             </div>
                             <div class="col-lg-6 col-12 mb-3">
                                 <x-inputs.label>Ketik Ulang Password Baru</x-inputs.label>
                                 <x-inputs.basic type="password" wire:model.live="retypeNewPassword"/>
+                                @error('retypeNewPassword') <small class="text-danger">{{ $message }}</small> @enderror
                                 @if ($passNotSame)
                                     <small class="text-danger">Password tidak sama</small>
                                 @endif
@@ -36,7 +37,9 @@
                                 @if ($passNotSame)
                                     <x-buttons.solid-primary disabled>Simpan</x-buttons.solid-primary>
                                 @else
-                                    <x-buttons.solid-primary type="submit">Simpan</x-buttons.solid-primary>
+                                    <x-buttons.solid-primary type="submit">
+                                        Simpan
+                                    </x-buttons.solid-primary>
                                 @endif
                                 <a wire:navigate href="{{ route('member::dashboard') }}">
                                     <x-buttons.outline-dark>Kembali</x-buttons.outline-dark>
@@ -51,18 +54,16 @@
 
     @push('customScripts')
     <script src="{{ asset('template/src/plugins/src/sweetalerts2/sweetalerts2.min.js') }}"></script>
+    @if (session('password-changed'))
     <script>
-        document.addEventListener('livewire:initialized', () => {
-           @this.on('password-success', (event) => {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Ok! Password anda berhasil diganti',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-           });
-        });
+            Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'OK! Password anda berhasil diganti',
+            showConfirmButton: false,
+            timer: 2000
+            })
     </script>
+    @endif
     @endpush
 </div>
