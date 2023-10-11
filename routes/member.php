@@ -17,8 +17,5 @@ Route::group(['middleware' => ['auth', 'member'], 'as' => 'member::'], function(
             Route::get('/renewal-registration', 'index')->name('renewal_registration');
             Route::get('/renewal-registration/{id}', 'show')->name('renewal_registration.show');
         });
-
-        //Change Password
-        Route::get('/ganti-password', ChangePassword::class)->name('ganti_password');
     });
 });

@@ -12,22 +12,11 @@ use Livewire\Attributes\Computed;
 class ClassRoom extends Component
 {
     #[Layout('layouts.app')]
-    #[Title('Member Aktif')]
-
-    public $openForm = false;
+    #[Title('Daftar Kelas Coach')]
 
     #[Computed]
     public function programs() {
         return Program::classList();
-    }
-
-    public function requestClass() {
-        $this->openForm = true;
-        $this->dispatch('request-form');
-    }
-
-    public function closeForm() {
-        $this->openForm = false;
     }
 
     public function render()

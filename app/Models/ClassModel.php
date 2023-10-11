@@ -13,7 +13,7 @@ class ClassModel extends Model
     use HasFactory;
 
     protected $table = 'classes';
-    protected $guarde = [];
+    protected $guarded = [];
 
     public function registrations(): HasMany
     {

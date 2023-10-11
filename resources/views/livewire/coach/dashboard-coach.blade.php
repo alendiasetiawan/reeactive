@@ -17,7 +17,9 @@
                     </a>
                 </x-slot>
                 <x-slot name="buttonActionTwo">
-                    <x-buttons.solid-info>Data Kelas</x-buttons.solid-info>
+                    <a wire:navigate href="{{ route('coach::class_room') }}">
+                        <x-buttons.solid-info>Data Kelas</x-buttons.solid-info>
+                    </a>
                 </x-slot>
                 <x-items.list-groups.advance>
                     @foreach ($membersInClass as $member)

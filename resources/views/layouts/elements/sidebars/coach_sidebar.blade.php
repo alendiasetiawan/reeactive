@@ -51,7 +51,7 @@
                     </div>
                 </a>
             </li>
-            <li class="menu {{ Route::is('coach::class_room') ? 'active' : '' }}">
+            <li class="menu {{ Route::is('coach::class_room') || Route::is('coach::class_room.create') ? 'active' : '' }}">
                 <a wire:navigate href="{{ route('coach::class_room') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
@@ -69,8 +69,8 @@
                 </div>
             </li>
 
-            <li class="menu {{ Route::is('member::ganti_password') ? 'active' : '' }}">
-                <a wire:navigate href="{{ route('member::ganti_password') }}" aria-expanded="false" class="dropdown-toggle">
+            <li class="menu {{ Route::is('ganti_password') ? 'active' : '' }}">
+                <a wire:navigate href="{{ route('ganti_password') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                         <span>Password</span>
