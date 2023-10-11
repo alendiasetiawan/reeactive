@@ -61,7 +61,7 @@
 
     @push('customScripts')
     <script src="{{ asset('template/src/assets/js/scrollspyNav.js') }}"></script>
-    <script src="{{ asset('template/src/plugins/src/flatpickr/flatpickr.main.js') }}"></script>
+    <script src="{{ asset('template/src/plugins/src/flatpickr/flatpickr.main.js') }}" data-navigate-once></script>
 
     <script>
         document.addEventListener('livewire:navigated', () => {
@@ -72,9 +72,11 @@
             defaultDate: "",
         });
     });
+    </script>
 
-    document.addEventListener('livewire:initialized', () => {
-        var f4 = flatpickr(document.getElementById('timeFlatpickr'), {
+    <script>
+        document.addEventListener('livewire:navigated', () => {
+        var f4 = flatpickr(document.getElementById('timeFlatpickrDua'), {
             enableTime: true,
             noCalendar: true,
             dateFormat: "H:i:s",
@@ -82,25 +84,5 @@
         });
     });
     </script>
-
-<script>
-    document.addEventListener('livewire:navigated', () => {
-    var f4 = flatpickr(document.getElementById('timeFlatpickrDua'), {
-        enableTime: true,
-        noCalendar: true,
-        dateFormat: "H:i:s",
-        defaultDate: "",
-    });
-});
-
-document.addEventListener('livewire:initialized', () => {
-    var f4 = flatpickr(document.getElementById('timeFlatpickrDua'), {
-        enableTime: true,
-        noCalendar: true,
-        dateFormat: "H:i:s",
-        defaultDate: "",
-    });
-});
-</script>
     @endpush
 </div>

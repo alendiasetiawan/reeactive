@@ -60,4 +60,29 @@
             <!--#Modal Member Class-->
         </div>
     </div>
+
+    @push('customScripts')
+    <script src="{{ asset('template/src/plugins/src/flatpickr/flatpickr.main.js') }}" data-navigate-once></script>
+    <script>
+        document.addEventListener('livewire:navigating', () => {
+        var f4 = flatpickr(document.getElementById('timeFlatpickr'), {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i:s",
+            defaultDate: "",
+        });
+    });
+    </script>
+
+    <script>
+        document.addEventListener('livewire:navigating', () => {
+        var f4 = flatpickr(document.getElementById('timeFlatpickrDua'), {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i:s",
+            defaultDate: "",
+        });
+    });
+    </script>
+    @endpush
 </div>
