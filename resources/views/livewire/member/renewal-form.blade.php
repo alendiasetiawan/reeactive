@@ -28,7 +28,7 @@
             </div>
 
             <div class="row">
-                <div class="col-lg-4 col-12 mb-2">
+                <div class="col-lg-6 col-12 mb-2">
                     <x-inputs.label>Program</x-inputs.label>
                     <x-inputs.select wire:model.live="selectedProgram" required
                     oninvalid="this.setCustomValidity('Silahkan pilih 1 program')"
@@ -41,27 +41,44 @@
                     </x-inputs.select>
                 </div>
 
-                <div class="col-lg-4 col-12 mb-2">
+                @if ($selectedProgram != null)
+                <div class="col-lg-6 col-12 mb-2">
+                    <x-inputs.label>Level</x-inputs.label>
+                    <x-inputs.select wire:model.live="selectedLevel" required
+                    oninvalid="this.setCustomValidity('Isi level anda saat ini')"
+                    oninput="this.setCustomValidity('')">
+                        <x-inputs.select-option value="" selected>--Pilih--</x-inputs.select-option>
+                        @foreach ($levels as $id => $level)
+                            <x-inputs.select-option value="{{ $id }}">{{ $level }}</x-inputs.select-option>
+                        @endforeach
+                    </x-inputs.select>
+                </div>
+                @endif
+
+                @if ($selectedLevel != null)
+                <div class="col-lg-6 col-12 mb-2">
                     <x-inputs.label>Coach</x-inputs.label>
                     <x-inputs.select wire:model.live="selectedCoach" required
                     oninvalid="this.setCustomValidity('Anda belum memilih coach')"
                     oninput="this.setCustomValidity('')">
                         <x-inputs.select-option value="" selected><b
                                 class="text-muted">--Pilih--</b></x-inputs.select-option>
-                        @foreach ($coaches as $coach)
+                        @foreach ($this->coaches as $coach)
                             <x-inputs.select-option
                                 value="{{ $coach->code }}">Coach {{ $coach->nick_name }} ({{ $coach->coach_name }})</x-inputs.select-option>
                         @endforeach
                     </x-inputs.select>
                 </div>
+                @endif
 
-                <div class="col-lg-4 col-12 mb-2">
+                @if ($selectedCoach != null)
+                <div class="col-lg-6 col-12 mb-2">
                     <x-inputs.label>Kelas</x-inputs.label>
-                    <x-inputs.select wire:model="selectedClass" required
+                    <x-inputs.select wire:model.live="selectedClass" required
                     oninvalid="this.setCustomValidity('Pilih kelas yang mana?')"
                     oninput="this.setCustomValidity('')">
                         <x-inputs.select-option value="" selected>--Pilih--</x-inputs.select-option>
-                        @foreach ($classes as $class)
+                        @foreach ($this->classes as $class)
                             <x-inputs.select-option value="{{ $class->id }}">
                                 {{ $class->day }}
                                 ({{ \Carbon\Carbon::parse($class->start_time)->format('H:i') }}
@@ -70,8 +87,9 @@
                             </x-inputs.select-option>
                         @endforeach
                     </x-inputs.select>
+                    {{ $selectedClass }}
                 </div>
-
+                @endif
             </div>
 
             <div class="row">
@@ -120,16 +138,25 @@
             </div>
 
             <div class="row">
+                <div class="col-12">
+                    @if ($alertQuota)
+                        <span class="text-danger">Mohon maaf, quota habis. Silahkan pilih kelas yang lain!</span>
+                    @endif
+                </div>
                 <div class="col-lg-6 col-12">
                     @if ($batchOpen == 1)
-                        @if ($checkBatch[0]->registrations->count() == 0)
-                            @error('fileUpload')
-                                <button class="btn btn-dark" disabled>Tidak Bisa Daftar</button>
-                            @else
-                                <button class="btn btn-primary" type="submit">Daftar</button>
-                            @enderror
+                        @if ($alertQuota)
+                            <button class="btn btn-dark" disabled>Tidak Bisa Daftar</button>
                         @else
-                            <button class="btn btn-dark" disabled>Anda Sudah Terdaftar</button>
+                            @if ($checkBatch[0]->registrations->count() == 0)
+                                @error('fileUpload')
+                                    <button class="btn btn-dark" disabled>Tidak Bisa Daftar</button>
+                                @else
+                                    <button class="btn btn-primary" type="submit">Daftar</button>
+                                @enderror
+                            @else
+                                <button class="btn btn-dark" disabled>Anda Sudah Terdaftar</button>
+                            @endif
                         @endif
                     @else
                         <button class="btn btn-dark" disabled>Pendaftaran Tutup</button>

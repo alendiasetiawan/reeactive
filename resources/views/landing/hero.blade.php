@@ -15,6 +15,9 @@
                 Penyedia jasa pelatih kebugaran secara <em>online</em> dan <em>offline</em> khusus <b class="text-theme">muslimah</b> yang
                 mengedepankan syariat islam
             </p>
+            <a class="btn btn-theme wow fadeInUp" data-wow-duration="3s" data-wow-delay="0.5s" href="/login" data-text="Login">
+                <span>M</span><span>e</span><span>m</span><span>b</span><span>e</span><span>r</span>
+            </a>
           </div>
         </div>
       </div>
