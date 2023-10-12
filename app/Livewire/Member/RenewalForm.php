@@ -3,14 +3,17 @@
 namespace App\Livewire\Member;
 
 use App\Models\Batch;
+use App\Models\Coach;
 use App\Models\Program;
 use Livewire\Component;
 use App\Models\Pricelist;
 use App\Models\ClassModel;
-use App\Models\Coach;
+use App\Models\Level;
 use App\Models\Registration;
+use App\Services\RegistrationService;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\Auth;
 
 class RenewalForm extends Component
@@ -23,38 +26,68 @@ class RenewalForm extends Component
     public $batchOpen;
     public $batchName;
     public $fileUpload;
-    public $programs = [];
-    public $coaches = [];
-    public $classes = [];
     public $selectedProgram;
     public $selectedCoach;
     public $selectedClass;
+    public $selectedLevel;
     public $price;
+    public $levels;
     public $showProgressBar = false;
     public $uploadedFileName;
     public $registrationCategory;
+    public $programs;
+    public $quotaLeft;
+    public $alertQuota = false;
+    public $registeredMember;
 
-    public function boot() {
-        $this->programs = Program::all();
+    protected $registrationService;
+
+    public function boot(RegistrationService $registrationService) {
+        $this->programs = Program::where('program_status', 'Open')->get();
         $batch = Batch::orderBy('id', 'desc')->first();
         $this->batchId = $batch->id;
         $this->batchName = $batch->batch_name;
+        $this->levels = Level::pluck('level_name', 'id');
+        $this->registrationService = $registrationService;
+    }
+
+    #[Computed]
+    public function coaches() {
+        return Pricelist::showCoachBasedOnProgram($this->selectedProgram);
+    }
+
+    #[Computed]
+    public function classes() {
+        return ClassModel::where('coach_code', $this->selectedCoach)->where('class_status','Open')->get();
+    }
+
+    #[Computed]
+    public function coach() {
+        return Coach::where('code', $this->selectedCoach)->first();
     }
 
     public function updated($property) {
         if ($property == 'selectedProgram') {
-            $this->coaches = Pricelist::showCoachBasedOnProgram($this->selectedProgram);
-            $this->reset(['selectedCoach', 'selectedClass']);
+            $this->reset('selectedLevel', 'selectedCoach', 'selectedClass', 'quotaLeft');
         }
 
         if ($property == 'selectedCoach') {
-            $this->coaches = Pricelist::showCoachBasedOnProgram($this->selectedProgram);
-            $this->classes = ClassModel::where('coach_code', $this->selectedCoach)->where('class_status','Open')->get();
             $pricelist = Pricelist::where('program_id', $this->selectedProgram)
                 ->where('coach_code', $this->selectedCoach)
                 ->first();
-            $priceNumber = $pricelist->price_per_person;
+            $priceNumber = $pricelist->price_renewal;
             $this->price = 'Rp '.number_format($priceNumber,0,',','.');
+            $this->reset('selectedClass', 'quotaLeft');
+        }
+
+        if ($property == 'selectedClass') {
+            $this->quotaLeft = $this->registrationService->quotaLeft($this->selectedProgram, $this->selectedLevel, $this->coach->id, $this->selectedClass, $this->batchId);
+
+            if ($this->quotaLeft <= 0) {
+                $this->alertQuota = true;
+            } else {
+                $this->alertQuota = false;
+            }
         }
 
         if ($property == 'fileUpload') {
@@ -67,9 +100,6 @@ class RenewalForm extends Component
                     'fileUpload.mimes' => 'File harus dalam format gambar: .jpg/.jpeg/.png.',
                 ]
             );
-
-            $this->coaches = Pricelist::showCoachBasedOnProgram($this->selectedProgram);
-            $this->classes = ClassModel::where('coach_code', $this->selectedCoach)->where('class_status','Open')->get();
             $this->uploadedFileName = time().'.'.$this->fileUpload->extension();
         }
     }
@@ -87,8 +117,6 @@ class RenewalForm extends Component
     }
 
     public function saveData() {
-        $coach = Coach::where('code', $this->selectedCoach)->first();
-        $registration = Registration::lastRegistrationData();
         $priceStr = preg_replace("/[^0-9]/","", $this->price);
         $priceInt = (int) $priceStr;
 
@@ -100,8 +128,8 @@ class RenewalForm extends Component
             'payment_status' => 'Process',
             'registration_category' => $this->registrationCategory,
             'program_id' => $this->selectedProgram,
-            'level_id' => $registration->level_id,
-            'coach_id' => $coach->id,
+            'level_id' => $this->selectedLevel,
+            'coach_id' => $this->coach->id,
             'class_id' => $this->selectedClass,
         ]);
 

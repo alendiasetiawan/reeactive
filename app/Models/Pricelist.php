@@ -36,6 +36,7 @@ class Pricelist extends Model
     public static function showCoachBasedOnProgram($programId) {
         return Pricelist::join('coaches', 'pricelists.coach_code', 'coaches.code')
         ->where('pricelists.program_id', $programId)
+        ->where('coaches.coach_status', 'Aktif')
         ->orderBy('coaches.coach_name', 'asc')
         ->get();
     }
