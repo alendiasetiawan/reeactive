@@ -587,7 +587,7 @@
                 <p class="lead mb-0">Tunggu apa lagi? ayo segera bergabung bersama kami</p>
             </div>
             <div class="col-md-4 col-sm-12 mt-3 mt-md-0">
-                <a class="btn btn-theme wow fadeInUp" data-wow-duration="3s" data-wow-delay="0.5s" href="/daftar" data-text="Daftar">
+                <a class="btn btn-theme wow fadeInUp" data-wow-duration="3s" data-wow-delay="0.5s" href="{{ route('new_member') }}" data-text="Daftar">
                     <span>M</span><span>e</span><span>m</span><span>b</span><span>e</span><span>r</span>
                     <span>B</span><span>a</span><span>r</span><span>u</span>
                 </a>
