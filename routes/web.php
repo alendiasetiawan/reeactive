@@ -6,6 +6,7 @@ use App\Livewire\Member\ChangePassword;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\CompanyProfile\PricelistController;
+use App\Livewire\Member\Registrations\FormNewMember;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,7 @@ Route::controller(PricelistController::class)->group(function() {
     Route::get('/special-case-groups', 'specialCase');
     Route::get('/large-groups', 'large');
 });
+Route::get('/member-baru', FormNewMember::class)->name('new_member');
 
 //Change Password
 Route::get('/ganti-password', ChangePassword::class)->name('ganti_password');
