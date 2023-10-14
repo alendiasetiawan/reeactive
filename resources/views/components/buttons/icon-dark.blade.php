@@ -1,9 +1,9 @@
 <button {{ $attributes->merge([
-    'class' => 'btn btn-primary',
+    'class' => 'btn btn-dark',
     'type' => 'button' ?? ''
 ]) }}>
+    {{ $icon }}
     <span class="btn-text-inner">
         {{ $slot }}
     </span>
-    {{ $icon }}
 </button>

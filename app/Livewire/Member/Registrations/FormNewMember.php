@@ -20,11 +20,15 @@ class FormNewMember extends Component
     public $selectedProgram;
     public $selectedCoach;
 
+    public $totalSteps = 4;
+    public $currentStep = 1;
+
     protected $batchService;
 
     public function mount(BatchService $batchService) {
         $this->batch = $batchService->batchQuery();
         $this->programs = Program::where('program_status', 'Open')->get();
+        $this->currentStep = 1;
     }
 
     #[Computed]
