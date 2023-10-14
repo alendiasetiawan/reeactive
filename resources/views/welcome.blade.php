@@ -587,10 +587,17 @@
                 <p class="lead mb-0">Tunggu apa lagi? ayo segera bergabung bersama kami</p>
             </div>
             <div class="col-md-4 col-sm-12 mt-3 mt-md-0">
-                <a class="btn btn-theme wow fadeInUp" data-wow-duration="3s" data-wow-delay="0.5s" href="/daftar" data-text="Daftar">
-                    <span>M</span><span>e</span><span>m</span><span>b</span><span>e</span><span>r</span>
-                    <span>B</span><span>a</span><span>r</span><span>u</span>
-                </a>
+                @if (\Carbon\Carbon::now() <= $openDate)
+                    <a class="btn btn-dark wow fadeInUp" data-wow-duration="3s" data-wow-delay="0.5s" href="#" data-text="Belum Buka">
+                        <span>T</span><span>u</span><span>n</span><span>g</span><span>g</span><span>u</span>
+                        <span>Y</span><span>a</span><span>!</span>
+                    </a>
+                @else
+                    <a class="btn btn-theme wow fadeInUp" data-wow-duration="3s" data-wow-delay="0.5s" href="/member-baru" data-text="Daftar">
+                        <span>M</span><span>e</span><span>m</span><span>b</span><span>e</span><span>r</span>
+                        <span>B</span><span>a</span><span>r</span><span>u</span>
+                    </a>
+                @endif
             </div>
             </div>
         </div>

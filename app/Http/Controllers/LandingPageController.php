@@ -18,7 +18,7 @@ class LandingPageController extends Controller
             'specialPrograms' => Program::specialPrograms(),
             'largePrograms' => Program::largePrograms(),
             'nutrionPrograms' => Program::nutrionPrograms(),
-            'openDate' => '2023-10-15 09:00:00'
+            'openDate' => '2023-10-14 09:00:00'
         ];
 
         return view('welcome', $data);
