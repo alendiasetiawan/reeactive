@@ -75,7 +75,7 @@ class FormNewMember extends Component
     public $bodyHeight;
     public $bodyWeight;
     public $address;
-    public $phoneCode;
+    public $countryPhoneCode;
     public $phone;
     public $medicalFile;
     public $password;
@@ -311,7 +311,7 @@ class FormNewMember extends Component
     }
 
     public function register() {
-        $mobilePhone = $this->phoneCode.$this->phone;
+        $mobilePhone = $this->countryPhoneCode.$this->phone;
         $batchId = $this->batch->id;
 
         //check the medical condition

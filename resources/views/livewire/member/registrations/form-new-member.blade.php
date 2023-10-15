@@ -429,7 +429,10 @@
                                 <div class="col-lg-6 col-12 mb-3">
                                     <x-inputs.label>Nomor Whatsapp</x-inputs.label>
                                     <div class="input-group mb-3">
-                                        <x-inputs.select wire:model='phoneCode'>
+                                        <x-inputs.select wire:model.blur='countryPhoneCode' required
+                                            oninvalid="this.setCustomValidity('Masukan kode negara anda')"
+                                            oninput="this.setCustomValidity('')">
+                                            <x-inputs.select-option value="">Kode Negara...</x-inputs.select-option>
                                             @foreach ($phoneCodes as $code)
                                             <x-inputs.select-option value="{{ $code->code }}">+{{ $code->code }} ({{ $code->country_name }})</x-inputs.select-option>
                                             @endforeach
