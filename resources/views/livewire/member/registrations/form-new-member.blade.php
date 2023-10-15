@@ -455,7 +455,7 @@
                                             <x-inputs.select-option value="{{ $code->code }}">+{{ $code->code }} ({{ $code->country_name }})</x-inputs.select-option>
                                             @endforeach
                                         </x-inputs.select>
-                                        <x-inputs.basic type="text" wire:model.blur='phone' placeholder="85763827382" required
+                                        <x-inputs.basic type="number" step="any" wire:model.blur='phone' placeholder="85763827382" required
                                         oninvalid="this.setCustomValidity('Anda harus mencantumkan nomor whatsapp')"
                                         oninput="this.setCustomValidity('')"/>
                                     </div>
