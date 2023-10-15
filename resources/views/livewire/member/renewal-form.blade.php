@@ -87,7 +87,6 @@
                             </x-inputs.select-option>
                         @endforeach
                     </x-inputs.select>
-                    {{ $selectedClass }}
                 </div>
                 @endif
             </div>
