@@ -120,12 +120,12 @@ class FormNewMember extends Component
 
     #[Computed]
     public function coaches() {
-        return Pricelist::showCoachBasedOnProgram($this->selectedProgram);
+        return Pricelist::showActiveCoachEksternal($this->selectedProgram);
     }
 
     #[Computed]
     public function classes() {
-        return ClassModel::where('coach_code', $this->selectedCoach)->where('class_status','Open')->where('program_id', $this->selectedProgram)->get();
+        return ClassModel::showActiveClassExternal($this->selectedProgram, $this->selectedCoach);
     }
 
     #[Computed]

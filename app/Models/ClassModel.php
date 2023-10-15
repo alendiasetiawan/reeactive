@@ -38,4 +38,11 @@ class ClassModel extends Model
         ->orderBy('start_time', 'asc')
         ->get();
     }
+
+    public static function showActiveClassExternal($programId, $coachCode) {
+        return ClassModel::where('coach_code', $coachCode)
+        ->where('class_status_eksternal','Open')
+        ->where('program_id', $programId)
+        ->get();
+    }
 }
