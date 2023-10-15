@@ -83,7 +83,7 @@ class Registration extends Model
         ->join('coaches', 'registrations.coach_id', 'coaches.id')
         ->join('classes', 'registrations.class_id', 'classes.id')
         ->where('registrations.batch_id', $batchId)
-        ->select('registrations.*', 'members.member_name', 'programs.program_name', 'levels.level_name', 'coaches.nick_name', 'coaches.coach_name',
+        ->select('registrations.*', 'members.member_name', 'members.mobile_phone', 'programs.program_name', 'levels.level_name', 'coaches.nick_name', 'coaches.coach_name',
         'classes.day', 'classes.start_time', 'classes.end_time')
         ->orderBy('registrations.id', 'desc')
         ->get();
