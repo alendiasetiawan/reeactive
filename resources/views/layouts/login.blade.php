@@ -115,7 +115,7 @@
 
                                     <div class="col-12">
                                         <div class="text-center">
-                                            <p class="mb-0">Belum menjadi member? <a href="javascript:void(0);"
+                                            <p class="mb-0">Belum menjadi member? <a href="{{ route('new_member') }}"
                                                     class="text-warning">Daftar Sekarang</a></p>
                                         </div>
                                     </div>

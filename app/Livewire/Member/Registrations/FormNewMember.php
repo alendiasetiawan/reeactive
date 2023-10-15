@@ -75,7 +75,7 @@ class FormNewMember extends Component
     public $bodyHeight;
     public $bodyWeight;
     public $address;
-    public $phoneCode;
+    public $countryPhoneCode;
     public $phone;
     public $medicalFile;
     public $password;
@@ -85,6 +85,7 @@ class FormNewMember extends Component
     public $selectedLevel = 1;
     public $registered;
     public $medicalFileName;
+    public $alertAddress = false;
 
     public $totalSteps = 4;
     public $currentStep = 1;
@@ -124,7 +125,7 @@ class FormNewMember extends Component
 
     #[Computed]
     public function classes() {
-        return ClassModel::where('coach_code', $this->selectedCoach)->where('class_status','Open')->get();
+        return ClassModel::where('coach_code', $this->selectedCoach)->where('class_status','Open')->where('program_id', $this->selectedProgram)->get();
     }
 
     #[Computed]
@@ -304,6 +305,16 @@ class FormNewMember extends Component
             $this->nextStep = true;
         }
 
+        if ($property == 'address') {
+            $textLenght = strlen($this->address);
+
+            if($textLenght < 40) {
+                $this->alertAddress = true;
+            } else {
+                $this->alertAddress = false;
+            }
+        }
+
     }
 
     public function selectFile() {
@@ -311,7 +322,18 @@ class FormNewMember extends Component
     }
 
     public function register() {
-        $mobilePhone = $this->phoneCode.$this->phone;
+        if ($this->countryId == 1) {
+            $this->validate([
+                'provinceId' => 'required',
+                'regencyId' => 'required',
+                'districtId' => 'required',
+            ], [
+                'provinceId.required' => 'Tolong isi provinsi dulu ya!',
+                'regencyId.required' => 'Tolong isi kabupaten dulu ya!',
+                'districtId.required' => 'Tolong isi kecamatan dulu ya!'
+            ]);
+        }
+        $mobilePhone = $this->countryPhoneCode.$this->phone;
         $batchId = $this->batch->id;
 
         //check the medical condition
@@ -352,58 +374,67 @@ class FormNewMember extends Component
         $priceStr = preg_replace("/[^0-9]/","", $this->price);
         $priceInt = (int) $priceStr;
 
-        try {
-            DB::beginTransaction();
-            Member::updateOrCreate([
-                'code' => $this->phone,
-            ], [
-                'member_name' => $this->memberName,
-                'gender' => 'Perempuan',
-                'address' => $this->address,
-                'country_id' => $this->countryId,
-                'province_id' => $provinsi,
-                'regency_id' => $kabupaten,
-                'district_id' => $kecamatan,
-                'mobile_phone' => $mobilePhone,
-                'body_height' => $this->bodyHeight,
-                'body_weight' => $this->bodyWeight,
-                'age_start' => $this->ageStart,
-                'medical_condition' => $medical_condition,
-                'medical_file' => $uploadMedicalFile,
-            ]);
+        $this->quotaLeft = $this->registrationService->quotaLeft($this->selectedProgram, $this->selectedLevel, $this->coach->id, $this->selectedClass, $this->batch->id);
 
-            Registration::updateOrCreate([
-                'member_code' => $this->phone,
-            ], [
-                'batch_id' => $batchId,
-                'amount_pay' => $priceInt,
-                'file_upload' => $this->fileUpload->storeAs($batchId, $this->uploadedFileName, 'public'),
-                'payment_status' => 'Process',
-                'registration_category' => 'New Member',
-                'program_id' => $this->selectedProgram,
-                'level_id' => 1,
-                'coach_id' => $this->coach->id,
-                'class_id' => $this->selectedClass,
-            ]);
-
-            User::updateOrCreate([
-                'email' => $this->phone,
-            ], [
-                'password' => Hash::make($this->password),
-                'role_id' => 3,
-                'full_name' => $this->memberName,
-                'gender' => 'Perempuan',
-                'default_pw' => 0,
-            ]);
-
-            DB::commit();
-            $this->redirect(route('registration_success', $this->memberName));
-
-        } catch (Exception) {
-            DB::rollBack();
-            session()->flash('failed', 'Daftar Gagal, Cek Koneksi dan Kolom Isian Anda');
+        if ($this->quotaLeft <= 0) {
+            session()->flash('fullQuota', 'Daftar Gagal! Kelas yang anda pilih sudah penuh');
             $this->redirect(route('new_member'));
+        } else {
+            try {
+                DB::beginTransaction();
+                Member::updateOrCreate([
+                    'code' => $this->phone,
+                ], [
+                    'member_name' => $this->memberName,
+                    'gender' => 'Perempuan',
+                    'address' => $this->address,
+                    'country_id' => $this->countryId,
+                    'province_id' => $provinsi,
+                    'regency_id' => $kabupaten,
+                    'district_id' => $kecamatan,
+                    'mobile_phone' => $mobilePhone,
+                    'body_height' => $this->bodyHeight,
+                    'body_weight' => $this->bodyWeight,
+                    'age_start' => $this->ageStart,
+                    'medical_condition' => $medical_condition,
+                    'medical_file' => $uploadMedicalFile,
+                ]);
+
+                Registration::updateOrCreate([
+                    'member_code' => $this->phone,
+                ], [
+                    'batch_id' => $batchId,
+                    'amount_pay' => $priceInt,
+                    'file_upload' => $this->fileUpload->storeAs($batchId, $this->uploadedFileName, 'public'),
+                    'payment_status' => 'Process',
+                    'registration_category' => 'New Member',
+                    'program_id' => $this->selectedProgram,
+                    'level_id' => 1,
+                    'coach_id' => $this->coach->id,
+                    'class_id' => $this->selectedClass,
+                ]);
+
+                User::updateOrCreate([
+                    'email' => $this->phone,
+                ], [
+                    'password' => Hash::make($this->password),
+                    'role_id' => 3,
+                    'full_name' => $this->memberName,
+                    'gender' => 'Perempuan',
+                    'default_pw' => 0,
+                ]);
+
+                DB::commit();
+                $this->redirect(route('registration_success', $this->memberName));
+
+            } catch (Exception) {
+                DB::rollBack();
+                session()->flash('failed', 'Daftar Gagal, Cek Koneksi dan Kolom Isian Anda');
+                $this->redirect(route('new_member'));
+            }
         }
+
+
 
     }
 
