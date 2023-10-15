@@ -13,6 +13,20 @@
         <x-slot name="currentPage">New Member</x-slot>
     </x-items.breadcrumb>
 
+    @if ($batch->batch_status != 'Open')
+        <div class="row layout-top-spacing">
+            <div class="col-12">
+                <x-items.alerts.light-danger>
+                    Mohon maaf, saat ini pendaftaran sudah TUTUP! Sampai jumpa di batch berikutnya ^^
+                </x-items.alerts.light-danger>
+            </div>
+            <div class="col-12">
+                <a href="/">
+                    <x-buttons.solid-secondary>Halaman Utama</x-buttons.solid-secondary>
+                </a>
+            </div>
+        </div>
+    @else
     <div class="row layout-top-spacing">
         <div class="d-flex align-items-center justify-content-center">
             <h2>Pendaftaran New Member Reeactive <b class="text-primary">{{ $batch->batch_name }}</b></h2>
@@ -422,9 +436,13 @@
                                 </div>
                                 <div class="col-lg-6 col-12 mb-3">
                                     <x-inputs.label>Alamat</x-inputs.label>
-                                    <x-inputs.textarea wire:model='address' required
+                                    <x-inputs.textarea wire:model.blur='address' required
                                     oninvalid="this.setCustomValidity('Dimana anda tinggal?')"
                                     oninput="this.setCustomValidity('')"></x-inputs.textarea>
+                                    @if ($alertAddress)
+                                    <small class="text-danger">Penulisan alamat minimal 40 karakter, mohon untuk dilengkapi</small>
+                                    @endif
+
                                 </div>
                                 <div class="col-lg-6 col-12 mb-3">
                                     <x-inputs.label>Nomor Whatsapp</x-inputs.label>
@@ -470,6 +488,7 @@
                                             <x-inputs.select-option value="{{ $province->id }}">{{ $province->province_name }}</x-inputs.select-option>
                                         @endforeach
                                     </x-inputs.select>
+                                    <small class="text-danger">@error('provinceId') {{ $message }} @enderror</small>
                                 </div>
                                 @endif
 
@@ -482,6 +501,7 @@
                                             <x-inputs.select-option value="{{ $regency->id }}">{{ $regency->regency_name }}</x-inputs.select-option>
                                         @endforeach
                                     </x-inputs.select>
+                                    <small class="text-danger">@error('regencyId') {{ $message }} @enderror</small>
                                 </div>
                                 @endif
 
@@ -494,6 +514,7 @@
                                             <x-inputs.select-option value="{{ $district->id }}">{{ $district->district_name }}</x-inputs.select-option>
                                         @endforeach
                                     </x-inputs.select>
+                                    <small class="text-danger">@error('districtId') {{ $message }} @enderror</small>
                                 </div>
                                 @endif
                             </div>
@@ -597,17 +618,22 @@
 
                                 @if ($currentStep == $totalSteps)
                                     @if ($alertUserExist)
-                                        <x-buttons.solid-dark disabled>Anda Sudah Terdaftar</x-buttons.solid-dark>
+                                        <x-buttons.solid-dark type="button" disabled>Anda Sudah Terdaftar</x-buttons.solid-dark>
                                     @else
-                                        @if ($alertQuota)
-
+                                        @if ($alertAddress)
+                                        <x-buttons.solid-dark type="button" disabled>Lengkapi Form Di Atas</x-buttons.solid-dark>
+                                        @else
+                                            @if ($alertQuota)
+                                                <x-buttons.solid-dark type="button" disabled>Kuota Penuh</x-buttons.solid-dark>
+                                            @else
+                                            <x-buttons.icon-success type="submit">
+                                                <x-slot name="icon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                                                </x-slot>
+                                                Kirim
+                                            </x-buttons.icon-success>
+                                            @endif
                                         @endif
-                                        <x-buttons.icon-success type="submit">
-                                            <x-slot name="icon">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-                                            </x-slot>
-                                            Kirim
-                                        </x-buttons.icon-success>
                                     @endif
                                 @endif
 
@@ -618,4 +644,5 @@
             </div>
         </div>
     </div>
+    @endif
 </div>
