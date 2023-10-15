@@ -41,4 +41,12 @@ class Pricelist extends Model
         ->get();
     }
 
+    public static function showActiveCoachEksternal($programId) {
+        return Pricelist::join('coaches', 'pricelists.coach_code', 'coaches.code')
+        ->where('pricelists.program_id', $programId)
+        ->where('coaches.coach_status_eksternal', 'Aktif')
+        ->orderBy('coaches.coach_name', 'asc')
+        ->get();
+    }
+
 }
