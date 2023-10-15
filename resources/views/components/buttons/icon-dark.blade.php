@@ -3,7 +3,7 @@
     'type' => 'button' ?? ''
 ]) }}>
     {{ $icon }}
-    <span class="btn-text-inner">
-        {{ $slot }}
-    </span>
+<span class="btn-text-inner">
+    {{ $slot }}
+</span>
 </button>

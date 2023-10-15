@@ -20,7 +20,7 @@ class RegistrationService {
             $program = Program::find($programId);
             $quotaProgram = $program->quota_max;
         } else {
-            $quotaProgram = 5;
+            $quotaProgram = 17;
         }
 
         $quotaLeft = $quotaProgram - $registeredMember;

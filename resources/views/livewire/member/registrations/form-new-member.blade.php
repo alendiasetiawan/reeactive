@@ -1,8 +1,10 @@
 <div>
     @push('customCss')
-    <link rel="stylesheet" type="text/css" href="{{ asset('template/src/plugins/src/stepper/bsStepper.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('template/src/assets/css/light/scrollspyNav.css') }}"/>
-    <link rel="stylesheet" type="text/css" href="{{ asset('template/src/plugins/css/light/stepper/custom-bsStepper.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('template/src/assets/css/light/elements/alert.css') }}">
+    <link href="{{ asset('template/src/plugins/src/flatpickr/flatpickr.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('template/src/plugins/src/noUiSlider/nouislider.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('template/src/plugins/css/light/flatpickr/custom-flatpickr.css') }}" rel="stylesheet" type="text/css">
     @endpush
     {{-- The best athlete wants his opponent at his best. --}}
 
@@ -15,6 +17,20 @@
         <div class="d-flex align-items-center justify-content-center">
             <h2>Pendaftaran New Member Reeactive <b class="text-primary">{{ $batch->batch_name }}</b></h2>
         </div>
+        @if ($currentStep <= 2)
+        <div class="d-flex align-items-center justify-content-center">
+            <b class="text-info">"Info rekening pembayaran akan muncul setelah anda memilih program dan coach"</b>
+        </div>
+        @endif
+
+        @if (session('failed'))
+        <div class="d-flex align-items-center justify-content-center">
+            <x-items.alerts.light-danger>
+                {{ session('failed') }}
+            </x-items.alerts.light-danger>
+        </div>
+        @endif
+
         <div class="d-flex align-items-center justify-content-center mt-3">
             <div class="col-lg-7">
                 <form wire:submit='register'>
@@ -59,7 +75,7 @@
                                 @if ($questionTwo == 'Normal')
                                 <div class="row mt-2 mb-2">
                                     <div class="col-12">
-                                        <x-inputs.label>Jarak waktu melahirkan?</x-inputs.label>
+                                        <x-inputs.label>Jarak waktu melahirkan normal?</x-inputs.label>
                                         <br>
                                         <x-inputs.radio-primary>
                                             <x-inputs.check-radio id="pertanyaan-tiga-jawaban-satu" name="pertanyaan-tiga" value="Less" wire:model.live='questionThree'></x-inputs.check-radio>
@@ -72,11 +88,130 @@
                                     </div>
                                 </div>
                                 @endif
+
+                                @if ($questionThree == 'More')
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-12">
+                                        <x-inputs.label>Apakah anda memiliki <em>Diastasis Recti</em>?
+                                        <a href="https://hellosehat.com/kehamilan/melahirkan/diastasis-recti-perut-tak-kempes/" target="_blank">
+                                            <small class="text-info">(Apa itu Diastasis Recti? Baca Disini!)</small>
+                                        </a>
+                                        </x-inputs.label>
+                                        <br>
+                                        <x-inputs.radio-primary>
+                                            <x-inputs.check-radio id="pertanyaan-empat-jawaban-satu" name="pertanyaan-empat" value="Iya" wire:model.live='questionFour'></x-inputs.check-radio>
+                                            <x-slot name="labelRadio" for="pertanyaan-empat-jawaban-satu">Iya</x-slot>
+                                        </x-inputs.radio-primary>
+                                        <x-inputs.radio-primary>
+                                            <x-inputs.check-radio id="pertanyaan-empat-jawaban-dua" name="pertanyaan-empat" value="Tidak" wire:model.live='questionFour'></x-inputs.check-radio>
+                                            <x-slot name="labelRadio" for="pertanyaan-empat-jawaban-dua">Tidak</x-slot>
+                                        </x-inputs.radio-primary>
+                                    </div>
+                                </div>
+                                @endif
+
+                                @if ($questionTwo == 'Caesar')
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-12">
+                                        <x-inputs.label>Jarak waktu melahirkan Caesar?</x-inputs.label>
+                                        <br>
+                                        <x-inputs.radio-primary>
+                                            <x-inputs.check-radio id="pertanyaan-lima-jawaban-satu" name="pertanyaan-lima" value="Less" wire:model.live='questionFive'></x-inputs.check-radio>
+                                            <x-slot name="labelRadio" for="pertanyaan-lima-jawaban-satu">Kurang dari 3 bulan</x-slot>
+                                        </x-inputs.radio-primary>
+                                        <x-inputs.radio-primary>
+                                            <x-inputs.check-radio id="pertanyaan-lima-jawaban-dua" name="pertanyaan-lima" value="More" wire:model.live='questionFive'></x-inputs.check-radio>
+                                            <x-slot name="labelRadio" for="pertanyaan-lima-jawaban-dua">Lebih dari 3 bulan</x-slot>
+                                        </x-inputs.radio-primary>
+                                    </div>
+                                </div>
+                                @endif
+
+                                @if ($questionFive == 'More')
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-12">
+                                        <x-inputs.label>Apakah anda memiliki <em>Diastasis Recti</em>?
+                                        <a href="https://hellosehat.com/kehamilan/melahirkan/diastasis-recti-perut-tak-kempes/" target="_blank">
+                                            <small class="text-info">(Apa itu Diastasis Recti? Baca Disini!)</small>
+                                        </a>
+                                        </x-inputs.label>
+                                        <br>
+                                        <x-inputs.radio-primary>
+                                            <x-inputs.check-radio id="pertanyaan-enam-jawaban-satu" name="pertanyaan-enam" value="Iya" wire:model.live='questionSix'></x-inputs.check-radio>
+                                            <x-slot name="labelRadio" for="pertanyaan-enam-jawaban-satu">Iya</x-slot>
+                                        </x-inputs.radio-primary>
+                                        <x-inputs.radio-primary>
+                                            <x-inputs.check-radio id="pertanyaan-enam-jawaban-dua" name="pertanyaan-enam" value="Tidak" wire:model.live='questionSix'></x-inputs.check-radio>
+                                            <x-slot name="labelRadio" for="pertanyaan-enam-jawaban-dua">Tidak</x-slot>
+                                        </x-inputs.radio-primary>
+                                    </div>
+                                </div>
+                                @endif
+
+                                @if ($questionSpecialCase)
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-12">
+                                        <x-inputs.label>Apakah anda memiliki kondisi khusus?</x-inputs.label>
+                                        <br>
+                                        <x-inputs.radio-primary>
+                                            <x-inputs.check-radio id="pertanyaan-tujuh-jawaban-satu" name="pertanyaan-tujuh" value="Iya" wire:model.live='questionSeven'></x-inputs.check-radio>
+                                            <x-slot name="labelRadio" for="pertanyaan-tujuh-jawaban-satu">Iya</x-slot>
+                                        </x-inputs.radio-primary>
+                                        <x-inputs.radio-primary>
+                                            <x-inputs.check-radio id="pertanyaan-tujuh-jawaban-dua" name="pertanyaan-tujuh" value="Tidak" wire:model.live='questionSeven'></x-inputs.check-radio>
+                                            <x-slot name="labelRadio" for="pertanyaan-tujuh-jawaban-dua">Tidak</x-slot>
+                                        </x-inputs.radio-primary>
+                                    </div>
+                                </div>
+                                @endif
+
+                                @if ($questionSeven == 'Iya')
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-12">
+                                        <x-inputs.label>Kondisi khusus apa yang anda miliki?</x-inputs.label>
+                                        <br>
+                                        <x-inputs.radio-primary>
+                                            <x-inputs.check-radio id="pertanyaan-delapan-jawaban-satu" name="pertanyaan-delapan" value="Cardiovascular" wire:model.live='questionEight'></x-inputs.check-radio>
+                                            <x-slot name="labelRadio" for="pertanyaan-delapan-jawaban-satu">Cardiovascular</x-slot>
+                                        </x-inputs.radio-primary>
+                                        <x-inputs.radio-primary>
+                                            <x-inputs.check-radio id="pertanyaan-delapan-jawaban-dua" name="pertanyaan-delapan" value="Cidera" wire:model.live='questionEight'></x-inputs.check-radio>
+                                            <x-slot name="labelRadio" for="pertanyaan-delapan-jawaban-dua">Riwayat Cidera</x-slot>
+                                        </x-inputs.radio-primary>
+                                    </div>
+                                </div>
+                                @endif
+
+                                @if ($questionEight == 'Cidera')
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-12">
+                                        <x-inputs.label>Cidera apa yang anda alami?</x-inputs.label>
+                                        <br>
+                                        <x-inputs.radio-primary>
+                                            <x-inputs.check-radio id="pertanyaan-sembilan-jawaban-satu" name="pertanyaan-sembilan" value="Spinal Culvature" wire:model.live='questionNine'></x-inputs.check-radio>
+                                            <x-slot name="labelRadio" for="pertanyaan-sembilan-jawaban-satu">Spinal Culvature (Skoliosis, Lordosis, Kyposis)</x-slot>
+                                        </x-inputs.radio-primary>
+                                        <x-inputs.radio-primary>
+                                            <x-inputs.check-radio id="pertanyaan-sembilan-jawaban-dua" name="pertanyaan-sembilan" value="Otot Tulang Sendi" wire:model.live='questionNine'></x-inputs.check-radio>
+                                            <x-slot name="labelRadio" for="pertanyaan-sembilan-jawaban-dua">Otot Tulang Sendi</x-slot>
+                                        </x-inputs.radio-primary>
+                                    </div>
+                                </div>
+                                @endif
+
                                 {{-- Alert Close Registration --}}
-                                @if ($closeRegistration)
+                                @if ($questionThree == 'Less' || $questionFive == 'Less')
                                 <div class="row mt-2 mb-2">
                                     <div class="col-12">
                                         <span><b>Mohon maaf, dengan pertimbangan kondisi di atas maka anda <em class="text-danger">belum bisa mengikuti program</em></b></span>
+                                    </div>
+                                </div>
+                                @endif
+
+                                @if ($questionFour == 'Iya' || $questionSix == 'Iya')
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-12">
+                                        <span><b>Mohon maaf, kami sarankan sebaiknya anda <em class="text-danger">datang ke fisioterapi</em> terlebih dahulu sebelum bisa mengikuti program</span>
                                     </div>
                                 </div>
                                 @endif
@@ -85,7 +220,7 @@
                         </div>
                     @endif
 
-                    {{-- Step 2 --}}
+                    {{-- Step 2: Terms and Condition --}}
                     @if ($currentStep == 2)
                         <div class="card mx-auto mb-3">
                             <div class="card-header">
@@ -153,55 +288,266 @@
                                 <p>
                                     Semoga Allah mengganjar pahala sesuai dengan apa yang diniatkan, melancarkan prosesnya dan memudahkan member untuk istiqomah dalam menjalani keseluruhan program. <em>Allahumma aamiin</em>.
                                 </p>
-                                <hr/>
-                                <span><b><em>Setelah anda memahami ketentuan di atas, silahkan lakukan pembayaran sesuai program yang anda pilih</em></b></span>
-                                <details>
-                                    <summary style="list-style-type: disclosure-open">Rekening Pembayaran</summary>
-                                    <p>
-                                        Bank : <b class="text-primary">Muamalat</b> <br>
-                                        Rekening : <b class="text-primary">11300-11061</b> <br>
-                                        Nama : <b class="text-primary">Khairino Firman Baisya</b> <br>
-                                        Kode Bank : <b class="text-primary">147</b>
-                                    </p>
-                                </details>
                             </div>
                         </div>
                     @endif
 
-                    {{-- Step 3 --}}
+                    {{-- Step 3: Choose Program --}}
                     @if ($currentStep == 3)
                         <div class="card mx-auto mb-3">
                             <div class="card-header">
                                 <h4>Pilih Program</h4>
-                                <small>Langkah 2/4</small>
+                                <small>Langkah 3/4</small>
                             </div>
                             <div class="card-body">
+                                <b>Rekening Pembayaran</b>
+                                <p>
+                                    Bank : <b class="text-primary">Muamalat</b> <br>
+                                    Rekening : <b class="text-primary">11300-11061</b> <br>
+                                    Nama : <b class="text-primary">Khairino Firman Baisya</b> <br>
+                                    Kode Bank : <b class="text-primary">147</b>
+                                </p>
+                                <div class="row text-center mt-2 mb-2">
+                                    <b>Nominal Pembayaran : <em class="text-primary">
+                                        @if (!$selectedCoach)
+                                        Pilih Program dan Coach Terlebih Dahulu
+                                        @else
+                                        {{ $price }}
+                                        @endif
+                                    </em></b>
+                                </div>
                                 <div class="row">
-                                    <div class="col-lg-6 col-12">
+                                    <x-inputs.basic type="hidden" wire:model='price'/>
+                                    <div class="col-lg-6 col-12 mb-3">
                                         <x-inputs.label>Program</x-inputs.label>
                                         <x-inputs.select wire:model.live='selectedProgram'>
                                             <x-inputs.select-option value="" selected>--Pilih--</x-inputs.select-option>
-                                            @foreach ($programs as $program)
-                                                <x-inputs.select-option value="{{ $program->id }}">{{ $program->program_name }}</x-inputs.select-option>
-                                            @endforeach
+                                            @if ($specialCase)
+                                                <x-inputs.select-option value="4">{{ $specialProgram->program_name }}</x-inputs.select-option>
+                                            @else
+                                                <x-inputs.select-option value="5">{{ $largeProgram->program_name }}</x-inputs.select-option>
+                                            @endif
                                         </x-inputs.select>
                                         <small class="text-danger">@error('selectedProgram') {{ $message }} @enderror</small>
                                     </div>
+
                                     @if ($selectedProgram)
-                                        <div class="col-lg-6 col-12">
+                                        <div class="col-lg-6 col-12 mb-3">
                                             <x-inputs.label>Coach</x-inputs.label>
                                             <x-inputs.select wire:model.live='selectedCoach'>
                                                 <x-inputs.select-option value="">--Pilih--</x-inputs.select-option>
-                                                @foreach ($this->coaches as $coach)
-                                                    <x-inputs.select-option value="{{ $coach->code }}">Coach {{ $coach->nick_name }}({{ $coach->coach_name }})</x-inputs.select-option>
-                                                @endforeach
+                                                @if ($questionEight == 'Cardiovascular')
+                                                    <x-inputs.select-option value="87825749786">Coach Mega (Mega Maharani)</x-inputs.select-option>
+                                                @elseif ($questionNine == 'Spinal Culvature')
+                                                    <x-inputs.select-option value="8979034958">Coach Mala (Mala Damayanti)</x-inputs.select-option>
+                                                @elseif ($questionNine == 'Otot Tulang Sendi')
+                                                    <x-inputs.select-option value="85774827925">Coach Dina (Dina Yuliana)</x-inputs.select-option>
+                                                @else
+                                                    @foreach ($this->coaches as $coach)
+                                                        <x-inputs.select-option value="{{ $coach->code }}">Coach {{ $coach->nick_name }}({{ $coach->coach_name }})</x-inputs.select-option>
+                                                    @endforeach
+                                                @endif
                                             </x-inputs.select>
                                             <small class="text-danger">@error('selectedCoach') {{ $message }} @enderror</small>
                                         </div>
                                     @endif
+
+                                    @if ($selectedCoach)
+                                    <div class="col-lg-6 col-12 mb-3">
+                                        <x-inputs.label>Kelas</x-inputs.label>
+                                        <x-inputs.select wire:model.live='selectedClass'>
+                                            <x-inputs.select-option value="" selected>--Pilih--</x-inputs.select-option>
+                                            @foreach ($this->classes as $class)
+                                                <x-inputs.select-option value="{{ $class->id }}">
+                                                    {{ $class->day }}
+                                                    ({{ \Carbon\Carbon::parse($class->start_time)->format('H:i') }}
+                                                    -
+                                                    {{ \Carbon\Carbon::parse($class->end_time)->format('H:i') }})
+                                                </x-inputs.select-option>
+                                            @endforeach
+                                        </x-inputs.select>
+                                        <small class="text-danger">@error('selectedClass') {{ $message }} @enderror</small>
+                                    </div>
+                                    @endif
+                                    <div class="col-lg-6 col-12">
+                                        @if ($alertQuota)
+                                            <span class="text-danger">Mohon maaf, quota habis. Silahkan pilih kelas yang lain!</span>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    @endif
+
+                    {{-- Step 4: Biodata --}}
+                    @if ($currentStep == 4)
+                    <div class="card mx-auto mb-3">
+                        <div class="card-header">
+                            <h4>Biodata</h4>
+                            <small>Langkah 4/4</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-6 col-12 mb-3">
+                                    <x-inputs.label>Nama Lengkap</x-inputs.label>
+                                    <x-inputs.basic type="text" wire:model='memberName' required
+                                    oninvalid="this.setCustomValidity('Siapa nama anda?')"
+                                    oninput="this.setCustomValidity('')"/>
+                                </div>
+                                <div class="col-lg-6 col-12 mb-3">
+                                    <x-inputs.label>Usia</x-inputs.label>
+                                    <x-inputs.basic type="number" wire:model='ageStart' placeholder='....tahun' required
+                                    oninvalid="this.setCustomValidity('Berapa usia anda?)"
+                                    oninput="this.setCustomValidity('')"/>
+                                </div>
+                                <div class="col-lg-6 col-12 mb-3">
+                                    <x-inputs.label>Tinggi Badan</x-inputs.label>
+                                    <x-inputs.basic type="number" wire:model='bodyHeight' placeholder='....cm' required
+                                    oninvalid="this.setCustomValidity('Wajib diisi!')"
+                                    oninput="this.setCustomValidity('')"/>
+                                </div>
+                                <div class="col-lg-6 col-12 mb-3">
+                                    <x-inputs.label>Berat Badan</x-inputs.label>
+                                    <x-inputs.basic type="number" wire:model='bodyWeight' placeholder='....kg' required
+                                    oninvalid="this.setCustomValidity('Wajib diisi')"
+                                    oninput="this.setCustomValidity('')"/>
+                                </div>
+                                <div class="col-lg-6 col-12 mb-3">
+                                    <x-inputs.label>Alamat</x-inputs.label>
+                                    <x-inputs.textarea wire:model='address' required
+                                    oninvalid="this.setCustomValidity('Dimana anda tinggal?')"
+                                    oninput="this.setCustomValidity('')"></x-inputs.textarea>
+                                </div>
+                                <div class="col-lg-6 col-12 mb-3">
+                                    <x-inputs.label>Nomor Whatsapp</x-inputs.label>
+                                    <div class="input-group mb-3">
+                                        <x-inputs.select wire:model='phoneCode'>
+                                            @foreach ($phoneCodes as $code)
+                                            <x-inputs.select-option value="{{ $code->code }}">+{{ $code->code }} ({{ $code->country_name }})</x-inputs.select-option>
+                                            @endforeach
+                                        </x-inputs.select>
+                                        <x-inputs.basic type="text" wire:model.blur='phone' placeholder="85763827382" required
+                                        oninvalid="this.setCustomValidity('Anda harus mencantumkan nomor whatsapp')"
+                                        oninput="this.setCustomValidity('')"/>
+                                    </div>
+                                    @if ($alertUserExist)
+                                        <small class="text-danger">Anda sudah terdaftar, silahkan login
+                                            <a href="/login">
+                                            <b class="text-info">disini!</b>
+                                            </a>
+                                        </small>
+                                    @endif
+                                </div>
+                                <div class="col-lg-6 col-12 mb-3">
+                                    <x-inputs.label>Negara</x-inputs.label>
+                                    <x-inputs.select wire:model.live="countryId" required
+                                    oninvalid="this.setCustomValidity('Kolom ini wajib diisi!')"
+                                    oninput="this.setCustomValidity('')">
+                                        <x-inputs.select-option value="" selected>--Pilih--</x-inputs.select-option>
+                                        <x-inputs.select-option value="1">Indonesia</x-inputs.select-option>
+                                        @foreach ($countries as $id => $country)
+                                            <x-inputs.select-option value="{{ $id }}">{{ $country }}</x-inputs.select-option>
+                                        @endforeach
+                                    </x-inputs.select>
+                                </div>
+                                @if ($countryId == 1)
+                                <div class="col-lg-6 col-12 mb-3">
+                                    <x-inputs.label>Provinsi</x-inputs.label>
+                                    <x-inputs.select wire:model.live="provinceId">
+                                        <x-inputs.select-option value="" selected>--Pilih--</x-inputs.select-option>
+                                        @foreach ($provinces as $province)
+                                            <x-inputs.select-option value="{{ $province->id }}">{{ $province->province_name }}</x-inputs.select-option>
+                                        @endforeach
+                                    </x-inputs.select>
+                                </div>
+                                @endif
+
+                                @if ($provinceId)
+                                <div class="col-lg-6 col-12 mb-3">
+                                    <x-inputs.label>Kabupaten</x-inputs.label>
+                                    <x-inputs.select wire:model.live="regencyId">
+                                        <x-inputs.select-option value="" selected>--Pilih--</x-inputs.select-option>
+                                        @foreach ($this->regencies as $regency)
+                                            <x-inputs.select-option value="{{ $regency->id }}">{{ $regency->regency_name }}</x-inputs.select-option>
+                                        @endforeach
+                                    </x-inputs.select>
+                                </div>
+                                @endif
+
+                                @if ($regencyId)
+                                <div class="col-lg-6 col-12 mb-3">
+                                    <x-inputs.label>Kecamatan</x-inputs.label>
+                                    <x-inputs.select wire:model.live="districtId">
+                                        <x-inputs.select-option value="" selected>--Pilih--</x-inputs.select-option>
+                                        @foreach ($this->districts as $district)
+                                            <x-inputs.select-option value="{{ $district->id }}">{{ $district->district_name }}</x-inputs.select-option>
+                                        @endforeach
+                                    </x-inputs.select>
+                                </div>
+                                @endif
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6 col-12 mb-3">
+                                    <x-inputs.label>Bukti Transfer</x-inputs.label>
+                                    <div x-data="{ uploading: false, progress: 5 }" x-on:livewire-upload-start="uploading = true"
+                                        x-on:livewire-upload-finish="uploading = false; progress = 5;"
+                                        x-on:livewire-upload-error="uploading = false"
+                                        x-on:livewire-upload-progress="progress = $event.detail.progress">
+                                        <!--Choose File-->
+                                        <x-inputs.basic type="file" wire:click='selectFile' wire:model='fileUpload'
+                                            accept="image/png, image/jpg, image/jpeg" required
+                                            oninvalid="this.setCustomValidity('Silahkan lampirkan bukti transfer anda')"
+                                            oninput="this.setCustomValidity('')" />
+
+                                        <!--Progress Bar-->
+                                        @if ($showProgressBar == true)
+                                            <div x-show="uploading">
+                                                <div class="progress mt-2">
+                                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                                                        role="progressbar" x-bind:style="`width: ${progress}%`"></div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    @error('fileUpload')
+                                        <small class="text-danger">
+                                            {{ $message }}
+                                            Anda bisa mengecilkan ukuran file <a href="https://tinyjpg.com/" target="_blank"><b class="text-info">Disini!</b></a>
+                                        </small>
+                                    @enderror
+                                </div>
+                                <div class="col-lg-6 col-12 mb-3">
+                                    <x-inputs.label>Hasil Pemeriksaan Medis (Jika Ada) .pdf</x-inputs.label>
+                                    <x-inputs.basic type="file" wire:model='medicalFile' accept=".pdf, .docx.s"/>
+                                </div>
+                                @error('fileUpload')
+                                    <!--Tampilkan Gambar Rusak-->
+                                @else
+                                    <div class="col-lg-6 col-12 mb-3">
+                                        @if ($fileUpload)
+                                            <img src="{{ $fileUpload->temporaryUrl() }}" width="200px" height="auto">
+                                        @endif
+                                    </div>
+                                @enderror
+                            </div>
+                            <hr />
+                            <span>Simpan dan catat dengan baik <b class="text-primary">username dan password</b> anda! Keduanya akan digunakan untuk login ke member area reeactive</span>
+                            <div class="row">
+                                <div class="col-lg-6 col-12 mb-3">
+                                    <x-inputs.label>Username</x-inputs.label>
+                                    <x-inputs.readonly placeholder="{{ $phone }}"/>
+                                </div>
+                                <div class="col-lg-6 col-12 mb-3">
+                                    <x-inputs.label>Password</x-inputs.label>
+                                    <x-inputs.basic type="password" wire:model='password' required
+                                    oninvalid="this.setCustomValidity('Anda harus membuat password')"
+                                    oninput="this.setCustomValidity('')"/>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                     @endif
 
                     {{-- Action Button --}}
@@ -218,23 +564,37 @@
                                 @endif
 
                                 @if ($currentStep < $totalSteps)
-                                    @if (!$closeRegistration)
-                                    <x-buttons.icon-primary type="button" wire:click='increaseStep'>
-                                        Lanjut
-                                        <x-slot name="icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                                        </x-slot>
-                                    </x-buttons.icon-primary>
+                                    @if (!$nextStep)
+                                    <x-buttons.solid-dark type="button" disabled>
+                                        Isi Pertanyaan Di atas
+                                    </x-buttons.solid-dark>
+                                    @else
+                                        @if ($alertQuota)
+                                            <x-buttons.solid-dark type="button" disabled>Tidak Bisa Daftar</x-buttons.solid-dark>
+                                        @else
+                                            @if ($questionThree != 'Less' && $questionFour != 'Iya' && $questionFive != 'Less' && $questionSix != 'Iya')
+                                            <x-buttons.icon-primary type="button" wire:click='increaseStep'>
+                                                Lanjut
+                                                <x-slot name="icon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                                                </x-slot>
+                                            </x-buttons.icon-primary>
+                                            @endif
+                                        @endif
                                     @endif
                                 @endif
 
                                 @if ($currentStep == $totalSteps)
-                                <x-buttons.icon-success type="submit">
-                                    <x-slot name="icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-                                    </x-slot>
-                                    Kirim
-                                </x-buttons.icon-success>
+                                    @if ($alertUserExist)
+                                        <x-buttons.solid-dark disabled>Anda Sudah Terdaftar</x-buttons.solid-dark>
+                                    @else
+                                        <x-buttons.icon-success type="submit">
+                                            <x-slot name="icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                                            </x-slot>
+                                            Kirim
+                                        </x-buttons.icon-success>
+                                    @endif
                                 @endif
 
                             </div>
