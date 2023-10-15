@@ -85,6 +85,7 @@ class FormNewMember extends Component
     public $selectedLevel = 1;
     public $registered;
     public $medicalFileName;
+    public $alertAddress = false;
 
     public $totalSteps = 4;
     public $currentStep = 1;
@@ -304,6 +305,16 @@ class FormNewMember extends Component
             $this->nextStep = true;
         }
 
+        if ($property == 'address') {
+            $textLenght = strlen($this->address);
+
+            if($textLenght < 40) {
+                $this->alertAddress = true;
+            } else {
+                $this->alertAddress = false;
+            }
+        }
+
     }
 
     public function selectFile() {
@@ -311,6 +322,17 @@ class FormNewMember extends Component
     }
 
     public function register() {
+        if ($this->countryId == 1) {
+            $this->validate([
+                'provinceId' => 'required',
+                'regencyId' => 'required',
+                'districtId' => 'required',
+            ], [
+                'provinceId.required' => 'Tolong isi provinsi dulu ya!',
+                'regencyId.required' => 'Tolong isi kabupaten dulu ya!',
+                'districtId.required' => 'Tolong isi kecamatan dulu ya!'
+            ]);
+        }
         $mobilePhone = $this->countryPhoneCode.$this->phone;
         $batchId = $this->batch->id;
 
