@@ -9,7 +9,7 @@
     {{-- The best athlete wants his opponent at his best. --}}
 
     <x-items.breadcrumb>
-        <x-slot name="mainPage">Beranda</x-slot>
+        <x-slot name="mainPage" href="/">Beranda</x-slot>
         <x-slot name="currentPage">New Member</x-slot>
     </x-items.breadcrumb>
 
@@ -27,6 +27,14 @@
         <div class="d-flex align-items-center justify-content-center">
             <x-items.alerts.light-danger>
                 {{ session('failed') }}
+            </x-items.alerts.light-danger>
+        </div>
+        @endif
+
+        @if (session('fullQuota'))
+        <div class="d-flex align-items-center justify-content-center">
+            <x-items.alerts.light-danger>
+                {{ session('fullQuota') }}
             </x-items.alerts.light-danger>
         </div>
         @endif
@@ -553,7 +561,7 @@
                     {{-- Action Button --}}
                     <div class="action-button">
                         <div class="row mb-3">
-                            <div class="col-lg-6 col-12">
+                            <div class="col-12">
                                 @if ($currentStep > 1)
                                 <x-buttons.icon-dark type="button" wire:click='decreaseStep'>
                                     <x-slot name="icon">
@@ -588,6 +596,9 @@
                                     @if ($alertUserExist)
                                         <x-buttons.solid-dark disabled>Anda Sudah Terdaftar</x-buttons.solid-dark>
                                     @else
+                                        @if ($alertQuota)
+
+                                        @endif
                                         <x-buttons.icon-success type="submit">
                                             <x-slot name="icon">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
