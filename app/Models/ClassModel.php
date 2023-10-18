@@ -29,7 +29,8 @@ class ClassModel extends Model
         return ClassModel::with([
             'registrations' => function ($query) use($batchId, $coachId) {
                 $query->where('batch_id', $batchId)
-                ->where('coach_id', $coachId);
+                ->where('coach_id', $coachId)
+                ->where('payment_status', 'Done');
             }
         ])
         ->join('programs', 'classes.program_id', 'programs.id')
@@ -43,6 +44,12 @@ class ClassModel extends Model
         return ClassModel::where('coach_code', $coachCode)
         ->where('class_status_eksternal','Open')
         ->where('program_id', $programId)
+        ->get();
+    }
+
+    public static function classList() {
+        return ClassModel::where('coach_code', Auth::user()->email)
+        ->orderBy('start_time', 'asc')
         ->get();
     }
 }

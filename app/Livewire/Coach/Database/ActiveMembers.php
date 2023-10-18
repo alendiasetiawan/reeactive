@@ -6,10 +6,12 @@ use App\Models\Batch;
 use App\Models\Coach;
 use App\Models\Member;
 use Livewire\Component;
+use App\Models\ClassModel;
 use Livewire\WithPagination;
 use App\Services\BatchService;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\Auth;
 
 class ActiveMembers extends Component
@@ -21,10 +23,24 @@ class ActiveMembers extends Component
 
     protected $batchService;
 
-    public $batchName;
-    public $batchId;
-    public $coachId;
-    public $searchMember;
+    public string $batchName;
+    public int $batchId;
+    public int $coachId;
+    public string $searchMember;
+    public int $activeMember;
+    public object $classList;
+    public int $filterClass = 0;
+
+    #[Computed]
+    public function members() {
+        if ($this->filterClass == 0) {
+            $members = Member::coachActiveMembers($this->batchId, $this->coachId);
+        } else {
+            $members = Member::memberInClass($this->batchId, $this->filterClass, $this->coachId);
+        }
+
+        return $members;
+    }
 
     public function boot(BatchService $batchService) {
         $batchQuery = $batchService->batchQuery();
@@ -33,27 +49,27 @@ class ActiveMembers extends Component
 
         $coach = Coach::where('code', Auth::user()->email)->first();
         $this->coachId = $coach->id;
+
+        $this->activeMember = Member::activeMemberPerCoach($this->batchId, $this->coachId);
+        $this->classList = ClassModel::classList();
     }
 
     public function updated($property) {
         if ($property == 'searchMember') {
             $this->members = Member::coachActiveMembersSearch($this->batchId, $this->coachId, $this->searchMember);
-            $this->resetPage();
         }
-    }
 
-    public function getMembersProperty() {
-        $members = Member::coachActiveMembers($this->batchId, $this->coachId);
-
-        return $members;
+        if ($property == 'filterClass') {
+            if ($this->filterClass == 0) {
+                $this->members = Member::coachActiveMembers($this->batchId, $this->coachId);
+            } else {
+                $this->members = Member::memberInClass($this->batchId, $this->filterClass, $this->coachId);
+            }
+        }
     }
 
     public function render()
     {
-        $data = [
-            'members' => $this->members,
-        ];
-
-        return view('livewire.coach.database.active-members', $data);
+        return view('livewire.coach.database.active-members');
     }
 }

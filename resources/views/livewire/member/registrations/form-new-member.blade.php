@@ -8,10 +8,18 @@
     @endpush
     {{-- The best athlete wants his opponent at his best. --}}
 
-    <x-items.breadcrumb>
-        <x-slot name="mainPage" href="/">Beranda</x-slot>
-        <x-slot name="currentPage">New Member</x-slot>
-    </x-items.breadcrumb>
+    <div class="page-meta">
+        <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/">
+                        <span class="text-secondary">Halaman Utama</span>
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">New Member</li>
+            </ol>
+        </nav>
+    </div>
 
     @if ($batch->batch_status != 'Open')
         <div class="row layout-top-spacing">

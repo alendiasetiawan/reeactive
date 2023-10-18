@@ -7,20 +7,40 @@
     <div class="row layout-top-spacing">
         <h4>Data Member Aktif <b class="text-primary">{{ $batchName }}</b></h4>
         <div class="col-lg-4 col-md-6 col-12 mt-2">
-            <x-inputs.basic type="text" placeholder="Cari nama member..." wire:model.live="searchMember"/>
+            <x-inputs.label>Cari Member</x-inputs.label>
+            <x-inputs.basic type="text" placeholder="Ketik nama disini..." wire:model.live="searchMember"/>
         </div>
-        <div class="mt-3 d-md-none d-lg-none d-xl-none">
+        <div class="col-lg-4 col-md-6 col-12 mt-2">
+            <x-inputs.label>Filter Kelas</x-inputs.label>
+            <x-inputs.select wire:model.live='filterClass'>
+                <x-inputs.select-option value="0">--Semua--</x-inputs.select-option>
+                @forelse ($classList as $class)
+                <x-inputs.select-option value="{{ $class->id }}">{{ $class->day }}
+                    ({{ \Carbon\Carbon::parse($class->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($class->end_time)->format('H:i') }})
+                </x-inputs.select-option>
+                @empty
+                <x-inputs.select-option>Tidak ada data kelas</x-inputs.select-option>
+                @endforelse
+            </x-inputs.select>
+        </div>
+        <div class="mb-3">
 
         </div>
         <div class="col-lg-4 col-md-6 col-12">
             <button type="button" class="btn btn-info">
-                Jumlah Member <span class="badge bg-light text-dark ms-2">{{ $members->count() }}</span>
+                Jumlah Member <span class="badge bg-light text-dark ms-2">
+                    @if ($filterClass == 0)
+                        {{ $activeMember }}
+                    @else
+                    {{ $this->members->count() }}
+                    @endif
+                </span>
             </button>
         </div>
     </div>
 
     <div class="row mt-3">
-        @foreach ($members as $member)
+        @foreach ($this->members as $member)
             <div class="col-lg-4 col-md-6 col-12 mb-3">
                 <x-cards.user>
                     <x-slot name="userImage">
@@ -42,6 +62,9 @@
                             <b class="text-success">{{ $member->program_name }}</b>
                         @endif
                     </x-slot>
+                    <x-slot name="icon" href="https://wa.me/{{ $member->mobile_phone }}" target="_blank">
+                        <i class="fa-brands fa-whatsapp fa-2xl" style="color: #19c502;"></i>
+                    </x-slot>
                     <ul class="mb-0">
                         <li>{{ $member->level_name }}</li>
                         <li>{{ $member->day }} ({{ \Carbon\Carbon::parse($member->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($member->end_time)->format('H:i') }})</li>
@@ -57,7 +80,7 @@
                 </x-cards.user>
             </div>
         @endforeach
-        {{ $members->links() }}
+        {{ $this->members->links() }}
     </div>
 
     @push('customScripts')
