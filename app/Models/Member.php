@@ -29,6 +29,7 @@ class Member extends Model
     public static function activeMemberPerCoach($batchId, $coachId) {
         return Registration::where('coach_id', $coachId)
         ->where('batch_id', $batchId)
+        ->where('payment_status', 'Done')
         ->count();
     }
 
@@ -40,7 +41,7 @@ class Member extends Model
         ->where('registrations.batch_id', $batchId)
         ->where('registrations.coach_id', $coachId)
         ->where('registrations.payment_status', 'Done')
-        ->select('registrations.created_at', 'members.member_name', 'members.medical_condition', 'programs.program_name', 'programs.id', 'levels.level_name',
+        ->select('registrations.created_at', 'members.member_name', 'members.mobile_phone', 'members.medical_condition', 'programs.program_name', 'programs.id', 'levels.level_name',
         'classes.day', 'classes.start_time', 'classes.end_time')
         ->orderBy('members.member_name', 'asc')
         ->paginate(9);
@@ -55,6 +56,21 @@ class Member extends Model
         ->where('registrations.coach_id', $coachId)
         ->where('registrations.payment_status', 'Done')
         ->where('members.member_name', 'like', '%'.$searchMember.'%')
+        ->select('registrations.created_at', 'members.member_name', 'members.medical_condition', 'programs.program_name', 'programs.id', 'levels.level_name',
+        'classes.day', 'classes.start_time', 'classes.end_time')
+        ->orderBy('members.member_name', 'asc')
+        ->paginate(9);
+    }
+
+    public static function memberInClass($batchId, $classId, $coachId) {
+        return Registration::join('members', 'registrations.member_code', 'members.code')
+        ->join('programs', 'registrations.program_id', 'programs.id')
+        ->join('levels', 'registrations.level_id', 'levels.id')
+        ->join('classes', 'registrations.class_id', 'classes.id')
+        ->where('registrations.batch_id', $batchId)
+        ->where('registrations.coach_id', $coachId)
+        ->where('registrations.class_id', $classId)
+        ->where('registrations.payment_status', 'Done')
         ->select('registrations.created_at', 'members.member_name', 'members.medical_condition', 'programs.program_name', 'programs.id', 'levels.level_name',
         'classes.day', 'classes.start_time', 'classes.end_time')
         ->orderBy('members.member_name', 'asc')

@@ -83,6 +83,7 @@
     @stack('customCss')
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
     @livewireStyles()
+    <script src="https://kit.fontawesome.com/69d31acf39.js" crossorigin="anonymous"></script>
 </head>
 <body class="layout-sidebar">
     <!--Query For Checking User Data-->
@@ -106,6 +107,8 @@
 
     @if (Auth::user()->role_id == 1)
         @include('layouts.elements.bottom_navbar.admin_bottom_navbar')
+    @elseif (Auth::user()->role_id == 2)
+        @include('layouts.elements.bottom_navbar.coach_bottom_navbar')
     @else
         @include('layouts.elements.bottom_navbar.member_bottom_navbar')
     @endif
