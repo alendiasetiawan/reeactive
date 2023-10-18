@@ -32,7 +32,7 @@
                     @if ($filterClass == 0)
                         {{ $activeMember }}
                     @else
-                    {{ $this->members->count() }}
+                    {{ $activeMemberInClass }}
                     @endif
                 </span>
             </button>

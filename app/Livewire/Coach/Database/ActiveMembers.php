@@ -28,18 +28,13 @@ class ActiveMembers extends Component
     public int $coachId;
     public string $searchMember;
     public int $activeMember;
+    public int $activeMemberInClass;
     public object $classList;
     public int $filterClass = 0;
 
     #[Computed]
     public function members() {
-        if ($this->filterClass == 0) {
-            $members = Member::coachActiveMembers($this->batchId, $this->coachId);
-        } else {
-            $members = Member::memberInClass($this->batchId, $this->filterClass, $this->coachId);
-        }
-
-        return $members;
+        return Member::coachActiveMembers($this->batchId, $this->coachId);
     }
 
     public function boot(BatchService $batchService) {
@@ -56,14 +51,17 @@ class ActiveMembers extends Component
 
     public function updated($property) {
         if ($property == 'searchMember') {
+            $this->resetPage();
             $this->members = Member::coachActiveMembersSearch($this->batchId, $this->coachId, $this->searchMember);
         }
 
         if ($property == 'filterClass') {
+            $this->resetPage();
             if ($this->filterClass == 0) {
                 $this->members = Member::coachActiveMembers($this->batchId, $this->coachId);
             } else {
                 $this->members = Member::memberInClass($this->batchId, $this->filterClass, $this->coachId);
+                $this->activeMemberInClass = Member::activeMemberInClass($this->batchId, $this->coachId, $this->filterClass);
             }
         }
     }
