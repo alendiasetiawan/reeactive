@@ -33,6 +33,14 @@ class Member extends Model
         ->count();
     }
 
+    public static function activeMemberInClass($batchId, $coachId, $classId) {
+        return Registration::where('coach_id', $coachId)
+        ->where('batch_id', $batchId)
+        ->where('class_id', $classId)
+        ->where('payment_status', 'Done')
+        ->count();
+    }
+
     public static function coachActiveMembers($batchId, $coachId) {
         return Registration::join('members', 'registrations.member_code', 'members.code')
         ->join('programs', 'registrations.program_id', 'programs.id')
