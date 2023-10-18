@@ -10,6 +10,18 @@
                 <h4 class="media-heading mb-0">{{ $userName }}</h4>
                 <p class="media-text">{{ $userTitle }}</p>
             </div>
+            @isset($icon)
+                <div>
+                    <a
+                    {{ $icon->attributes->merge([
+                        'href' => '#' ?? '',
+                        'class' => 'text-muted' ?? ''
+                    ])}}>
+                        {{ $icon }}
+                    </a>
+                </div>
+            @endisset
+
         </div>
         <span class="card-text mt-4 mb-0">
             {{ $slot }}
