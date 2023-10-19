@@ -34,7 +34,7 @@ class FormNewMember extends Component
     #[Title('Pendaftaran Member Baru')]
 
     public $batch;
-    public $programs;
+    public $specialProgram;
     public $selectedProgram;
     public $selectedCoach;
     public $selectedClass;
@@ -103,15 +103,21 @@ class FormNewMember extends Component
         } else {
             $this->medical_condition = $this->questionNine;
         }
+
+        $this->specialProgram = Program::find(4);
     }
 
     public function mount(BatchService $batchService) {
         $this->batch = $batchService->batchQuery();
-        $this->programs = Program::where('program_status', 'Open')->get();
         $this->currentStep = 1;
         $this->phoneCodes = PhoneCode::all();
         $this->countries = Country::orderBy('country_name', 'asc')->pluck('country_name', 'id');
         $this->provinces = Province::all();
+    }
+
+    #[Computed]
+    public function programs() {
+        return Program::where('program_status', 'Open')->get();
     }
 
     #[Computed]
@@ -131,13 +137,6 @@ class FormNewMember extends Component
 
     #[Computed]
     public function classes() {
-        if ($this->questionEight == 'Cardiovascular') {
-            $classList =
-
-            $classList = ClassModel::showActiveClassExternal($this->selectedProgram, $this->selectedCoach);
-        } else {
-
-        }
         return ClassModel::showActiveClassExternal($this->selectedProgram, $this->selectedCoach);
     }
 
