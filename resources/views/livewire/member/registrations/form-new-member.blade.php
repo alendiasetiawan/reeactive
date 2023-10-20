@@ -338,24 +338,33 @@
                                     Kode Bank : <b class="text-primary">147</b>
                                 </p>
                                 <div class="row text-center mt-2 mb-2">
-                                    <b>Nominal Pembayaran : <em class="text-primary">
-                                        @if (!$selectedCoach)
-                                        Pilih Program dan Coach Terlebih Dahulu
-                                        @else
-                                        {{ $price }}
-                                        @endif
-                                    </em></b>
+                                    <b>Nominal Pembayaran :
+                                        <em class="text-primary">
+                                            @if (!$selectedCoach)
+                                            Pilih Program dan Coach Terlebih Dahulu
+                                            @else
+                                            {{ $price }}
+                                            @endif
+                                        </em>
+                                    </b>
                                 </div>
+                                @if ($specialCase)
+                                <p class="text-center">
+                                    Kondisi Khusus : <em class="text-primary">{{ $medical_condition }}</em>
+                                </p>
+                                @endif
                                 <div class="row">
                                     <x-inputs.basic type="hidden" wire:model='price'/>
                                     <div class="col-lg-6 col-12 mb-3">
                                         <x-inputs.label>Program</x-inputs.label>
                                         <x-inputs.select wire:model.live='selectedProgram'>
                                             <x-inputs.select-option value="" selected>--Pilih--</x-inputs.select-option>
-                                            @if ($specialCase)
-                                                <x-inputs.select-option value="4">{{ $specialProgram->program_name }}</x-inputs.select-option>
+                                            @if ($medical_condition == 'Cardiovascular')
+                                                <x-inputs.select-option value="{{ $specialProgram->id }}">{{ $specialProgram->program_name }}</x-inputs.select-option>
                                             @else
-                                                <x-inputs.select-option value="5">{{ $largeProgram->program_name }}</x-inputs.select-option>
+                                                @foreach ($this->programs as $program)
+                                                    <x-inputs.select-option value="{{ $program->id }}">{{ $program->program_name }}</x-inputs.select-option>
+                                                @endforeach
                                             @endif
                                         </x-inputs.select>
                                         <small class="text-danger">@error('selectedProgram') {{ $message }} @enderror</small>

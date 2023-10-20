@@ -58,7 +58,10 @@ class RenewalForm extends Component
 
     #[Computed]
     public function classes() {
-        return ClassModel::where('coach_code', $this->selectedCoach)->where('class_status','Open')->get();
+        return ClassModel::where('coach_code', $this->selectedCoach)
+        ->where('class_status','Open')
+        ->where('program_id', $this->selectedProgram)
+        ->get();
     }
 
     #[Computed]
