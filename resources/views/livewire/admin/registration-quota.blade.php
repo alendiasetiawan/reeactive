@@ -10,22 +10,31 @@
     </x-items.breadcumb>
 
     <div class="row layout-top-spacing">
+        @forelse ($this->membersPerCoach as $member)
         <div class="col-lg-4 col-md-6 col-12 mb-3">
             <x-widgets.payment-method>
-                <x-slot name="title">Nama Coach</x-slot>
+                <x-slot name="title"><b class="text-primary">Coach {{ $member->nick_name }}</b></x-slot>
                 <x-items.list-groups.label>
+                    @foreach ($member->classes as $class)
                     <x-items.list-groups.item-label>
-                        <x-slot name="title">Senin, Selasa, Rabu</x-slot>
-                        <x-slot name="subTitle">08:30 - 09:30</x-slot>
-                        <x-items.badges.light-primary>10 Member</x-items.badges.light-primary>
+                        <x-slot name="title">{{ $class->day }}</x-slot>
+                        <x-slot name="subTitle">
+                            {{ \Carbon\Carbon::parse($class->start_time)->format('H:i') }}
+                            -
+                            {{ \Carbon\Carbon::parse($class->end_time)->format('H:i') }}
+                        </x-slot>
+                        <a wire:navigate href="{{ route('admin::member_in_class', [$class->id, $batchId]) }}">
+                            <x-items.badges.light-success>
+                                {{ $class->registrations->where('class_id', $class->id)->count() }} Member
+                            </x-items.badges.light-success>
+                        </a>
                     </x-items.list-groups.item-label>
-                    <x-items.list-groups.item-label>
-                        <x-slot name="title">Senin, Selasa, Rabu</x-slot>
-                        <x-slot name="subTitle">08:30 - 09:30</x-slot>
-                        <x-items.badges.light-primary>10 Member</x-items.badges.light-primary>
-                    </x-items.list-groups.item-label>
+                    @endforeach
                 </x-items.list-groups.label>
             </x-widgets.payment-method>
         </div>
+        @empty
+        <x-items.alerts.light-danger>Tidak ada data yang bisa ditampilkan</x-items.alerts.light-danger>
+        @endforelse
     </div>
 </div>
