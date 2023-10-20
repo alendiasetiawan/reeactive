@@ -34,7 +34,7 @@ class FormNewMember extends Component
     #[Title('Pendaftaran Member Baru')]
 
     public $batch;
-    public $programs;
+    public $specialProgram;
     public $selectedProgram;
     public $selectedCoach;
     public $selectedClass;
@@ -53,8 +53,6 @@ class FormNewMember extends Component
     public $questionSeven;
     public $questionEight;
     public $questionNine;
-    public $specialProgram;
-    public $largeProgram;
     public $price;
     public $healthScreenings;
     public $phoneCodes;
@@ -86,6 +84,7 @@ class FormNewMember extends Component
     public $registered;
     public $medicalFileName;
     public $alertAddress = false;
+    public $medical_condition;
 
     public $totalSteps = 4;
     public $currentStep = 1;
@@ -95,17 +94,30 @@ class FormNewMember extends Component
 
     public function boot(RegistrationService $registrationService) {
         $this->registrationService = $registrationService;
+
+        //check the medical condition
+        if ($this->questionEight == 'Cardiovascular') {
+            $this->medical_condition = $this->questionEight;
+        } elseif ($this->questionEight == NULL) {
+            $this->medical_condition = NULL;
+        } else {
+            $this->medical_condition = $this->questionNine;
+        }
+
+        $this->specialProgram = Program::find(4);
     }
 
     public function mount(BatchService $batchService) {
         $this->batch = $batchService->batchQuery();
-        $this->programs = Program::where('program_status', 'Open')->get();
         $this->currentStep = 1;
-        $this->specialProgram = Program::find(4);
-        $this->largeProgram = Program::find(5);
         $this->phoneCodes = PhoneCode::all();
         $this->countries = Country::orderBy('country_name', 'asc')->pluck('country_name', 'id');
         $this->provinces = Province::all();
+    }
+
+    #[Computed]
+    public function programs() {
+        return Program::where('program_status', 'Open')->get();
     }
 
     #[Computed]
@@ -229,7 +241,12 @@ class FormNewMember extends Component
             $pricelist = Pricelist::where('program_id', $this->selectedProgram)
                 ->where('coach_code', $this->selectedCoach)
                 ->first();
-            $priceNumber = $pricelist->price_per_person;
+            if ($this->specialCase == TRUE) {
+                $priceNumber = $pricelist->price_special;
+            } else {
+                $priceNumber = $pricelist->price_per_person;
+            }
+
             $this->price = 'Rp '.number_format($priceNumber,0,',','.');
             $this->reset('selectedClass');
         }
@@ -285,6 +302,7 @@ class FormNewMember extends Component
         if ($property == 'questionSeven') {
             if ($value == 'Tidak') {
                 $this->nextStep = true;
+                $this->specialCase = false;
             } else {
                 $this->specialCase = true;
                 $this->nextStep = false;
@@ -336,14 +354,6 @@ class FormNewMember extends Component
         $mobilePhone = $this->countryPhoneCode.$this->phone;
         $batchId = $this->batch->id;
 
-        //check the medical condition
-        if ($this->questionEight == 'Cardiovascular') {
-            $medical_condition = $this->questionEight;
-        } elseif ($this->questionEight == NULL) {
-            $medical_condition = NULL;
-        } else {
-            $medical_condition = $this->questionNine;
-        }
 
         //check medical file
         if ($this->medicalFile == NULL) {
@@ -396,7 +406,7 @@ class FormNewMember extends Component
                     'body_height' => $this->bodyHeight,
                     'body_weight' => $this->bodyWeight,
                     'age_start' => $this->ageStart,
-                    'medical_condition' => $medical_condition,
+                    'medical_condition' => $this->medical_condition,
                     'medical_file' => $uploadMedicalFile,
                 ]);
 
@@ -433,9 +443,6 @@ class FormNewMember extends Component
                 $this->redirect(route('new_member'));
             }
         }
-
-
-
     }
 
     public function render()
