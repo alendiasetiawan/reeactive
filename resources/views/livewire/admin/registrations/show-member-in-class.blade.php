@@ -2,6 +2,8 @@
     @push('customCss')
     <link href="{{ asset('template/src/assets/css/light/elements/infobox.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="{{ asset('template/src/assets/css/light/elements/alert.css') }}">
+    <link href="{{ asset('template/src/plugins/src/animate/animate.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('template/src/assets/css/light/components/modal.css') }}" rel="stylesheet" type="text/css" />
     @endpush
     <x-items.breadcrumb>
         <x-slot name="mainPage" href="{{ route('admin::registration_quota') }}">
@@ -17,11 +19,18 @@
             <h4>Data Member Per Kelas <b class="text-primary">{{ $batchQuery->batch_name }}</b></h4>
         </div>
         <div class="col-lg-6 col-12">
-            <x-buttons.outline-primary>Coach Mala</x-buttons.outline-primary>
+            <x-buttons.outline-primary><b>Coach {{ $nickName }}</b></x-buttons.outline-primary>
             <div class="mb-2 d-lg-none d-xl-none">
 
             </div>
-            <x-buttons.outline-secondary>Senin, Rabu, Jum'at 08:30 - 09:30</x-buttons.outline-secondary>
+            <x-buttons.outline-secondary>
+                <b>
+                {{ $classDetail->day }}
+                ({{ \Carbon\Carbon::parse($classDetail->start_time)->format('H:i') }}
+                -
+                {{ \Carbon\Carbon::parse($classDetail->end_time)->format('H:i') }})
+                </b>
+            </x-buttons.outline-secondary>
         </div>
     </div>
 
@@ -40,10 +49,24 @@
                 <x-inputs.select-option value="3">Intermediate</x-inputs.select-option>
             </x-inputs.select>
         </div>
+        <div class="mt-2">
+
+        </div>
+        <div class="col-lg-4 col-md-6 col-12">
+            <button type="button" class="btn btn-info">
+                Jumlah Member <span class="badge bg-light text-dark ms-2">
+                    @if ($filterLevel == 0 && $searchMember == NULL)
+                        {{ $this->allMembersInClass->count() }}
+                    @else
+                    {{ $this->membersInClass->count() }}
+                    @endif
+                </span>
+            </button>
+        </div>
     </div>
 
     {{-- Card Members --}}
-    <div class="row mt-5">
+    <div class="row mt-3">
         @forelse ($this->membersInClass as $member)
         <div class="col-lg-4 col-md-6 col-12 mb-3">
             <x-cards.user>
@@ -65,11 +88,12 @@
                     @else
                         <b class="text-success">{{ $member->program_name }}</b>
                     @endif
+                    <small> - {{ $member->registration_category }}</small>
                 </x-slot>
                 <x-slot name="icon" href="https://wa.me/{{ $member->mobile_phone }}" target="_blank">
-                    <i class="fa-brands fa-whatsapp fa-2xl" style="color: #19c502;"></i>
+                    <i class="fa-brands fa-whatsapp fa-xl" style="color: #19c502;"></i>
                 </x-slot>
-                <ul class="mb-0">
+                <ul class="mb-0 mt-0">
                     <li>{{ $member->level_name }}</li>
                     <li>{{ $member->day }} ({{ \Carbon\Carbon::parse($member->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($member->end_time)->format('H:i') }})</li>
                     <li>Catatan Medis :
@@ -80,16 +104,32 @@
                         @endif
                     </li>
                 </ul>
-                <x-slot name="bottomButton" href="#">Detail Member</x-slot>
+                <x-slot name="bottomButton" data-bs-toggle="modal" data-bs-target="#editMember{{ $member->id }}">Edit Member</x-slot>
             </x-cards.user>
+            {{-- Modal Edit Member --}}
+            <x-modals.form id="editMember{{ $member->id }}">
+                <x-slot name="modalHeader">Edit Data Member</x-slot>
+                <livewire:admin.registrations.form-edit-member />
+            </x-modals.form>
         </div>
         @empty
-        <x-items.alerts.light-danger>Upss.. belum ada member yang daftar di kelas ini</x-items.alerts.light-danger>
-        @endforelse
-        <div class="col-6">
-            <x-buttons.solid-primary>
-                <div class="spinner-border text-white me-2 align-self-center loader-sm "></div>
-                Tampilkan Lagi...</x-buttons.solid-primary>
+        <div class="col-12">
+            <x-items.alerts.light-danger>Upss.. tidak ada data yang bisa ditampilkan</x-items.alerts.light-danger>
         </div>
+        @endforelse
     </div>
+
+    {{-- Load More Button --}}
+    @if ($filterLevel == 0 && $searchMember == '')
+        @if ($this->allMembersInClass->count() > $this->membersInClass->count())
+        <div class="row">
+            <div class="col-lg-6 col-12">
+                <x-buttons.solid-primary wire:click='loadMore' wire:loading.attr='disabled'>
+                    Tampilkan Lagi...
+                </x-buttons.solid-primary>
+                <div wire:loading.class="spinner-border spinner-border-reverse align-self-center loader-sm text-primary">.</div>
+            </div>
+        </div>
+        @endif
+    @endif
 </div>

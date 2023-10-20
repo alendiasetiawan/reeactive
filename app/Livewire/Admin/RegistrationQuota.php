@@ -28,7 +28,6 @@ class RegistrationQuota extends Component
 
     public function render()
     {
-        // dd ($this->membersPerCoach);
         return view('livewire.admin.registration-quota');
     }
 }

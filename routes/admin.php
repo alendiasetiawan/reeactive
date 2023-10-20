@@ -21,6 +21,6 @@ Route::group(['middleware' => ['auth', 'admin'], 'as' => 'admin::'], function() 
         Route::get('/verifikasi-transfer', PaymentVerification::class)->name('payment_verification');
         Route::get('/verifikasi-transfer/{id}', ShowPaymentVerification::class)->name('payment_verification.show');
         Route::get('/kuota-pendaftaran', RegistrationQuota::class)->name('registration_quota');
-        Route::get('/member-per-kelas/{classId}/{batchId}', ShowMemberInClass::class)->name('member_in_class');
+        Route::get('/member-per-kelas/{classId}/{batchId}/{nickName}', ShowMemberInClass::class)->name('member_in_class');
     });
 });

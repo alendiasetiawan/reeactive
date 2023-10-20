@@ -93,13 +93,13 @@ class Member extends Model
         ->where('registrations.batch_id', $batchId)
         ->where('registrations.class_id', $classId)
         ->where('registrations.payment_status', 'Done')
-        ->select('registrations.created_at', 'members.member_name', 'members.medical_condition', 'programs.program_name', 'programs.id', 'levels.level_name',
+        ->select('registrations.created_at', 'registrations.registration_category', 'members.member_name', 'members.medical_condition', 'programs.program_name', 'programs.id', 'levels.level_name',
         'classes.day', 'classes.start_time', 'classes.end_time')
         ->orderBy('members.member_name', 'asc')
         ->get();
     }
 
-    public static function allMemberInClassPaginate($classId, $batchId) {
+    public static function allMemberInClassSearch($classId, $batchId, $searchMember) {
         return Registration::join('members', 'registrations.member_code', 'members.code')
         ->join('programs', 'registrations.program_id', 'programs.id')
         ->join('levels', 'registrations.level_id', 'levels.id')
@@ -107,14 +107,40 @@ class Member extends Model
         ->where('registrations.batch_id', $batchId)
         ->where('registrations.class_id', $classId)
         ->where('registrations.payment_status', 'Done')
-        ->select('registrations.created_at', 'members.member_name', 'members.medical_condition', 'programs.program_name', 'programs.id', 'levels.level_name',
+        ->where('members.member_name', 'like', '%'.$searchMember.'%')
+        ->select('registrations.created_at', 'registrations.registration_category', 'members.member_name', 'members.medical_condition', 'programs.program_name', 'programs.id', 'levels.level_name',
         'classes.day', 'classes.start_time', 'classes.end_time')
         ->orderBy('members.member_name', 'asc')
-        ->limit(6)
+        ->get();
+    }
+
+    public static function allMemberInClassMore($classId, $batchId, $limitData) {
+        return Registration::join('members', 'registrations.member_code', 'members.code')
+        ->join('programs', 'registrations.program_id', 'programs.id')
+        ->join('levels', 'registrations.level_id', 'levels.id')
+        ->join('classes', 'registrations.class_id', 'classes.id')
+        ->where('registrations.batch_id', $batchId)
+        ->where('registrations.class_id', $classId)
+        ->where('registrations.payment_status', 'Done')
+        ->select('registrations.created_at', 'registrations.registration_category', 'members.member_name', 'members.medical_condition', 'programs.program_name', 'programs.id', 'levels.level_name',
+        'classes.day', 'classes.start_time', 'classes.end_time')
+        ->orderBy('members.member_name', 'asc')
+        ->limit($limitData)
         ->get();
     }
 
     public static function memberPerLevel($classId, $batchId, $levelId) {
-
+        return Registration::join('members', 'registrations.member_code', 'members.code')
+        ->join('programs', 'registrations.program_id', 'programs.id')
+        ->join('levels', 'registrations.level_id', 'levels.id')
+        ->join('classes', 'registrations.class_id', 'classes.id')
+        ->where('registrations.batch_id', $batchId)
+        ->where('registrations.class_id', $classId)
+        ->where('registrations.level_id', $levelId)
+        ->where('registrations.payment_status', 'Done')
+        ->select('registrations.created_at', 'registrations.registration_category', 'members.member_name', 'members.medical_condition', 'programs.program_name', 'programs.id', 'levels.level_name',
+        'classes.day', 'classes.start_time', 'classes.end_time')
+        ->orderBy('members.member_name', 'asc')
+        ->get();
     }
 }
