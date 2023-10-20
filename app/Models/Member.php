@@ -98,4 +98,23 @@ class Member extends Model
         ->orderBy('members.member_name', 'asc')
         ->get();
     }
+
+    public static function allMemberInClassPaginate($classId, $batchId) {
+        return Registration::join('members', 'registrations.member_code', 'members.code')
+        ->join('programs', 'registrations.program_id', 'programs.id')
+        ->join('levels', 'registrations.level_id', 'levels.id')
+        ->join('classes', 'registrations.class_id', 'classes.id')
+        ->where('registrations.batch_id', $batchId)
+        ->where('registrations.class_id', $classId)
+        ->where('registrations.payment_status', 'Done')
+        ->select('registrations.created_at', 'members.member_name', 'members.medical_condition', 'programs.program_name', 'programs.id', 'levels.level_name',
+        'classes.day', 'classes.start_time', 'classes.end_time')
+        ->orderBy('members.member_name', 'asc')
+        ->limit(6)
+        ->get();
+    }
+
+    public static function memberPerLevel($classId, $batchId, $levelId) {
+
+    }
 }

@@ -1,6 +1,7 @@
 <div>
     @push('customCss')
     <link href="{{ asset('template/src/assets/css/light/elements/infobox.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('template/src/assets/css/light/elements/alert.css') }}">
     @endpush
     <x-items.breadcrumb>
         <x-slot name="mainPage" href="{{ route('admin::registration_quota') }}">
@@ -13,7 +14,7 @@
 
     <div class="row layout-top-spacing">
         <div class="col-12">
-            <h2>Data Member Per Kelas</h2>
+            <h4>Data Member Per Kelas <b class="text-primary">{{ $batchQuery->batch_name }}</b></h4>
         </div>
         <div class="col-lg-6 col-12">
             <x-buttons.outline-primary>Coach Mala</x-buttons.outline-primary>
@@ -21,6 +22,74 @@
 
             </div>
             <x-buttons.outline-secondary>Senin, Rabu, Jum'at 08:30 - 09:30</x-buttons.outline-secondary>
+        </div>
+    </div>
+
+    {{-- Filter Card --}}
+    <div class="row">
+        <div class="col-lg-4 col-md-6 col-12 mt-2">
+            <x-inputs.label>Cari Member</x-inputs.label>
+            <x-inputs.basic type="text" placeholder="Ketik nama disini..." wire:model.live="searchMember"/>
+        </div>
+        <div class="col-lg-4 col-md-6 col-12 mt-2">
+            <x-inputs.label>Filter Level</x-inputs.label>
+            <x-inputs.select wire:model.live='filterLevel'>
+                <x-inputs.select-option value="0">--Semua--</x-inputs.select-option>
+                <x-inputs.select-option value="1">Beginner 1.0</x-inputs.select-option>
+                <x-inputs.select-option value="2">Beginner 2.0</x-inputs.select-option>
+                <x-inputs.select-option value="3">Intermediate</x-inputs.select-option>
+            </x-inputs.select>
+        </div>
+    </div>
+
+    {{-- Card Members --}}
+    <div class="row mt-5">
+        @forelse ($this->membersInClass as $member)
+        <div class="col-lg-4 col-md-6 col-12 mb-3">
+            <x-cards.user>
+                <x-slot name="userImage">
+                    <x-cards.user-image src="{{ asset('template/src/assets/img/avatar/user_akhwat.png') }}"></x-cards.user-image>
+                </x-slot>
+                <x-slot name="userName">{{ $member->member_name }}</x-slot>
+                <x-slot name="userTitle">
+                    @if ($member->id == 1)
+                        <b class="text-primary">{{ $member->program_name }}</b>
+                    @elseif ($member->id == 2)
+                        <b class="text-secondary">{{ $member->program_name }}</b>
+                    @elseif ($member->id == 3)
+                        <b class="text-info">{{ $member->program_name }}</b>
+                    @elseif ($member->id == 4)
+                        <b class="text-danger">{{ $member->program_name }}</b>
+                    @elseif ($member->id == 5)
+                        <b class="text-warning">{{ $member->program_name }}</b>
+                    @else
+                        <b class="text-success">{{ $member->program_name }}</b>
+                    @endif
+                </x-slot>
+                <x-slot name="icon" href="https://wa.me/{{ $member->mobile_phone }}" target="_blank">
+                    <i class="fa-brands fa-whatsapp fa-2xl" style="color: #19c502;"></i>
+                </x-slot>
+                <ul class="mb-0">
+                    <li>{{ $member->level_name }}</li>
+                    <li>{{ $member->day }} ({{ \Carbon\Carbon::parse($member->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($member->end_time)->format('H:i') }})</li>
+                    <li>Catatan Medis :
+                        @if ($member->medical_condition != NULL)
+                            {{ $member->medical_condition }}
+                        @else
+                            -
+                        @endif
+                    </li>
+                </ul>
+                <x-slot name="bottomButton" href="#">Detail Member</x-slot>
+            </x-cards.user>
+        </div>
+        @empty
+        <x-items.alerts.light-danger>Upss.. belum ada member yang daftar di kelas ini</x-items.alerts.light-danger>
+        @endforelse
+        <div class="col-6">
+            <x-buttons.solid-primary>
+                <div class="spinner-border text-white me-2 align-self-center loader-sm "></div>
+                Tampilkan Lagi...</x-buttons.solid-primary>
         </div>
     </div>
 </div>
