@@ -48,22 +48,23 @@
                     </x-slot>
                     <x-slot name="userName">{{ $member->member_name }}</x-slot>
                     <x-slot name="userTitle">
-                        @if ($member->id == 1)
+                        @if ($member->program_name == 'Private 1 on 1')
                             <b class="text-primary">{{ $member->program_name }}</b>
-                        @elseif ($member->id == 2)
+                        @elseif ($member->program_name == 'Buddy')
                             <b class="text-secondary">{{ $member->program_name }}</b>
-                        @elseif ($member->id == 3)
+                        @elseif ($member->program_name == 'Small Group')
                             <b class="text-info">{{ $member->program_name }}</b>
-                        @elseif ($member->id == 4)
+                        @elseif ($member->program_name == 'Special Case Small Group')
                             <b class="text-danger">{{ $member->program_name }}</b>
-                        @elseif ($member->id == 5)
+                        @elseif ($member->program_name == 'Large Group')
                             <b class="text-warning">{{ $member->program_name }}</b>
                         @else
                             <b class="text-success">{{ $member->program_name }}</b>
                         @endif
+                        <small> - {{ $member->registration_category }}</small>
                     </x-slot>
                     <x-slot name="icon" href="https://wa.me/{{ $member->mobile_phone }}" target="_blank">
-                        <i class="fa-brands fa-whatsapp fa-2xl" style="color: #19c502;"></i>
+                        <i class="fa-brands fa-whatsapp fa-xl" style="color: #19c502;"></i>
                     </x-slot>
                     <ul class="mb-0">
                         <li>{{ $member->level_name }}</li>
