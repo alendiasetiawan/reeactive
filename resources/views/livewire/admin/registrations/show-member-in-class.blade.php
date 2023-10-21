@@ -5,6 +5,7 @@
     <link href="{{ asset('template/src/plugins/src/animate/animate.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('template/src/assets/css/light/components/modal.css') }}" rel="stylesheet" type="text/css" />
     @endpush
+
     <x-items.breadcrumb>
         <x-slot name="mainPage" href="{{ route('admin::registration_quota') }}">
             <em class="text-info">
@@ -42,11 +43,11 @@
         </div>
         <div class="col-lg-4 col-md-6 col-12 mt-2">
             <x-inputs.label>Filter Level</x-inputs.label>
-            <x-inputs.select wire:model.live='filterLevel'>
-                <x-inputs.select-option value="0">--Semua--</x-inputs.select-option>
-                <x-inputs.select-option value="1">Beginner 1.0</x-inputs.select-option>
-                <x-inputs.select-option value="2">Beginner 2.0</x-inputs.select-option>
-                <x-inputs.select-option value="3">Intermediate</x-inputs.select-option>
+            <x-inputs.select wire:model.live="filterLevel">
+                <x-inputs.select-option value=0>--Semua--</x-inputs.select-option>
+                <x-inputs.select-option value=1>Beginner 1.0</x-inputs.select-option>
+                <x-inputs.select-option value=2>Beginner 2.0</x-inputs.select-option>
+                <x-inputs.select-option value=3>Intermediate</x-inputs.select-option>
             </x-inputs.select>
         </div>
         <div class="mt-2">
@@ -68,22 +69,22 @@
     {{-- Card Members --}}
     <div class="row mt-3">
         @forelse ($this->membersInClass as $member)
-        <div class="col-lg-4 col-md-6 col-12 mb-3">
+        <div class="col-lg-4 col-md-6 col-12 mb-3" wire:key='{{ $member->id }}'>
             <x-cards.user>
                 <x-slot name="userImage">
                     <x-cards.user-image src="{{ asset('template/src/assets/img/avatar/user_akhwat.png') }}"></x-cards.user-image>
                 </x-slot>
                 <x-slot name="userName">{{ $member->member_name }}</x-slot>
                 <x-slot name="userTitle">
-                    @if ($member->id == 1)
+                    @if ($member->program_name == 'Private 1 on 1')
                         <b class="text-primary">{{ $member->program_name }}</b>
-                    @elseif ($member->id == 2)
+                    @elseif ($member->program_name == 'Buddy')
                         <b class="text-secondary">{{ $member->program_name }}</b>
-                    @elseif ($member->id == 3)
+                    @elseif ($member->program_name == 'Small Group')
                         <b class="text-info">{{ $member->program_name }}</b>
-                    @elseif ($member->id == 4)
+                    @elseif ($member->program_name == 'Special Case Small Group')
                         <b class="text-danger">{{ $member->program_name }}</b>
-                    @elseif ($member->id == 5)
+                    @elseif ($member->program_name == 'Large Group')
                         <b class="text-warning">{{ $member->program_name }}</b>
                     @else
                         <b class="text-success">{{ $member->program_name }}</b>
@@ -107,10 +108,10 @@
                 <x-slot name="bottomButton" data-bs-toggle="modal" data-bs-target="#editMember{{ $member->id }}">Edit Member</x-slot>
             </x-cards.user>
             {{-- Modal Edit Member --}}
-            <x-modals.form id="editMember{{ $member->id }}">
+            {{-- <x-modals.form id="editMember{{ $member->id }}" wire:key='{{ $member->id }}'>
                 <x-slot name="modalHeader">Edit Data Member</x-slot>
                 <livewire:admin.registrations.form-edit-member />
-            </x-modals.form>
+            </x-modals.form> --}}
         </div>
         @empty
         <div class="col-12">

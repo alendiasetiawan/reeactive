@@ -16,6 +16,7 @@ class RegistrationQuota extends Component
 
     public object $registeredMember;
     public int $batchId;
+    public string $searchMember = '';
 
     public function boot(BatchService $batchService) {
         $this->batchId = $batchService->batchIdActive();

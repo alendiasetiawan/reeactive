@@ -17,7 +17,6 @@ class ShowMemberInClass extends Component
     #[Layout('layouts.app')]
     #[Title('Data Member Per Kelas')]
 
-    public object $members;
     public object $batchQuery;
     public int $filterLevel;
     public int $classId;
@@ -33,7 +32,6 @@ class ShowMemberInClass extends Component
     protected $batchService;
 
     public function mount($classId, $batchId, $nickName) {
-        $this->members = Member::allMemberInClass($classId, $batchId);
         $this->classId = $classId;
         $this->batchId = $batchId;
         $this->nickName = $nickName;
@@ -42,32 +40,6 @@ class ShowMemberInClass extends Component
 
     public function boot(BatchService $batchService) {
         $this->batchQuery = $batchService->batchQuery();
-    }
-
-    public function updated($property, $value) {
-        if ($property == 'filterLevel') {
-            if ($this->filterLevel == 0) {
-                $this->membersInClass = Member::allMemberInClassMore($this->classId, $this->batchId, $this->limitData);
-            } else {
-                $this->membersInClass = Member::memberPerLevel($this->classId, $this->batchId, $this->filterLevel);
-            }
-        }
-
-        if ($property == 'searchMember') {
-            if ($this->searchMember == '') {
-                $this->membersInClass = Member::allMemberInClassMore($this->classId, $this->batchId, $this->limitData);
-            } else {
-                $this->membersInClass = Member::allMemberInClassSearch($this->classId, $this->batchId, $this->searchMember);
-            }
-        }
-
-        if ($property == 'selectedCoach') {
-            $this->selectedCoach = $value;
-        }
-    }
-
-    public function loadMore() {
-        $this->limitData += 10;
     }
 
     #[Computed]
@@ -80,14 +52,28 @@ class ShowMemberInClass extends Component
         return Member::allMemberInClass($this->classId, $this->batchId);
     }
 
-    #[Computed]
-    public function coaches() {
-        return Coach::where('coach_status', 'Aktif')->pluck('nick_name', 'id');
+    public function updated($property) {
+        if ($property == 'filterLevel') {
+            $this->reset('searchMember');
+            if ($this->filterLevel == 0) {
+                $this->membersInClass = Member::allMemberInClassMore($this->classId, $this->batchId, $this->limitData);
+            } else {
+                $this->membersInClass = Member::memberPerLevel($this->classId, $this->batchId, $this->filterLevel);
+            }
+        }
+
+        if ($property == 'searchMember') {
+            $this->reset('filterLevel');
+            if ($this->searchMember == '') {
+                $this->membersInClass = Member::allMemberInClassMore($this->classId, $this->batchId, $this->limitData);
+            } else {
+                $this->membersInClass = Member::allMemberInClassSearch($this->classId, $this->batchId, $this->searchMember);
+            }
+        }
     }
 
-    #[Computed]
-    public function classes() {
-        return ClassModel::where('coach_code', $this->selectedCoach)->where('class_status', '<>', 'Pending')->get();
+    public function loadMore() {
+        $this->limitData += 10;
     }
 
     public function render()
