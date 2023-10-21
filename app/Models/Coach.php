@@ -32,7 +32,10 @@ class Coach extends Model
         return $this->hasMany(Registration::class, 'coach_id', 'id');
     }
 
-
+    public function classes(): HasMany
+    {
+        return $this->hasMany(ClassModel::class, 'coach_code', 'code');
+    }
 
 
 
@@ -104,6 +107,24 @@ class Coach extends Model
         ])
         ->select('id', 'coach_name', 'nick_name')
         ->orderBy('coach_name', 'asc')
+        ->get();
+    }
+
+    public static function membersClassPerCoach($batchId) {
+        return Coach::with([
+            'classes' => function($query) use($batchId) {
+                $query->where('class_status', '<>', 'Pending')
+                ->with([
+                    'registrations' => function($query) use($batchId) {
+                        $query->where('batch_id', $batchId);
+                    }
+                ]);
+                // ->select('classes.coach_code', 'classes.program_id', 'classes.start_time', 'classes.end_time', 'classes.day', 'classes.class_status', 'classes.class_status_eksternal', 'registrations.*');
+            }
+        ])
+        ->where('coach_status', 'Aktif')
+        ->orderBy('coach_name', 'asc')
+        ->select('code', 'coach_name', 'nick_name')
         ->get();
     }
 }

@@ -1,7 +1,7 @@
 <div class="footer-wrapper">
     <div class="footer-section f-section-1">
         <p class="">Copyright © <span class="dynamic-year">2023</span>
-            <a target="_blank" href="https://reeactive.com">Reeactive</a>, v0.3.4
+            <a target="_blank" href="https://reeactive.com">Reeactive</a>, v0.4.4
         </p>
     </div>
     <div class="footer-section f-section-2">
