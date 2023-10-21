@@ -38,7 +38,10 @@
                             </div>
                             <div class="col-lg-4 col-12 mb-3">
                                 <x-inputs.label>Kelas</x-inputs.label>
-                                <x-inputs.disable-text placeholder="{{ \Carbon\Carbon::parse($paymentDetail->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($paymentDetail->end_time)->format('H:i') }}"></x-inputs.disable-text>
+                                <x-inputs.disable-text placeholder="
+                                {{ $paymentDetail->day }}
+                                ({{ \Carbon\Carbon::parse($paymentDetail->start_time)->format('H:i') }} -
+                                {{ \Carbon\Carbon::parse($paymentDetail->end_time)->format('H:i') }})"></x-inputs.disable-text>
                             </div>
                         </div>
 
