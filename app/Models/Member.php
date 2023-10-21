@@ -79,7 +79,7 @@ class Member extends Model
         ->where('registrations.coach_id', $coachId)
         ->where('registrations.class_id', $classId)
         ->where('registrations.payment_status', 'Done')
-        ->select('registrations.created_at', 'members.member_name', 'members.medical_condition', 'programs.program_name', 'programs.id', 'levels.level_name',
+        ->select('registrations.id', 'registrations.created_at', 'members.member_name', 'members.medical_condition', 'programs.program_name', 'levels.level_name',
         'classes.day', 'classes.start_time', 'classes.end_time')
         ->orderBy('members.member_name', 'asc')
         ->paginate(9);
@@ -93,7 +93,7 @@ class Member extends Model
         ->where('registrations.batch_id', $batchId)
         ->where('registrations.class_id', $classId)
         ->where('registrations.payment_status', 'Done')
-        ->select('registrations.created_at', 'registrations.registration_category', 'members.member_name', 'members.medical_condition', 'programs.program_name', 'programs.id', 'levels.level_name',
+        ->select('registrations.id', 'registrations.created_at', 'registrations.registration_category', 'members.member_name', 'members.medical_condition', 'programs.program_name', 'levels.level_name',
         'classes.day', 'classes.start_time', 'classes.end_time')
         ->orderBy('members.member_name', 'asc')
         ->get();
@@ -108,7 +108,7 @@ class Member extends Model
         ->where('registrations.class_id', $classId)
         ->where('registrations.payment_status', 'Done')
         ->where('members.member_name', 'like', '%'.$searchMember.'%')
-        ->select('registrations.created_at', 'registrations.registration_category', 'members.member_name', 'members.medical_condition', 'programs.program_name', 'programs.id', 'levels.level_name',
+        ->select('registrations.id', 'registrations.created_at', 'registrations.registration_category', 'members.member_name', 'members.medical_condition', 'programs.program_name', 'levels.level_name',
         'classes.day', 'classes.start_time', 'classes.end_time')
         ->orderBy('members.member_name', 'asc')
         ->get();
@@ -122,9 +122,8 @@ class Member extends Model
         ->where('registrations.batch_id', $batchId)
         ->where('registrations.class_id', $classId)
         ->where('registrations.payment_status', 'Done')
-        ->select('registrations.created_at', 'registrations.registration_category', 'members.member_name', 'members.medical_condition', 'programs.program_name', 'programs.id', 'levels.level_name',
+        ->select('registrations.id', 'registrations.created_at', 'registrations.registration_category', 'members.member_name', 'members.medical_condition', 'programs.program_name', 'levels.level_name',
         'classes.day', 'classes.start_time', 'classes.end_time')
-        ->orderBy('members.member_name', 'asc')
         ->limit($limitData)
         ->get();
     }
@@ -138,7 +137,7 @@ class Member extends Model
         ->where('registrations.class_id', $classId)
         ->where('registrations.level_id', $levelId)
         ->where('registrations.payment_status', 'Done')
-        ->select('registrations.created_at', 'registrations.registration_category', 'members.member_name', 'members.medical_condition', 'programs.program_name', 'programs.id', 'levels.level_name',
+        ->select('registrations.id', 'registrations.created_at', 'registrations.registration_category', 'members.member_name', 'members.medical_condition', 'programs.program_name', 'levels.level_name',
         'classes.day', 'classes.start_time', 'classes.end_time')
         ->orderBy('members.member_name', 'asc')
         ->get();

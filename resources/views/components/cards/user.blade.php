@@ -1,4 +1,4 @@
-<div class="card style-4">
+<div {{ $attributes->merge(['class' => 'card style-4']) }}>
     <div class="card-body pt-3">
         <div class="media mt-0 mb-3">
             @isset($userImage)

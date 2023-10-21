@@ -11,7 +11,6 @@
                 <div class="widget-heading">
                     <h5 class="text-primary"><b>Coach {{ $member->nick_name }}</b></h5>
                 </div>
-
                 <div class="widget-content">
                     @foreach ($member->classes as $class)
                     <div class="transactions-list">
