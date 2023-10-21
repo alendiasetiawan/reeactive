@@ -25,6 +25,11 @@ class ClassModel extends Model
         return $this->belongsTo(Program::class, 'program_id', 'id');
     }
 
+    public function coach(): BelongsTo
+    {
+        return $this->belongsTo(Coach::class, 'coach_code', 'code');
+    }
+
     public static function memberPerCoach($batchId, $coachId) {
         return ClassModel::with([
             'registrations' => function ($query) use($batchId, $coachId) {

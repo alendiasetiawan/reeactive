@@ -8,7 +8,7 @@
             @endisset
             <div class="media-body">
                 <h4 class="media-heading mb-0">{{ $userName }}</h4>
-                <p class="media-text">{{ $userTitle }}</p>
+                <span class="media-text">{{ $userTitle }}</span>
             </div>
             @isset($icon)
                 <div>
@@ -28,7 +28,7 @@
         </span>
     </div>
     <div class="card-footer pt-0 border-0 text-center">
-        <a {{ $attributes->class(['btn btn-secondary w-100'])->merge(['href' => '']) }}>
+        <a {{ $bottomButton->attributes->class(['btn btn-secondary w-100'])->merge(['href' => '']) }}>
             {{ $bottomButton }}
         </a>
     </div>
