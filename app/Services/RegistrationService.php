@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Program;
 use App\Models\Registration;
+use App\Models\WorkshopRegistration;
 
 class RegistrationService {
 
@@ -22,6 +23,21 @@ class RegistrationService {
         } else {
             $quotaProgram = 17;
         }
+
+        $quotaLeft = $quotaProgram - $registeredMember;
+
+        return $quotaLeft;
+    }
+
+    public function quotaWorkshop($programId, $coachId) {
+        //Check number of participants registered
+        $registeredMember = WorkshopRegistration::where('program_id', $programId)
+        ->where('coach_id', $coachId)
+        ->count();
+
+        //Check program's quota
+        $program = Program::find($programId);
+        $quotaProgram = $program->quota_max;
 
         $quotaLeft = $quotaProgram - $registeredMember;
 
