@@ -15,71 +15,6 @@
     <!-- END GLOBAL MANDATORY STYLES -->
 
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
-    <style>
-        .scroller {
-            overflow: auto;
-            padding-right: 3px;
-            height: 280px;
-        }
-
-        .scroller2 {
-        overflow: auto;
-        padding-right: 3px;
-        height: 190px;
-        }
-
-        .scroller3 {
-        overflow: auto;
-        padding-right: 3px;
-        height: 400px;
-        }
-
-        .scroller4 {
-        overflow: auto;
-        padding-right: 3px;
-        height: 300px;
-        }
-
-        .scroller5 {
-        overflow: auto;
-        padding-right: 3px;
-        height: 450px;
-        }
-
-        .scroller6 {
-        overflow: auto;
-        padding-right: 3px;
-        height: 400px;
-        }
-
-        .scroller7 {
-        overflow: auto;
-        padding-right: 3px;
-        height: 700px;
-        }
-
-        /* width */
-        ::-webkit-scrollbar {
-        width: 3px;
-        }
-
-        /* Track */
-        ::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 5px grey;
-        border-radius: 3px;
-        }
-
-        /* Handle */
-        ::-webkit-scrollbar-thumb {
-        background: #1277BF;
-        border-radius: 3px;
-        }
-
-        /* Handle on hover */
-        ::-webkit-scrollbar-thumb:hover {
-        background: #25A8E0;
-        }
-    </style>
     @stack('customCss')
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
     @livewireStyles()
@@ -157,10 +92,11 @@
     <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
     <script src="{{ asset('template/src/plugins/src/global/vendors.min.js') }}"></script>
     <script src="{{ asset('template/src/bootstrap/js/bootstrap.main.js') }}"></script>
-    <script src="{{ asset('template/src/plugins/src/perfect-scrollbar/perfect-scrollbar.main.js') }}"></script>
+    <script src="{{ asset('template/src/plugins/src/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('template/src/plugins/src/mousetrap/mousetrap.main.js') }}"></script>
     <script src="{{ asset('template/src/plugins/src/waves/waves.main.js') }}"></script>
     <script src="{{ asset('template/layouts/modern-light-menu/app.js') }}"></script>
+    <script src="{{ asset('template/src/plugins/src/highlight/highlight.pack.js') }}"></script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->
 
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->

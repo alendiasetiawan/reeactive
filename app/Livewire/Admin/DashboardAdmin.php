@@ -11,6 +11,8 @@ use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
 use App\Charts\MemberInActiveBatchChart;
 use App\Charts\RegistrationCategoryChart;
+use App\Models\WorkshopBatch;
+use App\Models\WorkshopRegistration;
 
 class DashboardAdmin extends Component
 {
@@ -21,13 +23,19 @@ class DashboardAdmin extends Component
     public $qtyLastMember;
     public $batchId;
     public $lastBatchId;
+    public bool $workshopOpen;
+    public object $allWorkshopRegistration;
 
     protected $memberChart;
     protected $categoryChart;
     protected $batchService;
 
     public function boot(BatchService $batchService, MemberInActiveBatchChart $memberChart, RegistrationCategoryChart $categoryChart) {
-        $this->batchId = $batchService->batchIdActive();
+        $batchQuery = $batchService->batchQuery();
+        $this->batchId = $batchQuery->id;
+
+        $workshopQuery = $batchService->workshopBatchQuery();
+        $workshopBatchId = $workshopQuery->id;
         $batches = Batch::orderBy('id', 'desc')->limit(2)->get();
         $this->lastBatchId = $batches[1]->id;
 
@@ -36,6 +44,9 @@ class DashboardAdmin extends Component
         $this->batchService = $batchService;
         $this->renewalMember = Registration::where('batch_id', $this->batchId)->where('registration_category', 'Renewal Member')->count();
         $this->qtyLastMember = Registration::where('batch_id', $this->lastBatchId)->where('payment_status', 'Done')->count();
+        $this->workshopOpen = WorkshopBatch::where('batch_status', 'Open')->exists();
+        $this->allWorkshopRegistration = WorkshopRegistration::where('workshop_batch_id', $workshopBatchId)->get();
+
     }
 
     public function render()
