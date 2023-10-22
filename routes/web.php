@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\CompanyProfile\PricelistController;
 use App\Livewire\Member\Registrations\FormNewMember;
+use App\Livewire\Member\Registrations\FormWorkshop;
 use App\Livewire\Member\RegistrationSuccess;
 
 /*
@@ -31,6 +32,8 @@ Route::controller(PricelistController::class)->group(function() {
 });
 Route::get('/member-baru', FormNewMember::class)->name('new_member');
 Route::get('/registrasi-berhasil/{memberName}', RegistrationSuccess::class)->name('registration_success');
+Route::get('/daftar-workshop', FormWorkshop::class)->name('workshop_register');
+Route::get('/registrasi-workshop-berhasil/{memberName}', RegistrationSuccess::class)->name('workshop_registration_success');
 
 //Change Password
 Route::get('/ganti-password', ChangePassword::class)->name('ganti_password');

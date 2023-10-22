@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\Program;
 use App\Models\Registration;
+use App\Models\WorkshopRegistration;
+use Illuminate\Support\Facades\Auth;
 
 class RegistrationService {
 
@@ -28,4 +30,33 @@ class RegistrationService {
         return $quotaLeft;
     }
 
+    public function quotaWorkshop($programId, $coachId) {
+        //Check number of participants registered
+        $registeredMember = WorkshopRegistration::where('program_id', $programId)
+        ->where('coach_id', $coachId)
+        ->count();
+
+        //Check program's quota
+        $program = Program::find($programId);
+        $quotaProgram = $program->quota_max;
+
+        $quotaLeft = $quotaProgram - $registeredMember;
+
+        return $quotaLeft;
+    }
+
+    public function checkAssessmentStatus($batchId) {
+        $registrationData = WorkshopRegistration::where('member_code', Auth::user()->email)
+        ->where('workshop_batch_id', $batchId)
+        ->first();
+        $isAssessment = $registrationData->is_assessment;
+
+        if ($isAssessment == 0) {
+            $assessmentStatus = 'Belum';
+        } else {
+            $assessmentStatus = 'Sudah';
+        }
+
+        return $assessmentStatus;
+    }
 }

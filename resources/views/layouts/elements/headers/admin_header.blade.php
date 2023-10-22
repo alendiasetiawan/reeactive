@@ -148,7 +148,7 @@
                                     &#x1F44B;
                                 </div>
                                 <div class="media-body">
-                                    <h5>{{ \Str::words($fullName, 2, '') }}</h5>
+                                    <h5>{{ \Str::words($user->full_name, 2, '') }}</h5>
                                     <p>{{ $user->role_name }}</p>
                                 </div>
                             </div>
