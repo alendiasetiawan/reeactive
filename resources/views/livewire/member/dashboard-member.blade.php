@@ -103,7 +103,7 @@
                         Group</button>
                     @endif
                 </x-slot>
-                @if ($personalInfo->member_type == 'Workshop')
+                @if (Auth::user()->type == 'Workshop')
                 <x-slot name="moreInfo">
                     <a wire:navigate href="{{ route('member::continue_workshop_form') }}">
                         <button class="btn btn-outline-secondary btn-sm">Daftar Program Lanjutan</button>
