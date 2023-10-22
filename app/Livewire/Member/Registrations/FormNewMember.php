@@ -116,7 +116,7 @@ class FormNewMember extends Component
 
     #[Computed]
     public function programs() {
-        return Program::where('program_status', 'Open')->get();
+        return Program::where('program_status', 'Open')->where('program_type','Reguler')->get();
     }
 
     #[Computed]

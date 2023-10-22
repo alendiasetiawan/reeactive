@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Program;
 use App\Models\Registration;
 use App\Models\WorkshopRegistration;
+use Illuminate\Support\Facades\Auth;
 
 class RegistrationService {
 
@@ -44,4 +45,18 @@ class RegistrationService {
         return $quotaLeft;
     }
 
+    public function checkAssessmentStatus($batchId) {
+        $registrationData = WorkshopRegistration::where('member_code', Auth::user()->email)
+        ->where('workshop_batch_id', $batchId)
+        ->first();
+        $isAssessment = $registrationData->is_assessment;
+
+        if ($isAssessment == 0) {
+            $assessmentStatus = 'Belum';
+        } else {
+            $assessmentStatus = 'Sudah';
+        }
+
+        return $assessmentStatus;
+    }
 }

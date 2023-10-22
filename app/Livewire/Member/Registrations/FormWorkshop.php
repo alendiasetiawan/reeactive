@@ -48,7 +48,7 @@ class FormWorkshop extends Component
     public string $normalPrice;
     public int $priceNumber;
     public int $normalPriceNumber;
-    public string $voucherMember;
+    public string $voucherMember = '';
     public bool $alertDiscount = false;
     public string $coachCode;
     public int $coachId = 9;
@@ -83,17 +83,17 @@ class FormWorkshop extends Component
     }
 
     #[Computed]
-    public function districts() {
-        return District::where('regency_id', $this->regencyId)->get();
-    }
-
-    #[Computed]
     public function regencies() {
         return Regency::where('province_id', $this->provinceId)->get();
     }
 
+    #[Computed]
+    public function districts() {
+        return District::where('regency_id', $this->regencyId)->get();
+    }
+
     public function mount() {
-        $this->programs = Program::where('program_type', 'Workshop')->where('program_status', 'Open')->get();
+        $this->programs = Program::where('program_type', 'Workshop')->get();
         $this->phoneCodes = PhoneCode::all();
         $this->provinces = Province::all();
     }
@@ -165,7 +165,7 @@ class FormWorkshop extends Component
 
     public function updatedVoucherMember() {
         $this->alertDiscount = true;
-        $this->isVoucher = Voucher::where('voucher_code', $this->voucherMember)->exists();
+        $this->isVoucher = Voucher::where('code', $this->voucherMember)->exists();
         $priceList = Pricelist::where('program_id', $this->selectedProgram)->first();
 
         if ($this->isVoucher) {
@@ -239,11 +239,17 @@ class FormWorkshop extends Component
 
         $this->quotaLeft = $this->registrationService->quotaWorkshop($this->selectedProgram, $this->coachId);
 
+        if($this->voucherMember == '') {
+            $voucherCode = NULL;
+        } else {
+            $voucherCode = $this->voucherMember;
+        }
+
         if ($this->quotaLeft <= 0) {
             session()->flash('fullQuota', 'Daftar Gagal! Quota pendaftaran sudah penuh, silahkan pilih program yang lain');
-            $this->redirect(route('workshop_register'));
+            $this->redirect(route('workshop_register'), navigate:true);
         } else {
-            // try {
+            try {
                 DB::beginTransaction();
                 Member::updateOrCreate([
                     'code' => $this->phone,
@@ -274,6 +280,7 @@ class FormWorkshop extends Component
                     'program_id' => $this->selectedProgram,
                     'coach_id' => 9,
                     'class_id' => $this->selectedClass,
+                    'voucher_code' => $voucherCode,
                 ]);
 
                 User::updateOrCreate([
@@ -284,17 +291,20 @@ class FormWorkshop extends Component
                     'full_name' => $this->memberName,
                     'gender' => 'Perempuan',
                     'default_pw' => 0,
+                    'type' => 'Workshop'
                 ]);
 
                 DB::commit();
                 $this->redirect(route('workshop_registration_success', $this->memberName));
 
-            // } catch (Exception) {
-            //     DB::rollBack();
-            //     session()->flash('failed', 'Daftar Gagal, Cek Koneksi dan Kolom Isian Anda');
-            //     $this->redirect(route('workshop_register'));
-            // }
+            } catch (Exception) {
+                DB::rollBack();
+                session()->flash('failed', 'Daftar Gagal, Cek Koneksi dan Kolom Isian Anda');
+                $this->redirect(route('workshop_register'), navigate:true);
+            }
         }
+
+        $this->reset();
     }
 
     public function render()

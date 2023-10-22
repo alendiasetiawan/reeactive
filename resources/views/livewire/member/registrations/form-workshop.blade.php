@@ -265,31 +265,31 @@
                                     <small class="text-danger">@error('provinceId') {{ $message }} @enderror</small>
                                 </div>
 
-                                @if ($provinceId)
                                 <div class="col-lg-6 col-12 mb-3">
                                     <x-inputs.label>Kabupaten</x-inputs.label>
                                     <x-inputs.select wire:model.live="regencyId">
                                         <x-inputs.select-option value="" selected>--Pilih--</x-inputs.select-option>
-                                        @foreach ($this->regencies as $regency)
+                                        @if ($provinceId)
+                                            @foreach ($this->regencies as $regency)
                                             <x-inputs.select-option value="{{ $regency->id }}">{{ $regency->regency_name }}</x-inputs.select-option>
-                                        @endforeach
+                                            @endforeach
+                                        @endif
                                     </x-inputs.select>
                                     <small class="text-danger">@error('regencyId') {{ $message }} @enderror</small>
                                 </div>
-                                @endif
 
-                                @if ($regencyId)
                                 <div class="col-lg-6 col-12 mb-3">
                                     <x-inputs.label>Kecamatan</x-inputs.label>
                                     <x-inputs.select wire:model.live="districtId">
                                         <x-inputs.select-option value="" selected>--Pilih--</x-inputs.select-option>
+                                        @if ($regencyId)
                                         @foreach ($this->districts as $district)
                                             <x-inputs.select-option value="{{ $district->id }}">{{ $district->district_name }}</x-inputs.select-option>
                                         @endforeach
+                                        @endif
                                     </x-inputs.select>
                                     <small class="text-danger">@error('districtId') {{ $message }} @enderror</small>
                                 </div>
-                                @endif
 
                                 <div class="col-lg-6 col-12 mb-3">
                                     <x-inputs.label>Riwayat Persalinan</x-inputs.label>
