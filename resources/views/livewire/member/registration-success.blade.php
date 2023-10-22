@@ -10,7 +10,7 @@
                     <div class="row text-center">
                         <div class="col-lg-12">
                             <p>
-                                Selamat <b class="text-primary">{{ $nama }}</b>, anda telah resmi menjadi member Reeactive, sekarang
+                                Selamat <b class="text-primary">{{ $nama }}</b>, anda telah berhasil daftar workshop, sekarang
                                 silahkan anda <b class="text-primary">Login Ke Aplikasi</b> untuk mendapatkan informasi selanjutnya.
                             </p>
                         </div>
