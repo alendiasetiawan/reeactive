@@ -43,7 +43,7 @@ class RenewalForm extends Component
     protected $registrationService;
 
     public function boot(RegistrationService $registrationService) {
-        $this->programs = Program::where('program_status', 'Open')->get();
+        $this->programs = Program::where('program_status', 'Open')->where('program_type', 'Reguler')->get();
         $batch = Batch::orderBy('id', 'desc')->first();
         $this->batchId = $batch->id;
         $this->batchName = $batch->batch_name;
