@@ -262,6 +262,28 @@
                 </div>
             </div>
         </div>
+
+        @if ($workshopOpen)
+        <div class="col-lg-6 col-md-6 col-12 layout-spacing">
+            <x-cards.account-box>
+                <x-slot name="image"><img src="{{ asset('template/src/assets/img/icon/wallet.png') }}" alt="money-bag"></x-slot>
+                <x-slot name="title">Pemasukan <b class="text-primary">Workshop</b></x-slot>
+                <x-slot name="subTitle">{{ 'Rp '.number_format($allWorkshopRegistration->where('payment_status', 'Done')->sum('amount_pay'),0,',','.') }}</x-slot>
+                <x-slot name="info">
+                    @php
+                        $needVerification = $allWorkshopRegistration->where('payment_status', 'Process')->count();
+                    @endphp
+                    @if ($needVerification >= 1)
+                        <x-items.badges.light-danger>Menunggu Verifikasi : {{ $needVerification }}</x-items.badges.light-danger>
+                    @else
+                        <x-items.badges.light-success>Menunggu Verifikasi : {{ $needVerification }}</x-items.badges.light-success>
+                    @endif
+
+                </x-slot>
+                <a wire:navigate href="{{ route('admin::workshop_verification') }}">Cek Pembayaran</a>
+            </x-cards.account-box>
+        </div>
+        @endif
     </div>
 
     @push('customScripts')
@@ -295,6 +317,27 @@
             });
         })
     </script>
+
+<script data-navigate-once>
+    document.addEventListener('livewire:navigating', () => {
+
+        $('#workshopPayment').DataTable({
+        "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
+        "<'table-responsive'tr>" +
+        "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+            "oLanguage": {
+                "oPaginate": { "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>', "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>' },
+                "sInfo": "Showing page _PAGE_ of _PAGES_",
+                "sSearch": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
+                "sSearchPlaceholder": "Search...",
+            "sLengthMenu": "Results :  _MENU_",
+            },
+            "stripeClasses": [],
+            "lengthMenu": [7, 10, 20, 50],
+            "pageLength": 10
+        });
+    })
+</script>
 
     @endpush
 </div>

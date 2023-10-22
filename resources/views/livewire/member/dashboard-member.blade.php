@@ -39,6 +39,16 @@
         </div>
         @endif
 
+        @if ($isWorkshopPaymentProcess)
+        <div class="col-12 mb-3">
+            <x-items.alerts.light-success>
+                Pendaftaran anda di <b>"{{ $activeWorkshop->program_name }}"</b> sedang kami proses, mohon
+                kesediannya untuk menunggu. Terima Kasih
+            </x-items.alerts.light-success>
+        </div>
+        @endif
+
+        {{-- Alert Default Password --}}
         @if (Auth::user()->default_pw == 1)
         <div class="col-12">
             <div class="alert alert-light-danger alert-dismissible fade show border-0 mb-2" role="alert">
@@ -62,9 +72,79 @@
             <!--#Modal Confirm Default PW-->
         </div>
         @endif
-        <!--#Alert Pendaftaran-->
 
-        <!--Info Program-->
+        @if ($isRegisteredInWorkshop)
+        {{-- Detail Workshop --}}
+        <div class="col-lg-4 col-md-6 col-12 layout-spacing">
+            <x-cards.account-box>
+                <x-slot name="image">
+                    <img src="{{ asset('template/src/assets/img/icon/dumble.png') }}" alt="dumble">
+                </x-slot>
+                <x-slot name="title">Ahlan, {{ \Str::words(Auth::user()->full_name, 2, '') }}</x-slot>
+                <x-slot name="subTitle">{{ $activeWorkshop->program_name }}</x-slot>
+                <x-slot name="badgeLabel">
+                    @if ($activeWorkshop->payment_status == 'Done')
+                    <x-items.badges.light-success>
+                        Coach {{ $activeWorkshop->nick_name }} (Aktif)
+                    </x-items.badges.light-success>
+                    @else
+                    <x-items.badges.light-dark>Coach {{ $activeWorkshop->nick_name }} (Pending)</x-items.badges.light-dark>
+                    @endif
+                </x-slot>
+                <x-slot name="info">
+                    @if ($activeWorkshop->payment_status == 'Done')
+                    <a href="{{ $activeWorkshop->link_wa }}" target="_blank">
+                        <button class="btn btn-success btn-sm">
+                            Join WA Group
+                        </button>
+                    </a>
+                    @else
+                    <button class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#grupWa">Join WA
+                        Group</button>
+                    @endif
+                </x-slot>
+                @if (Auth::user()->type == 'Workshop')
+                <x-slot name="moreInfo">
+                    <a wire:navigate href="{{ route('member::continue_workshop_form') }}">
+                        <button class="btn btn-outline-secondary btn-sm">Daftar Program Lanjutan</button>
+                    </a>
+                </x-slot>
+                @endif
+
+                <a href="#" data-bs-toggle="modal" data-bs-target="#detailProgram">Detail Program</a>
+            </x-cards.account-box>
+
+            <!--Modal Detail Program-->
+            <x-modals.zoomUp id="detailProgram">
+                <x-slot name="modalTitle">Detail Program</x-slot>
+                <x-items.list-groups.basic>
+                    <x-items.list-groups.item-basic>
+                        <x-slot name="title">Program</x-slot>
+                        <x-slot name="subTitle">{{ $activeWorkshop->program_name }}</x-slot>
+                    </x-items.list-groups.item-basic>
+                    <x-items.list-groups.item-basic>
+                        <x-slot name="title">Coach</x-slot>
+                        <x-slot name="subTitle">{{ $activeWorkshop->nick_name }}</x-slot>
+                    </x-items.list-groups.item-basic>
+                    <x-items.list-groups.item-basic>
+                        <x-slot name="title">Waktu</x-slot>
+                        <x-slot name="subTitle">{{ $activeWorkshop->day }}</x-slot>
+                    </x-items.list-groups.item-basic>
+                </x-items.list-groups.basic>
+            </x-modals.zoomUp>
+            <!--#Modal Detail Program-->
+
+            <!--Modal Join Group WA-->
+            <x-modals.fadeInUp id="grupWa">
+                <x-slot name="modalTitle">Upss.. Tidak Bisa Join Group WA</x-slot>
+                <em class="text-danger">Anda bisa bergabung grup WA setelah status pembayaran anda dinyatakan "Valid"</em>
+            </x-modals.fadeInUp>
+            <!--#Modal Join Group WA-->
+        </div>
+        @endif
+
+        @if ($isRegisteredInReeactive)
+        {{-- Detail Program Reeactive --}}
         <div class="col-lg-4 col-md-6 col-12 layout-spacing">
             <x-cards.account-box>
                 <x-slot name="image">
@@ -135,9 +215,8 @@
             </x-modals.fadeInUp>
             <!--#Modal Join Group WA-->
         </div>
-        <!--#Info Program-->
 
-        <!--Registrations Log-->
+        {{-- Registrations Log --}}
         <div class="col-lg-4 col-md-6 col-12 layout-spacing">
             <x-cards.wallet>
                 <x-slot name="header">Pendaftaran Terkini</x-slot>
@@ -194,6 +273,6 @@
                 {{-- <x-slot name="callToAction">Lihat Riwayat Pendaftaran</x-slot> --}}
             </x-cards.wallet>
         </div>
-        <!--#Registrations Log-->
+        @endif
     </div>
 </div>

@@ -18,7 +18,6 @@ use App\Models\Registration;
 use Livewire\WithFileUploads;
 use App\Services\BatchService;
 use Livewire\Attributes\Title;
-use App\Models\HealthScreening;
 use App\Services\RegistrationService;
 use Exception;
 use Livewire\Attributes\Layout;
@@ -117,7 +116,7 @@ class FormNewMember extends Component
 
     #[Computed]
     public function programs() {
-        return Program::where('program_status', 'Open')->get();
+        return Program::where('program_status', 'Open')->where('program_type','Reguler')->get();
     }
 
     #[Computed]
