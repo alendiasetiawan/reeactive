@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Batch;
+use App\Models\WorkshopBatch;
 
 class BatchService {
 
@@ -50,5 +51,23 @@ class BatchService {
         $percent = Round(($renewalMember/$qtyLastMember) * 100,2);
 
         return $percent;
+    }
+
+    public function workshopBatchQuery() {
+        $activeBatch = WorkshopBatch::where('batch_status', 'Active')->exists();
+        $openBatch = WorkshopBatch::where('batch_status', 'Open')->exists();
+
+        if($openBatch) {
+            $batch = WorkshopBatch::where('batch_status', 'Open')->first();
+        } elseif ($activeBatch) {
+            $batch = WorkshopBatch::where('batch_status', 'Active')->first();
+        }
+        else {
+            $batch = WorkshopBatch::orderBy('id', 'desc')
+            ->limit(1)
+            ->first();
+        }
+
+        return $batch;
     }
 }
