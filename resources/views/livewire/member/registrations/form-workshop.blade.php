@@ -170,7 +170,7 @@
                                 @if($selectedProgram)
                                 <div class="col-lg-6 col-12 mb-2">
                                     <x-inputs.label>Waktu</x-inputs.label>
-                                    <x-inputs.basic type="text" placeholder="{{ $this->classCoach->day }}" />
+                                    <x-inputs.basic type="text" placeholder="{{ $this->classCoach->day }}" disabled />
                                 </div>
                                 @endif
                             </div>
