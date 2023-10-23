@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Member\Registrations;
 
+use App\Models\AssessmentVerification;
 use Exception;
 use App\Models\User;
 use App\Models\Coach;
@@ -71,6 +72,10 @@ class FormWorkshop extends Component
     public int $regencyId;
     public int $districtId;
     public string $medicalCondition;
+    public $assessmentDone;
+    public string $assessmentVerification;
+    public bool $isAssessmentCodeValid;
+    public object $assessmentData;
 
     protected $batchQuery;
     protected $registrationService;
@@ -147,20 +152,24 @@ class FormWorkshop extends Component
     }
 
     public function updatedSelectedProgram() {
-        $this->reset('voucherMember');
+        $this->resetErrorBag();
+        $this->reset('voucherMember', 'price', 'priceNumber', 'normalPriceNumber', 'normalPrice', 'isVoucher', 'assessmentDone', 'assessmentVerification', 'isAssessmentCodeValid');
 
-        //Check price
-        $priceList = Pricelist::where('program_id', $this->selectedProgram)->first();
-        $this->priceNumber = $priceList->price;
-        $this->price = 'Rp '.number_format($this->priceNumber,0,',','.');
-        $this->coachCode = $priceList->coach_code;
+        if ($this->selectedProgram != NULL) {
+            //Check price
+            $priceList = Pricelist::where('program_id', $this->selectedProgram)->first();
+            $this->priceNumber = $priceList->price;
+            $this->price = 'Rp '.number_format($this->priceNumber,0,',','.');
+            $this->coachCode = $priceList->coach_code;
 
-        //Check quota
-        $this->quotaLeft = $this->registrationService->quotaWorkshop($this->selectedProgram, $this->coachId);
+            //Check quota
+            $this->quotaLeft = $this->registrationService->quotaWorkshop($this->selectedProgram, $this->coachId);
 
-        //Check class ID
-        $classData = ClassModel::where('program_id', $this->selectedProgram)->first();
-        $this->selectedClass = $classData->id;
+            //Check class ID
+            $classData = ClassModel::where('program_id', $this->selectedProgram)->first();
+            $this->selectedClass = $classData->id;
+        }
+
     }
 
     public function updatedVoucherMember() {
@@ -169,6 +178,32 @@ class FormWorkshop extends Component
         $priceList = Pricelist::where('program_id', $this->selectedProgram)->first();
 
         if ($this->isVoucher) {
+            $this->priceNumber = $priceList->price_special;
+            $this->normalPriceNumber = $priceList->price;
+            $this->normalPrice = 'Rp '.number_format($this->normalPriceNumber,0,',','.');
+        } else {
+            $this->priceNumber = $priceList->price;
+        }
+
+        $this->price = 'Rp '.number_format($this->priceNumber,0,',','.');
+    }
+
+    public function updatedAssessmentDone() {
+        if ($this->assessmentDone == 'Belum') {
+            $priceList = Pricelist::where('program_id', $this->selectedProgram)->first();
+            $this->priceNumber = $priceList->price;
+            $this->price = 'Rp '.number_format($this->priceNumber,0,',','.');
+        }
+        $this->reset('assessmentVerification', 'isAssessmentCodeValid', 'assessmentData');
+        $this->resetErrorBag();
+    }
+
+    public function updatedAssessmentVerification() {
+        $this->resetErrorBag();
+        $priceList = Pricelist::where('program_id', $this->selectedProgram)->first();
+        $this->isAssessmentCodeValid = AssessmentVerification::where('code', $this->assessmentVerification)->exists();
+        if ($this->isAssessmentCodeValid) {
+            $this->assessmentData = AssessmentVerification::where('code', $this->assessmentVerification)->first();
             $this->priceNumber = $priceList->price_special;
             $this->normalPriceNumber = $priceList->price;
             $this->normalPrice = 'Rp '.number_format($this->normalPriceNumber,0,',','.');
@@ -204,10 +239,10 @@ class FormWorkshop extends Component
     public function updatedFileUpload(){
         $this->validate(
             [
-                'fileUpload' => 'mimes:png,jpg,jpeg|max:1024',
+                'fileUpload' => 'mimes:png,jpg,jpeg|max:2084',
             ],
             [
-                'fileUpload.max' => 'Ukuran file tidak boleh lebih dari 1 MB.',
+                'fileUpload.max' => 'Ukuran file tidak boleh lebih dari 2 MB.',
                 'fileUpload.mimes' => 'File harus dalam format gambar: .jpg/.jpeg/.png.',
             ]
         );
@@ -245,6 +280,16 @@ class FormWorkshop extends Component
             $voucherCode = $this->voucherMember;
         }
 
+        if ($this->selectedProgram == 8) {
+            if ($this->assessmentDone == 'Sudah') {
+                $isAssessment = 1;
+            } else {
+                $isAssessment = 0;
+            }
+        } else {
+            $isAssessment = 0;
+        }
+
         if ($this->quotaLeft <= 0) {
             session()->flash('fullQuota', 'Daftar Gagal! Quota pendaftaran sudah penuh, silahkan pilih program yang lain');
             $this->redirect(route('workshop_register'), navigate:true);
@@ -276,7 +321,7 @@ class FormWorkshop extends Component
                     'file_upload' => $this->fileUpload->storeAs($this->batchQuery->id, $this->uploadedFileName, 'public'),
                     'payment_status' => 'Process',
                     'registration_category' => 'New Member',
-                    'is_assessment' => 0,
+                    'is_assessment' => $isAssessment,
                     'program_id' => $this->selectedProgram,
                     'coach_id' => 9,
                     'class_id' => $this->selectedClass,

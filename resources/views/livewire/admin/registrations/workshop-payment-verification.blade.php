@@ -31,6 +31,7 @@
                                 <th>No</th>
                                 <th>Nama</th>
                                 <th>Program</th>
+                                <th>Assessment</th>
                                 <th>Whatsapp</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -42,8 +43,18 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>
                                         {{ $payment->member_name }}
+                                        @if ($payment->voucher_code != NULL)
+                                            <x-items.badges.light-primary>Voucher</x-items.badges.light-primary>
+                                        @endif
                                     </td>
                                     <td>{{ $payment->program_name }}</td>
+                                    <td>
+                                        @if ($payment->is_assessment == 1)
+                                            <x-items.badges.solid-success>Sudah</x-items.badges.solid-success>
+                                        @else
+                                            <x-items.badges.solid-dark>Belum</x-items.badges.solid-dark>
+                                        @endif
+                                    </td>
                                     <td>
                                         +{{ $payment->mobile_phone }}
                                         <a href="https://wa.me/{{ $payment->mobile_phone }}" target="_blank" class="text-success">
