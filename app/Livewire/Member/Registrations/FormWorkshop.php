@@ -239,10 +239,10 @@ class FormWorkshop extends Component
     public function updatedFileUpload(){
         $this->validate(
             [
-                'fileUpload' => 'mimes:png,jpg,jpeg|max:1024',
+                'fileUpload' => 'mimes:png,jpg,jpeg|max:2084',
             ],
             [
-                'fileUpload.max' => 'Ukuran file tidak boleh lebih dari 1 MB.',
+                'fileUpload.max' => 'Ukuran file tidak boleh lebih dari 2 MB.',
                 'fileUpload.mimes' => 'File harus dalam format gambar: .jpg/.jpeg/.png.',
             ]
         );

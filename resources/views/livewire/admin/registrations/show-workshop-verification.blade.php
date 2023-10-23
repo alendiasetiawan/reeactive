@@ -14,15 +14,26 @@
                 <div class="w-content">
                     <form wire:submit.prevent="saveData">
                         <div class="row">
-                            <div class="col-lg-4 col-md-6 col-12 mb-3">
+                            <div class="col-lg-6 col-md-6 col-12 mb-3">
                                 <x-inputs.label>Nama Lengkap</x-inputs.label>
                                 <x-inputs.disable-text placeholder="{{ $this->paymentDetail->member_name }}"></x-inputs.disable-text>
                             </div>
-                            <div class="col-lg-4 col-12 mb-3">
+                            <div class="col-lg-6 col-12 mb-3">
                                 <x-inputs.label>Program</x-inputs.label>
                                 <x-inputs.disable-text placeholder="{{ $this->paymentDetail->program_name }}"></x-inputs.disable-text>
                             </div>
-                            <div class="col-lg-4 col-12 mb-3">
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6 col-12 mb-3">
+                                <x-inputs.label>Status Assessment</x-inputs.label>
+                                @if ($this->paymentDetail->is_assessment == 1)
+                                <x-inputs.disable-text placeholder="Sudah"></x-inputs.disable-text>
+                                @else
+                                <x-inputs.disable-text placeholder="Belum"></x-inputs.disable-text>
+                                @endif
+                            </div>
+                            <div class="col-lg-6 col-12 mb-3">
                                 <x-inputs.label>Kode Voucher</x-inputs.label>
                                 <x-inputs.disable-text placeholder="{{ $this->paymentDetail->vocher_code }}"></x-inputs.disable-text>
                             </div>
