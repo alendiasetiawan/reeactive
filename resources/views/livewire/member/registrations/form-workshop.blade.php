@@ -18,7 +18,7 @@
 
     <div class="row layout-top-spacing">
         <div class="text-center">
-            <h2>Pendaftaran <b class="text-primary">Early Postpartum Workshop</b></h2>
+            <h2>Pendaftaran <b class="text-primary">Early Postpartum Workshop & Core Stability Program</b></h2>
         </div>
         <div class="text-center">
             <h5 class="text-secondary">Reeactive x Yofitmos</h5>
@@ -54,13 +54,12 @@
                     @if ($currentStep == 1)
                     <div class="card mx-auto mb-3">
                         <div class="card-header">
-                            <h4>Terms and Condition</h4>
+                            <h4>Terms and Conditions <b class="text-primary">Core Stability Program</b></h4>
                             <small>Langkah 1/3</small>
                         </div>
                         <div class="card-body">
-                            <span>Sebelum anda mengisi formulir, pastikan anda telah <b class="text-primary">membaca dan memahami</b> poin-poin ketentuan di bawah ini.
-                            Berikan tanda <b class="text-primary"><em>Checklist</em></b> jika anda telah paham dengan setiap poin ketentuan yang telah disebutkan
-                            <br><br>
+                            <span><b class="text-primary">Bagi anda yang ingin mengikuti "Core Stability Program"</b>, pastikan anda telah <b class="text-primary">membaca dan memahami</b> poin-poin ketentuan di bawah ini.
+                            <br><br>Berikan tanda <b class="text-primary"><em>Checklist</em></b> jika anda telah paham dengan setiap poin ketentuan yang telah disebutkan
                             </span>
                                 <div class="row mt-2 mb-2">
                                     <div class="col-12">
@@ -126,11 +125,11 @@
                                     @if (!$selectedProgram)
                                         ...
                                     @else
-                                        @if ($isVoucher)
-                                        <s>{{$this->normalPrice}}</s>
-                                        {{ $this->price }}
+                                        @if ($isVoucher || $isAssessmentCodeValid)
+                                            <s>{{$this->normalPrice}}</s>
+                                            {{ $this->price }}
                                         @else
-                                        {{ $this->price }}
+                                            {{ $this->price }}
                                         @endif
                                     @endif
                                 </em>
@@ -141,7 +140,7 @@
                                 <div class="col-lg-6 col-12 mb-2">
                                     <x-inputs.label>Program</x-inputs.label>
                                     <x-inputs.select wire:model.live='selectedProgram'>
-                                        <x-inputs.select-option value="">--Pilih--</x-inputs.select-option>
+                                        <x-inputs.select-option>--Pilih--</x-inputs.select-option>
                                         @foreach ($programs as $program)
                                             <x-inputs.select-option value="{{ $program->id }}">{{ $program->program_name }}</x-inputs.select-option>
                                         @endforeach
@@ -150,12 +149,20 @@
                                         <small class="text-warning">Anda hanya akan mengikuti workshop, tidak lanjut ke assessment dan core stability program</small>
                                     @endif
                                     @if($selectedProgram == 8)
-                                        <small class="text-warning">Anda akan mengikuti seluruh program, yaitu : <b>(Workshop + Assessment + Core Stability Program)</b></small>
+                                        <small class="text-warning">Anda akan mengikuti seluruh program, yaitu : <b>Workshop + Assessment (Bagi yang belum) + Core Stability Program</b></small>
                                     @endif
                                     <small class="text-danger">@error('selectedProgram') {{ $message }} @enderror</small>
                                 </div>
 
-                                <div class="col-lg-6 col-12">
+                                @if($selectedProgram)
+                                <div class="col-lg-6 col-12 mb-2">
+                                    <x-inputs.label>Waktu</x-inputs.label>
+                                    <x-inputs.basic type="text" placeholder="{{ $this->classCoach->day }}" disabled />
+                                </div>
+                                @endif
+
+                                @if ($selectedProgram == 7)
+                                <div class="col-lg-6 col-12 mb-2">
                                     <x-inputs.label>Voucher Member</x-inputs.label>
                                     <x-inputs.basic type="text" wire:model.live='voucherMember' placeholder="Jika ada memiliki voucher, tulis disini!"/>
                                     @if ($alertDiscount && $voucherMember != NULL)
@@ -166,12 +173,36 @@
                                         @endif
                                     @endif
                                 </div>
+                                @endif
 
-                                @if($selectedProgram)
+                                @if ($selectedProgram == 8)
                                 <div class="col-lg-6 col-12 mb-2">
-                                    <x-inputs.label>Waktu</x-inputs.label>
-                                    <x-inputs.basic type="text" placeholder="{{ $this->classCoach->day }}" disabled />
+                                    <x-inputs.label>Apakah Anda Sudah Pernah Personal Assessment Periode Oktober 2023 Bersama Coach Arum?</x-inputs.label>
+                                    <small class="text-danger text-form">@error('assessmentDone') {{ $message }} @enderror</small>
+                                    <br>
+                                    <x-inputs.radio-primary>
+                                        <x-inputs.check-radio id="assessment-done-jawaban-satu" name="assessment-done" value="Sudah" wire:model.live='assessmentDone'></x-inputs.check-radio>
+                                        <x-slot name="labelRadio" for="assessment-done-jawaban-satu ">Sudah</x-slot>
+                                    </x-inputs.radio-primary>
+                                    <x-inputs.radio-primary>
+                                        <x-inputs.check-radio id="assessment-done-jawaban-dua" name="assessment-done" value="Belum" wire:model.live='assessmentDone'></x-inputs.check-radio>
+                                        <x-slot name="labelRadio" for="pertanyaan-delapan-jawaban-dua">Belum</x-slot>
+                                    </x-inputs.radio-primary>
                                 </div>
+                                @endif
+
+                                @if ($assessmentDone == 'Sudah')
+                                    <div class="col-lg-6 col-12 mb-2">
+                                        <x-inputs.label>Kode Verifikasi Assessment</x-inputs.label>
+                                        <x-inputs.basic type="text" wire:model.live.debounce.250ms='assessmentVerification' placeholder="Tulis nomor HP, ex : 085775745484"/>
+                                        @if ($assessmentVerification != NULL)
+                                            @if ($isAssessmentCodeValid)
+                                                <small class="text-info">Hi, <b class="text-primary">"{{ $assessmentData->valid_name }}"</b>. Kamu berhak mendapatkan discount biaya pendaftaran</small>
+                                            @else
+                                                <small class="text-danger">Mohon maaf, kode yang anda masukan tidak valid</small>
+                                            @endif
+                                        @endif
+                                    </div>
                                 @endif
                             </div>
 
