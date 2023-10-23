@@ -1,6 +1,6 @@
 <div>
     <x-items.breadcrumb>
-        <x-slot name="mainPage">Dashboard</x-slot>
+        <x-slot name="mainPage" href="{{ route('admin::dashboard') }}">Dashboard</x-slot>
         <x-slot name="currentPage">Kuota Pendaftaran</x-slot>
     </x-items.breadcumb>
 
