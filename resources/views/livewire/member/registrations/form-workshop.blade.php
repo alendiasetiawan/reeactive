@@ -58,8 +58,9 @@
                             <small>Langkah 1/3</small>
                         </div>
                         <div class="card-body">
-                            <span><b class="text-primary">Bagi anda yang ingin mengikuti "Core Stability Program"</b>, pastikan anda telah <b class="text-primary">membaca dan memahami</b> poin-poin ketentuan di bawah ini.
-                            <br><br>Berikan tanda <b class="text-primary"><em>Checklist</em></b> jika anda telah paham dengan setiap poin ketentuan yang telah disebutkan
+                            <span>
+                                Berikut ini adalah syarat dan ketentuan bagi anda yang ingin mengikuti <b class="text-primary">"Core Stability Program"</b>, apabila anda hanya ingin mengikuti <b class="text-primary">"Workshop Saja"</b> maka cukup berikan tanda checklist pada setiap poin ketentuan di bawah ini.<br><br>
+                                <b>Checklist tersebut sebagai bukti bahwa anda <b class="text-primary">"Sudah Membaca"</b> poin-poin ketentuan yang ada</b><br><br>
                             </span>
                                 <div class="row mt-2 mb-2">
                                     <div class="col-12">
