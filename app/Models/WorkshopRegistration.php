@@ -18,6 +18,11 @@ class WorkshopRegistration extends Model
         return $this->belongsTo(Voucher::class, 'voucher_code', 'code');
     }
 
+    public function class(): BelongsTo
+    {
+        return $this->belongsTo(ClassModel::class, 'class_id', 'id');
+    }
+
     public static function activeWorkshop() {
         return WorkshopRegistration::join('programs', 'workshop_registrations.program_id', 'programs.id')
         ->join('coaches', 'workshop_registrations.coach_id', 'coaches.id')
