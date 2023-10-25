@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use PhpParser\Node\Stmt\Static_;
 
 class Coach extends Model
 {
@@ -36,7 +37,6 @@ class Coach extends Model
     {
         return $this->hasMany(ClassModel::class, 'coach_code', 'code');
     }
-
 
 
 
@@ -119,10 +119,29 @@ class Coach extends Model
                         $query->where('batch_id', $batchId);
                     }
                 ]);
-                // ->select('classes.coach_code', 'classes.program_id', 'classes.start_time', 'classes.end_time', 'classes.day', 'classes.class_status', 'classes.class_status_eksternal', 'registrations.*');
+
             }
         ])
-        ->where('coach_status', 'Aktif')
+        ->where('type', 'Reguler')
+        ->orderBy('coach_name', 'asc')
+        ->select('code', 'coach_name', 'nick_name')
+        ->get();
+    }
+
+    public static function membersWorkshop($batchId) {
+        return Coach::with([
+            'classes' => function($query) use($batchId) {
+                $query->join('programs', 'classes.program_id', 'programs.id')
+                ->where('class_status', '<>', 'Pending')
+                ->select('classes.*', 'programs.program_name')
+                ->with([
+                    'workshop_registrations' => function($query) use($batchId) {
+                        $query->where('workshop_batch_id', $batchId);
+                    }
+                ]);
+            }
+        ])
+        ->where('type', 'Workshop')
         ->orderBy('coach_name', 'asc')
         ->select('code', 'coach_name', 'nick_name')
         ->get();
