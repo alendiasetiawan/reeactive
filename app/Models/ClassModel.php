@@ -20,6 +20,11 @@ class ClassModel extends Model
         return $this->hasMany(Registration::class, 'class_id', 'id');
     }
 
+    public function workshop_registrations(): HasMany
+    {
+        return $this->hasMany(WorkshopRegistration::class, 'class_id', 'id');
+    }
+
     public function program(): BelongsTo
     {
         return $this->belongsTo(Program::class, 'program_id', 'id');

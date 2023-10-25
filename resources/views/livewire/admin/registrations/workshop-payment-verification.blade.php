@@ -111,6 +111,25 @@
         @endforeach
     </div>
 
+    <div class="row">
+        @foreach ($this->workshopMembers as $member)
+            <div class="col-lg-4 col-md-6 col-12">
+                <x-cards.transaction>
+                    <x-slot name="cardTitle">Coach {{ $member->nick_name }}</x-slot>
+                    @foreach ($member->classes as $class)
+                        <x-cards.transaction-list>
+                            <x-slot name="mainContent">{{ $class->program_name }}</x-slot>
+                            <x-slot name="subContent">{{ $class->day }}</x-slot>
+                            <x-slot name="label">
+                                <b class="text-info">Member : {{ $class->workshop_registrations->where('class_id', $class->id)->count() }}</b>
+                            </x-slot>
+                        </x-cards.transaction-list>
+                    @endforeach
+                </x-cards.transaction>
+            </div>
+        @endforeach
+    </div>
+
     @push('customScripts')
         <script src="{{ asset('template/src/assets/js/widgets/modules-widgets.js') }}" data-navigate-once></script>
         <script src="{{ asset('template/src/plugins/src/table/datatable/datatables.js') }}" data-navigate-once></script>
