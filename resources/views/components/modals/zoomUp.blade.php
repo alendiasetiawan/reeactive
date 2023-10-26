@@ -11,12 +11,6 @@
             <div class="modal-body">
                 {{ $slot }}
             </div>
-            <div class="modal-footer md-button">
-                <button class="btn btn-light-dark" data-bs-dismiss="modal">Tutup</button>
-                @isset($okButton)
-                    {{ $okButton }}
-                @endisset
-            </div>
         </div>
     </div>
 </div>
