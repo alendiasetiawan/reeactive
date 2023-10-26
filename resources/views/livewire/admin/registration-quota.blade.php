@@ -1,4 +1,10 @@
 <div>
+    @push('customCss')
+    <link href="{{ asset('template/src/assets/css/light/components/modal.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('template/src/plugins/src/animate/animate.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('template/src/plugins/src/sweetalerts2/sweetalerts2.css') }}">
+    <link href="{{ asset('template/src/plugins/css/light/sweetalerts2/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
+    @endpush
     <x-items.breadcrumb>
         <x-slot name="mainPage" href="{{ route('admin::dashboard') }}">Dashboard</x-slot>
         <x-slot name="currentPage">Kuota Pendaftaran</x-slot>
@@ -13,16 +19,35 @@
                 </div>
                 <div class="widget-content">
                     @foreach ($member->classes as $class)
-                    <div class="transactions-list">
+                    <div class="transactions-list" wire:key='{{ $class->id }}'>
                         <div class="t-item">
                             <div class="t-company-name">
                                 <div class="t-name">
-                                    <h4>{{ $class->day }}</h4>
+                                    <h4>{{ $class->day }}
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#changeClassStatus{{ $class->id }}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="1.25em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 0a256 256 0 1 0 0 512A256 256 0 1 0 256 0zM135 241c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l87 87 87-87c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9L273 345c-9.4 9.4-24.6 9.4-33.9 0L135 241z"/></svg>
+                                        </a>
+                                    </h4>
                                     <p class="meta-date">
                                         {{ \Carbon\Carbon::parse($class->start_time)->format('H:i') }}
                                         -
                                         {{ \Carbon\Carbon::parse($class->end_time)->format('H:i') }}
                                     </p>
+                                    <small>
+                                        New:
+                                        @if ($class->class_status_eksternal == 'Open')
+                                            <b class="text-success">Open</b>
+                                        @else
+                                            <b class="text-danger">Close</b>
+                                        @endif
+                                        |
+                                        Renew:
+                                        @if ($class->class_status == 'Open')
+                                            <b class="text-success">Open</b>
+                                        @else
+                                            <b class="text-danger">Close</b>
+                                        @endif
+                                    </small>
                                 </div>
                             </div>
                             <div class="t-rate rate-dec">
@@ -45,6 +70,21 @@
                             </div>
                         </div>
                     </div>
+
+                    {{-- Modal Change Class Status --}}
+                    @php
+                        $statusNewMember = $class->class_status_eksternal;
+                        $statusRenewal = $class->class_status;
+                        $classId = $class->id;
+                        $coach = $member->nick_name;
+                        $day = $class->day;
+                        $start = $class->start_time;
+                        $end = $class->end_time;
+                    @endphp
+                    <x-modals.zoomUp id="changeClassStatus{{ $class->id }}">
+                        <x-slot name="modalTitle">Ubah Status Kelas</x-slot>
+                        <livewire:admin.registrations.form-class-status :statusNewMember='$statusNewMember' :statusRenewal='$statusRenewal' :classId='$classId' :coach='$coach' :day='$day' :start='$start' :end='$end'/>
+                    </x-modals.zoomUp>
                     @endforeach
                 </div>
             </div>
@@ -53,4 +93,20 @@
         <x-items.alerts.light-danger>Tidak ada data yang bisa ditampilkan</x-items.alerts.light-danger>
         @endforelse
     </div>
+
+    @push('customScripts')
+    <script src="{{ asset('template/src/plugins/src/sweetalerts2/sweetalerts2.min.js') }}"></script>
+
+    @if (session('saveClass'))
+        <script>
+                Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'OK! Status kelas berhasil disimpan',
+                showConfirmButton: false,
+                timer: 1500
+                })
+        </script>
+    @endif
+    @endpush
 </div>
