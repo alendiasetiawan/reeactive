@@ -19,6 +19,7 @@
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
     @livewireStyles()
     <script src="https://kit.fontawesome.com/69d31acf39.js" crossorigin="anonymous"></script>
+    <wireui:scripts />
 </head>
 <body class="layout-sidebar">
     <!--Query For Checking User Data-->
