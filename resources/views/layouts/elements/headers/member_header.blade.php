@@ -141,6 +141,7 @@
                     </div>
                 </a>
 
+                @persist('header')
                 <div class="dropdown-menu position-absolute" aria-labelledby="userProfileDropdown">
                     <div class="user-profile-section">
                         <div class="media mx-auto">
@@ -165,7 +166,7 @@
                         </a>
                     </div>
                 </div>
-
+                @endpersist
             </li>
         </ul>
     </header>

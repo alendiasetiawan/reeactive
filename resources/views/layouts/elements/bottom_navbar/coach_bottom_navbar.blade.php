@@ -1,7 +1,7 @@
 <nav class="p-0 navbar navbar-dark bg-light-secondary navbar-expand fixed-bottom d-md-none d-lg-none d-xl-none">
     <ul class="navbar-nav nav-justified w-100">
         <li class="nav-item">
-            <a wire:navigate href="{{ route('coach::dashboard') }}" class="nav-link text-center">
+            <a href="{{ route('coach::dashboard') }}" class="nav-link text-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home {{ Route::is('coach::dashboard') ? 'text-primary' : '' }}"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                 <span class="small d-block {{ Route::is('coach::dashboard') ? 'text-primary' : '' }}"><b>Home</b></span>
             </a>
