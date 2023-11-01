@@ -281,7 +281,7 @@
                                         @endif
                                     @endforeach
                                 </div>
-                                <a wire:navigate class="btn btn-theme" href="/private-1-on-1" data-text="Read More">
+                                <a class="btn btn-theme" href="/private-1-on-1" data-text="Read More">
                                     <span>D</span><span>e</span><span>t</span><span>a</span><span>i</span><span>l</span>
                                 </a>
                             </div>
@@ -329,7 +329,7 @@
                                         @endif
                                     @endforeach
                                 </div>
-                                <a wire:navigate class="btn btn-theme" href="/buddy-small-groups" data-text="Read More">
+                                <a class="btn btn-theme" href="/buddy-small-groups" data-text="Read More">
                                     <span>D</span><span>e</span><span>t</span><span>a</span><span>i</span><span>l</span>
                                 </a>
                             </div>
@@ -365,7 +365,7 @@
                                         @endif
                                     @endforeach
                                 </div>
-                                <a wire:navigate class="btn btn-theme" href="/special-case-groups" data-text="Read More">
+                                <a class="btn btn-theme" href="/special-case-groups" data-text="Read More">
                                     <span>D</span><span>e</span><span>t</span><span>a</span><span>i</span><span>l</span>
                                 </a>
                             </div>
@@ -401,7 +401,7 @@
                                         @endif
                                     @endforeach
                                 </div>
-                                <a wire:navigate class="btn btn-theme" href="/large-groups" data-text="Read More">
+                                <a class="btn btn-theme" href="/large-groups" data-text="Read More">
                                     <span>D</span><span>e</span><span>t</span><span>a</span><span>i</span><span>l</span>
                                 </a>
                             </div>
