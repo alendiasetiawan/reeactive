@@ -33,6 +33,7 @@ class MemberPerCoachExport extends \PhpOffice\PhpSpreadsheet\Cell\StringValueBin
             ->join('classes', 'registrations.class_id', 'classes.id')
             ->where('batch_id', $this->batchId)
             ->where('coach_id', $this->coachId)
+            ->where('payment_status', 'Done')
             ->select('registrations.*', 'members.*', 'programs.program_name', 'levels.level_name', 'coaches.nick_name', 'classes.day', 'classes.start_time', 'classes.end_time')
             ->orderBy('members.member_name', 'asc')
             ->get(),
@@ -49,7 +50,10 @@ class MemberPerCoachExport extends \PhpOffice\PhpSpreadsheet\Cell\StringValueBin
         return [
             // Style the first row as bold text.
             1    => [
-                'font' => ['bold' => true],
+                'font' => [
+                    'bold' => true,
+                    'size' => 18
+                ],
                 'alignment' => [
                     'horizontal' => Alignment::HORIZONTAL_CENTER,
                     'vertical' => Alignment::VERTICAL_CENTER,
