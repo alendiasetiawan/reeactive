@@ -18,19 +18,38 @@
                     <h4 class="">Tabel Member Aktif <b class="text-primary">{{ $batchName }}</b></h4>
                 </div>
                 <div class="widget-content">
-                    <span><b class="text-primary">Perhatian!</b> <b>Data yang tampil di bawah ini hanya member yang sudah dinyatakan Valid bukti transfer nya</b></span>
+                    <span><b class="text-primary">Perhatian!</b> <b>Data yang tampil di bawah ini hanya member yang bukti transfernya dinyatakan <b class="text-primary">Valid</b></b></span>
                     <br>
 
                     <div class="btn-group mb-2 me-4 mt-2" role="group">
-                        <button id="btndefault" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Download Excel <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+                        <button id="btndefault" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Excel Semua Member <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
                         <div class="dropdown-menu" aria-labelledby="btndefault">
                             @foreach ($batches as $data)
-                                <a href="javascript:void(0);" class="dropdown-item"><i class="flaticon-home-fill-1 mr-1"></i>{{ $data->batch_name }}</a>
+                                <a href="{{ route('admin::excel_all_member', [$data->id]) }}" class="dropdown-item" target="_blank">
+                                    <i class="flaticon-home-fill-1 mr-1"></i>
+                                    {{ $data->batch_name }}
+                                </a>
                             @endforeach
                         </div>
                     </div>
 
-                    <table id="paymentsTable" class="table table-striped dt-table-hover" style="width:100%">
+                    <div class="btn-group mb-2 me-4 mt-2" role="group">
+                        <button id="btndefault" type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Excel Per Coach <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+                        <div class="dropdown-menu" aria-labelledby="btndefault">
+                            @foreach ($this->coaches as $coach)
+                                <a href="{{ route('admin::excel_per_coach', [$coach->id]) }}" class="dropdown-item" target="_blank">
+                                    <i class="flaticon-home-fill-1 mr-1"></i>
+                                    Coach {{ $coach->nick_name }}
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <hr>
+                    <span>Untuk download data member per jadwal, silahkan pilih data di bawah ini!</span>
+                    <livewire:admin.database.filter-coach-class />
+
+                    <table id="paymentsTable" class="table table-striped dt-table-hover mt-2" style="width:100%">
                         <thead>
                             <tr>
                                 <th>No</th>

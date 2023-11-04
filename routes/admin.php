@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ExportExcelController;
 use App\Livewire\Admin\DashboardAdmin;
 use App\Livewire\Admin\DatabaseMember;
 use App\Livewire\Admin\PaymentVerification;
@@ -18,6 +19,11 @@ Route::group(['middleware' => ['auth', 'admin'], 'as' => 'admin::'], function() 
 
         //Database
         Route::get('/database-member', DatabaseMember::class)->name('database_member');
+
+        //Download Excel
+        Route::get('/excel-all-member/{batch_id}', [ExportExcelController::class, 'allMember'])->name('excel_all_member');
+        Route::get('/excel-per-coach/{coach_id}', [ExportExcelController::class, 'perCoach'])->name('excel_per_coach');
+        Route::get('/excel-per-class', [ExportExcelController::class, 'perClass'])->name('excel_per_class');
 
         //Registration
         Route::get('/verifikasi-transfer', PaymentVerification::class)->name('payment_verification');
