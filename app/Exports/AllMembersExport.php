@@ -28,6 +28,7 @@ class AllMembersExport extends \PhpOffice\PhpSpreadsheet\Cell\StringValueBinder 
             ->join('coaches', 'registrations.coach_id', 'coaches.id')
             ->join('classes', 'registrations.class_id', 'classes.id')
             ->where('batch_id', $this->batchId)
+            ->where('payment_status', 'Done')
             ->select('registrations.*', 'members.*', 'programs.program_name', 'levels.level_name', 'coaches.nick_name', 'classes.day', 'classes.start_time', 'classes.end_time')
             ->orderBy('members.member_name', 'asc')
             ->get()
@@ -40,7 +41,10 @@ class AllMembersExport extends \PhpOffice\PhpSpreadsheet\Cell\StringValueBinder 
     {
         return [
             // Style the first row as bold text.
-            1    => ['font' => ['bold' => true]],
+            1    => ['font' => [
+                'bold' => true,
+                'size' => 16,
+                ]],
         ];
     }
 }
