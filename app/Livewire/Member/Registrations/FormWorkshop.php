@@ -16,6 +16,7 @@ use App\Models\Province;
 use App\Models\PhoneCode;
 use App\Models\Pricelist;
 use App\Models\ClassModel;
+use App\Models\WorkshopBatch;
 use Livewire\WithFileUploads;
 use App\Services\BatchService;
 use Livewire\Attributes\Title;
@@ -76,6 +77,7 @@ class FormWorkshop extends Component
     public string $assessmentVerification;
     public bool $isAssessmentCodeValid;
     public object $assessmentData;
+    public $batchOpen;
 
     protected $batchQuery;
     protected $registrationService;
@@ -101,6 +103,7 @@ class FormWorkshop extends Component
         $this->programs = Program::where('program_type', 'Workshop')->get();
         $this->phoneCodes = PhoneCode::all();
         $this->provinces = Province::all();
+        $this->batchOpen = WorkshopBatch::where('batch_status', 'Open')->exists();
     }
 
     public function boot(RegistrationService $registrationService, BatchService $batchService) {

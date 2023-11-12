@@ -81,14 +81,6 @@
                     <h3 id="countdown" class="text-theme"></h3>
                 @endif
             </div>
-
-            <div class="col-12 mx-auto">
-                <h3>Sedang Dibuka Pendaftaran <b class="text-theme">Early Postpartum Workshop dan Core Stability Program</b></h3>
-                <a class="btn btn-theme wow fadeInUp mt-2" data-wow-duration="3s" data-wow-delay="0.5s" href="/daftar-workshop" data-text="Daftar">
-                    <span>I</span><span>s</span><span>i</span>
-                    <span>F</span><span>o</span><span>r</span><span>m</span>
-                </a>
-            </div>
         </div>
       </div>
     </div>
