@@ -9,6 +9,7 @@ use App\Http\Controllers\CompanyProfile\PricelistController;
 use App\Livewire\Member\Registrations\FormNewMember;
 use App\Livewire\Member\Registrations\FormWorkshop;
 use App\Livewire\Member\RegistrationSuccess;
+use App\Livewire\WatchPrivateVideo;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,9 +37,11 @@ Route::get('/registrasi-berhasil/{memberName}', RegistrationSuccess::class)->nam
 //Workshop
 Route::get('/daftar-workshop', FormWorkshop::class)->name('workshop_register');
 Route::get('/registrasi-workshop-berhasil/{memberName}', RegistrationSuccess::class)->name('workshop_registration_success');
+Route::get('/private-video', WatchPrivateVideo::class)->name('private_video');
 
 //Change Password
 Route::get('/ganti-password', ChangePassword::class)->name('ganti_password');
+
 
 require __DIR__ . '/member.php';
 
