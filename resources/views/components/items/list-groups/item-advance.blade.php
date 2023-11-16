@@ -7,7 +7,10 @@
         @endisset
         <div class="media-body">
             <h6 class="tx-inverse">{{ $title }}</h6>
+            @isset($subTitle)
             <p class="mg-b-0">{{ $subTitle }}</p>
+            @endisset
+
             <p class="amount">{{ $info }}</p>
         </div>
     </div>

@@ -30,8 +30,11 @@ class RedirectIfAuthenticated
                 elseif (Auth::user()->role_id==2) {
                     return redirect()->route('coach::dashboard');
                 }
+                elseif (Auth::user()->role_id==5) {
+                    return redirect()->route('trainer::dashboard');
+                }
                 else {
-                    return redirect()->route('/');
+                    return redirect()->route('landing');
                 }
             }
         }

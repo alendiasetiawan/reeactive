@@ -65,12 +65,19 @@ class LoginController extends Controller
                 }
                 return redirect()->route('coach::dashboard');
             }
+            elseif(auth()->user()->role_id==5) {
+                if($request->has('simpanpwd')) {
+                    Cookie::queue('saveuser',$request->email,20160);
+                    Cookie::queue('savepwd',$request->password,20160);
+                }
+                return redirect()->route('trainer::dashboard');
+            }
             else {
                 if($request->has('simpanpwd')) {
                     Cookie::queue('saveuser',$request->email,20160);
                     Cookie::queue('savepwd',$request->password,20160);
                 }
-                return redirect()->route('home_page');
+                return redirect()->route('landing');
             }
         } else {
             return redirect()->route('login')->with('flash_message_error','GAGAL Login, Username/Password Salah!');

@@ -35,7 +35,7 @@
     <!--  BEGIN NAVBAR  -->
     @if (Auth::user()->role_id == 1)
         @include('layouts.elements.headers.admin_header')
-    @elseif (Auth::user()->role_id == 2)
+    @elseif (Auth::user()->role_id == 2 || Auth::user()->role_id == 5)
         @include('layouts.elements.headers.coach_header')
     @else
         @include('layouts.elements.headers.member_header')
@@ -43,7 +43,7 @@
 
     @if (Auth::user()->role_id == 1)
         @include('layouts.elements.bottom_navbar.admin_bottom_navbar')
-    @elseif (Auth::user()->role_id == 2)
+    @elseif (Auth::user()->role_id == 2 || Auth::user()->role_id == 5)
         @include('layouts.elements.bottom_navbar.coach_bottom_navbar')
     @else
         @include('layouts.elements.bottom_navbar.member_bottom_navbar')
@@ -64,6 +64,8 @@
             @include('layouts.elements.sidebars.member_sidebar')
         @elseif (Auth::user()->role_id == 2)
             @include('layouts.elements.sidebars.coach_sidebar')
+        @elseif (Auth::user()->role_id == 5)
+            @include('layouts.elements.sidebars.trainer-sidebar')
         @else
             @include('layouts.elements.sidebars.admin_sidebar')
         @endif

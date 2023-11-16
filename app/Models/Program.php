@@ -28,6 +28,11 @@ class Program extends Model
         return $this->hasMany(ClassModel::class, 'program_id', 'id');
     }
 
+    public function workshopRegistrations(): HasMany
+    {
+        return $this->hasMany(WorkshopRegistration::class, 'program_id', 'id');
+    }
+
     public static function allProgramPricelists() {
         return Program::with([
             'pricelists' => function ($query) {
@@ -99,13 +104,16 @@ class Program extends Model
         ->get();
     }
 
-    public static function membersPerProgram($batchId) {
+    public static function membersPerProgram($batchId, $coachId) {
         return Program::with([
-            'registrations' => function($query) use($batchId) {
+            'registrations' => function($query) use($batchId, $coachId) {
                 $query->where('batch_id', $batchId)
+                ->where('coach_id', $coachId)
                 ->where('payment_status', 'Done');
             }
         ])
+        ->join('classes', 'programs.id', 'classes.program_id')
+        ->where('classes.coach_code', Auth::user()->email)
         ->get();
     }
 
@@ -115,6 +123,20 @@ class Program extends Model
                 $query->where('coach_code', Auth::user()->email);
             }
         ])
+        ->get();
+    }
+
+    public static function participantsPerProgram($batchId, $coachId) {
+        return Program::with([
+            'workshopRegistrations' => function ($query) use($batchId, $coachId) {
+                $query->where('workshop_batch_id', $batchId)
+                ->where('coach_id', $coachId)
+                ->where('payment_status', 'Done');
+            }
+        ])
+        ->join('classes', 'programs.id', 'classes.program_id')
+        ->select('programs.*', 'classes.start_time', 'classes.end_time')
+        ->where('classes.coach_code', Auth::user()->email)
         ->get();
     }
 

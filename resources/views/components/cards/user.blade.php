@@ -27,9 +27,12 @@
             {{ $slot }}
         </span>
     </div>
+    @isset($bottomButton)
     <div class="card-footer pt-0 border-0 text-center">
         <a {{ $bottomButton->attributes->class(['btn btn-secondary w-100'])->merge(['href' => '']) }}>
             {{ $bottomButton }}
         </a>
     </div>
+    @endisset
+
 </div>
