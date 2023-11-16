@@ -23,7 +23,7 @@ use App\Livewire\WatchPrivateVideo;
 */
 
 Auth::routes();
-Route::get('/', [LandingPageController::class, 'index'])->name('home_page');
+Route::get('/', [LandingPageController::class, 'index'])->name('landing');
 Route::get('/logout', [LoginController::class, 'logout']);
 Route::controller(PricelistController::class)->group(function() {
     Route::get('/private-1-on-1', 'private');
@@ -48,3 +48,5 @@ require __DIR__ . '/member.php';
 require __DIR__ . '/admin.php';
 
 require __DIR__ . '/coach.php';
+
+require __DIR__ . '/trainer.php';

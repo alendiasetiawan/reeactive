@@ -23,6 +23,11 @@ class WorkshopRegistration extends Model
         return $this->belongsTo(ClassModel::class, 'class_id', 'id');
     }
 
+    public function program(): BelongsTo
+    {
+        return $this->belongsTo(Program::class, 'program_id', 'id');
+    }
+
     public static function activeWorkshop() {
         return WorkshopRegistration::join('programs', 'workshop_registrations.program_id', 'programs.id')
         ->join('coaches', 'workshop_registrations.coach_id', 'coaches.id')
@@ -55,5 +60,61 @@ class WorkshopRegistration extends Model
         ->select('workshop_registrations.*', 'members.member_name', 'programs.program_name', 'coaches.nick_name', 'coaches.coach_name',
         'classes.day', 'classes.start_time', 'classes.end_time', 'classes.link_wa')
         ->first();
+    }
+
+    public static function activeParticipant($coachId, $batchId) {
+        return WorkshopRegistration::where('coach_id', $coachId)
+        ->where('workshop_batch_id', $batchId)
+        ->where('payment_status', 'Done')
+        ->count();
+    }
+
+    public static function activeParticipantInProgram($batchId, $coachId, $programId) {
+        return WorkshopRegistration::where('coach_id', $coachId)
+        ->where('workshop_batch_id', $batchId)
+        ->where('program_id', $programId)
+        ->where('payment_status', 'Done')
+        ->count();
+    }
+
+    public static function activeParticipantPerCoach($batchId, $coachId) {
+        return WorkshopRegistration::join('members', 'workshop_registrations.member_code', 'members.code')
+        ->join('programs', 'workshop_registrations.program_id', 'programs.id')
+        ->join('classes', 'workshop_registrations.class_id', 'classes.id')
+        ->where('workshop_registrations.workshop_batch_id', $batchId)
+        ->where('workshop_registrations.coach_id', $coachId)
+        ->where('workshop_registrations.payment_status', 'Done')
+        ->select('workshop_registrations.created_at', 'members.member_name','members.mobile_phone', 'members.medical_condition', 'programs.program_name', 'programs.id',
+        'classes.day', 'classes.start_time', 'classes.end_time', 'workshop_registrations.is_assessment', 'workshop_registrations.voucher_code')
+        ->orderBy('members.member_name', 'asc')
+        ->paginate(9);
+    }
+
+    public static function activeParticipantPerCoachSearch($batchId, $coachId, $searchMember) {
+        return WorkshopRegistration::join('members', 'workshop_registrations.member_code', 'members.code')
+        ->join('programs', 'workshop_registrations.program_id', 'programs.id')
+        ->join('classes', 'workshop_registrations.class_id', 'classes.id')
+        ->where('workshop_registrations.workshop_batch_id', $batchId)
+        ->where('workshop_registrations.coach_id', $coachId)
+        ->where('workshop_registrations.payment_status', 'Done')
+        ->where('members.member_name', 'like', '%'.$searchMember.'%')
+        ->select('workshop_registrations.created_at', 'members.member_name','members.mobile_phone', 'members.medical_condition', 'programs.program_name', 'programs.id',
+        'classes.day', 'classes.start_time', 'classes.end_time', 'workshop_registrations.is_assessment', 'workshop_registrations.voucher_code')
+        ->orderBy('members.member_name', 'asc')
+        ->paginate(9);
+    }
+
+    public static function memberInProgram($batchId, $coachId, $programId) {
+        return WorkshopRegistration::join('members', 'workshop_registrations.member_code', 'members.code')
+        ->join('programs', 'workshop_registrations.program_id', 'programs.id')
+        ->join('classes', 'workshop_registrations.class_id', 'classes.id')
+        ->where('workshop_registrations.workshop_batch_id', $batchId)
+        ->where('workshop_registrations.coach_id', $coachId)
+        ->where('workshop_registrations.program_id', $programId)
+        ->where('workshop_registrations.payment_status', 'Done')
+        ->select('workshop_registrations.id', 'workshop_registrations.created_at', 'workshop_registrations.registration_category', 'members.member_name', 'members.medical_condition', 'programs.program_name',
+        'classes.day', 'classes.start_time', 'classes.end_time', 'members.mobile_phone')
+        ->orderBy('members.member_name', 'asc')
+        ->paginate(9);
     }
 }
