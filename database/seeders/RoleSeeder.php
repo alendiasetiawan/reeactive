@@ -30,6 +30,10 @@ class RoleSeeder extends Seeder
                 'role_name' => 'Finance',
                 'access_grant' => 'Cash Control',
             ],
+            [
+                'role_name' => 'Trainer',
+                'access_grant' => 'Workshop Training',
+            ],
         ]);
     }
 }
