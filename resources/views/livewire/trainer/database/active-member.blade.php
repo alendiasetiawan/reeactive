@@ -47,12 +47,10 @@
                     </x-slot>
                     <x-slot name="userName">{{ $member->member_name }}</x-slot>
                     <x-slot name="userTitle">
-                        @if ($loop->index == 0 )
+                        @if ($member->program_name == 'Early Postpartum Workshop' )
                             <b class="text-success">{{ $member->program_name }}</b>
-                        @elseif ($loop->index == 1 )
-                            <b class="text-secondary">{{ $member->program_name }}</b>
                         @else
-                            <b class="text-primary">{{ $member->program_name }}</b>
+                            <b class="text-secondary">{{ $member->program_name }}</b>
                         @endif
                     </x-slot>
                     <x-slot name="icon" href="https://wa.me/{{ $member->mobile_phone }}" target="_blank">
@@ -67,9 +65,11 @@
                             @endif
                         </li>
                         <li>{{ $member->day }} ({{ \Carbon\Carbon::parse($member->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($member->end_time)->format('H:i') }})</li>
+                        @if ($member->voucher_code != null)
                         <li>
                             Kode Voucher : <b><em>{{ $member->voucher_code }}</em></b>
                         </li>
+                        @endif
                     </ul>
                     {{-- <x-slot name="bottomButton" href="#">Detail Member</x-slot> --}}
                 </x-cards.user>
