@@ -104,16 +104,13 @@ class Program extends Model
         ->get();
     }
 
-    public static function membersPerProgram($batchId, $coachId) {
+    public static function membersPerProgram($batchId) {
         return Program::with([
-            'registrations' => function($query) use($batchId, $coachId) {
+            'registrations' => function($query) use($batchId) {
                 $query->where('batch_id', $batchId)
-                ->where('coach_id', $coachId)
                 ->where('payment_status', 'Done');
             }
         ])
-        ->join('classes', 'programs.id', 'classes.program_id')
-        ->where('classes.coach_code', Auth::user()->email)
         ->get();
     }
 
