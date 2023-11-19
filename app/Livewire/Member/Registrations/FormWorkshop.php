@@ -100,7 +100,7 @@ class FormWorkshop extends Component
     }
 
     public function mount() {
-        $this->programs = Program::where('program_type', 'Workshop')->get();
+        $this->programs = Program::where('program_type', 'Workshop')->where('program_status','Open')->get();
         $this->phoneCodes = PhoneCode::all();
         $this->provinces = Province::all();
         $this->batchOpen = WorkshopBatch::where('batch_status', 'Open')->exists();
@@ -144,6 +144,16 @@ class FormWorkshop extends Component
             );
         }
         if ($this->currentStep == 2) {
+            if ($this->assessmentDone == 'Sudah') {
+                $this->validate(
+                    [
+                        'assessmentVerification' => 'required',
+                    ], [
+                        'assessmentVerification.required' => 'Silahkan masukan kode verifikasi anda!',
+                    ]
+                );
+            }
+
             $this->validate(
             [
                 'selectedProgram' => 'required',
