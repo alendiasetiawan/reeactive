@@ -196,8 +196,9 @@
 
                                     @if ($assessmentDone == 'Sudah')
                                         <div class="col-lg-6 col-12 mb-2">
-                                            <x-inputs.label>Kode Verifikasi Assessment</x-inputs.label>
+                                            <x-inputs.label>Kode Verifikasi Assessment (Untuk Discount)</x-inputs.label>
                                             <x-inputs.basic type="text" wire:model.live.debounce.250ms='assessmentVerification' placeholder="Tulis nomor HP, ex : 085775745484"/>
+                                            <small class="text-danger text-form">@error('assessmentVerification') {{ $message }} @enderror</small>
                                             @if ($assessmentVerification != NULL)
                                                 @if ($isAssessmentCodeValid)
                                                     <small class="text-info">Hi, <b class="text-primary">"{{ $assessmentData->valid_name }}"</b>. Kamu berhak mendapatkan discount biaya pendaftaran</small>

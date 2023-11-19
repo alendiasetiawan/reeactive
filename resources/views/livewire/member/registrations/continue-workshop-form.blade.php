@@ -39,7 +39,7 @@
                     </x-items.alerts.light-danger>
                 @else
                 <hr>
-                    @if (Auth::user()->email == 'Reguler')
+                    @if (Auth::user()->type == 'Reguler')
                         <x-items.alerts.light-danger>Mohon maaf, program ini tidak untuk member reeactive</x-items.alerts.light-danger>
                     @else
                         @if ($userExist)
