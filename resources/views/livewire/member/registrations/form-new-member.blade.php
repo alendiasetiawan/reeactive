@@ -21,23 +21,10 @@
         </nav>
     </div>
 
-    @if ($batch->batch_status != 'Open')
-        <div class="row layout-top-spacing">
-            <div class="col-12">
-                <x-items.alerts.light-danger>
-                    Mohon maaf, saat ini pendaftaran sudah TUTUP! Sampai jumpa di batch berikutnya ^^
-                </x-items.alerts.light-danger>
-            </div>
-            <div class="col-12">
-                <a href="/">
-                    <x-buttons.solid-secondary>Halaman Utama</x-buttons.solid-secondary>
-                </a>
-            </div>
-        </div>
-    @else
+    @if ($batch->batch_status == 'Open' || $privateBatch->status == 'Open')
     <div class="row layout-top-spacing">
         <div class="d-flex align-items-center justify-content-center">
-            <h2>Pendaftaran New Member Reeactive <b class="text-primary">{{ $batch->batch_name }}</b></h2>
+            <h2>Pendaftaran New Member Reeactive</h2>
         </div>
         @if ($currentStep <= 2)
         <div class="d-flex align-items-center justify-content-center">
@@ -254,7 +241,7 @@
                     @if ($currentStep == 2)
                         <div class="card mx-auto mb-3">
                             <div class="card-header">
-                                <h4>Akad Program <b class="text-primary">Large Group</b></h4>
+                                <h4>Akad Program</h4>
                                 <small>Langkah 2/4</small>
                             </div>
                             <div class="card-body">
@@ -264,7 +251,8 @@
                                             <div class="form-check form-check-primary form-check-inline">
                                                 <input class="form-check-input" type="checkbox" id="poin-satu" wire:model='poinSatu'>
                                                 <label class="form-check-label" for="poin-satu">
-                                                    Pembelian paket (30 sesi) berlaku selama <b>2,5 bulan</b> masa training
+                                                    <b>Program Large Group</b> : Pembelian paket (30 sesi) berlaku selama <b>2,5 bulan</b> masa training |
+                                                    <b>Program Small Group</b> : Pembelian paket (10 Sesi)
                                                 </label>
                                                 <small class="text-danger"><b>@error('poinSatu') {{ $message }} @enderror</b></small>
                                             </div>
@@ -659,6 +647,19 @@
                     </div>
                 </form>
             </div>
+        </div>
+    </div>
+    @else
+    <div class="row layout-top-spacing">
+        <div class="col-12">
+            <x-items.alerts.light-danger>
+                Mohon maaf, saat ini pendaftaran sudah TUTUP! Sampai jumpa di batch berikutnya ^^
+            </x-items.alerts.light-danger>
+        </div>
+        <div class="col-12">
+            <a href="/">
+                <x-buttons.solid-secondary>Halaman Utama</x-buttons.solid-secondary>
+            </a>
         </div>
     </div>
     @endif
