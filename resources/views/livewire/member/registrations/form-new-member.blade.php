@@ -251,7 +251,7 @@
                                             <div class="form-check form-check-primary form-check-inline">
                                                 <input class="form-check-input" type="checkbox" id="poin-satu" wire:model='poinSatu'>
                                                 <label class="form-check-label" for="poin-satu">
-                                                    <b>Program Large Group</b> : Pembelian paket (30 sesi) berlaku selama <b>2,5 bulan</b> masa training |
+                                                    <b>Program Large Group</b> : Pembelian paket (27 sesi) berlaku selama <b>2,5 bulan</b> masa training |
                                                     <b>Program Small Group</b> : Pembelian paket (10 Sesi)
                                                 </label>
                                                 <small class="text-danger"><b>@error('poinSatu') {{ $message }} @enderror</b></small>
@@ -371,7 +371,7 @@
                                                     <x-inputs.select-option value="85774827925">Coach Dina (Dina Yuliana)</x-inputs.select-option>
                                                 @else
                                                     @foreach ($this->coaches as $coach)
-                                                        <x-inputs.select-option value="{{ $coach->code }}">Coach {{ $coach->nick_name }}({{ $coach->coach_name }})</x-inputs.select-option>
+                                                        <x-inputs.select-option value="{{ $coach->code }}">Coach {{ $coach->nick_name }} ({{ $coach->coach_name }})</x-inputs.select-option>
                                                     @endforeach
                                                 @endif
                                             </x-inputs.select>
