@@ -123,10 +123,6 @@ class Coach extends Model
             }
         ])
         ->where('type', 'Reguler')
-        ->where(function ($query) {
-            $query->orWhere('coach_status', 'Aktif')
-            ->orWhere('coach_status_eksternal', 'Aktif');
-        })
         ->orderBy('coach_name', 'asc')
         ->select('code', 'coach_name', 'nick_name')
         ->get();
