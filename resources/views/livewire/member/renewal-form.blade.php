@@ -33,9 +33,7 @@
                     <x-inputs.select wire:model.live="selectedProgram" required
                     oninvalid="this.setCustomValidity('Silahkan pilih 1 program')"
                     oninput="this.setCustomValidity('')">
-                        @if (!$selectedProgram)
                         <x-inputs.select-option value="" selected>--Pilih--</x-inputs.select-option>
-                        @endif
                         @foreach ($programs as $program)
                             <x-inputs.select-option
                                 value="{{ $program->id }}">{{ $program->program_name }}</x-inputs.select-option>
@@ -50,40 +48,21 @@
                     oninvalid="this.setCustomValidity('Isi level anda saat ini')"
                     oninput="this.setCustomValidity('')">
                         <x-inputs.select-option value="" selected>--Pilih--</x-inputs.select-option>
-                        <x-inputs.select-option value="2">Beginner 2.0</x-inputs.select-option>
-                        <x-inputs.select-option value="3">Intermediate</x-inputs.select-option>
-                    </x-inputs.select>
-                </div>
-                @endif
-
-                @if ($selectedProgram)
-                <div class="col-lg-6 col-12 mb-2">
-                    <x-inputs.label>Jumlah Sesi</x-inputs.label>
-                    <x-inputs.select wire:model.live="selectedSession" required
-                    oninvalid="this.setCustomValidity('Pilih jumlah sesi yang anda inginkan')"
-                    oninput="this.setCustomValidity('')">
-                        @if (!$selectedSession)
-                        <x-inputs.select-option value="" selected>--Pilih--</x-inputs.select-option>
-                        @endif
-                        @foreach ($this->classSessions as $session)
-                            <x-inputs.select-option
-                                value="{{ $session->id }}">{{ $session->amount }} Sesi</x-inputs.select-option>
+                        @foreach ($levels as $id => $level)
+                            <x-inputs.select-option value="{{ $id }}">{{ $level }}</x-inputs.select-option>
                         @endforeach
                     </x-inputs.select>
-                    <small class="text-dark">Pilih sesi yang anda inginkan</small>
                 </div>
                 @endif
 
-                @if ($selectedSession)
+                @if ($selectedLevel != null)
                 <div class="col-lg-6 col-12 mb-2">
                     <x-inputs.label>Coach</x-inputs.label>
                     <x-inputs.select wire:model.live="selectedCoach" required
                     oninvalid="this.setCustomValidity('Anda belum memilih coach')"
                     oninput="this.setCustomValidity('')">
-                        @if (!$selectedCoach)
-                        <x-inputs.select-option value="" selected>--Pilih--</x-inputs.select-option>
-                        @endif
-
+                        <x-inputs.select-option value="" selected><b
+                                class="text-muted">--Pilih--</b></x-inputs.select-option>
                         @foreach ($this->coaches as $coach)
                             <x-inputs.select-option
                                 value="{{ $coach->code }}">Coach {{ $coach->nick_name }} ({{ $coach->coach_name }})</x-inputs.select-option>
@@ -115,7 +94,7 @@
             <div class="row">
                 <div class="col-lg-6 col-12 mb-3">
                     <x-inputs.label>Harga</x-inputs.label>
-                    <x-inputs.disable-text placeholder="{{ $price }}" />
+                    <x-inputs.disable-text wire:model="price" />
                 </div>
                 <div class="col-lg-6 col-12 mb-3">
                     <x-inputs.label>Bukti Transfer</x-inputs.label>
