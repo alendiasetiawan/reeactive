@@ -18,11 +18,11 @@ class RegistrationService {
         ->count();
 
         //Check program's quota
-        if ($levelId != 3) {
+        if ($levelId == 1) {
             $program = Program::find($programId);
             $quotaProgram = $program->quota_max;
         } else {
-            $quotaProgram = 17;
+            $quotaProgram = 18;
         }
 
         $quotaLeft = $quotaProgram - $registeredMember;

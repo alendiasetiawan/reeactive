@@ -8,6 +8,7 @@ use App\Models\Program;
 use Livewire\Component;
 use App\Models\Pricelist;
 use App\Models\ClassModel;
+use App\Models\ClassSession;
 use App\Models\Level;
 use App\Models\Registration;
 use App\Services\RegistrationService;
@@ -39,6 +40,7 @@ class RenewalForm extends Component
     public $quotaLeft;
     public $alertQuota = false;
     public $registeredMember;
+    public $selectedSession;
 
     protected $registrationService;
 
@@ -65,6 +67,13 @@ class RenewalForm extends Component
     }
 
     #[Computed]
+    public function classSessions() {
+        return ClassSession::where('program_id', $this->selectedProgram)
+        ->where('status', 'Open')
+        ->get();
+    }
+
+    #[Computed]
     public function coach() {
         return Coach::where('code', $this->selectedCoach)->first();
     }
@@ -74,11 +83,25 @@ class RenewalForm extends Component
             $this->reset('selectedLevel', 'selectedCoach', 'selectedClass', 'quotaLeft');
         }
 
+        if($property == 'selectedSession') {
+            $this->reset('selectedCoach', 'selectedClass');
+        }
+
         if ($property == 'selectedCoach') {
+            $member = Registration::where('member_code', Auth::user()->email)->first();
             $pricelist = Pricelist::where('program_id', $this->selectedProgram)
                 ->where('coach_code', $this->selectedCoach)
                 ->first();
-            $priceNumber = $pricelist->price_renewal;
+
+            if ($this->selectedSession == 1) {
+                $priceNumber = $pricelist->price_session_20;
+            } else {
+                if ($member->batch_id == 1) {
+                    $priceNumber = $pricelist->price_session_27_old;
+                } else {
+                    $priceNumber = $pricelist->price_session_27_new;
+                }
+            }
             $this->price = 'Rp '.number_format($priceNumber,0,',','.');
             $this->reset('selectedClass', 'quotaLeft');
         }
