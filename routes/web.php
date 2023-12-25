@@ -32,7 +32,7 @@ Route::controller(PricelistController::class)->group(function() {
     Route::get('/large-groups', 'large');
 });
 Route::get('/member-baru', FormNewMember::class)->name('new_member');
-Route::get('/registrasi-berhasil/{memberName}', RegistrationSuccess::class)->name('registration_success');
+Route::get('/registrasi-berhasil/{memberName}/{programName}/{coachFullName}/{coachNickName}/{classDay}/{classStartTime}/{classEndTime}/{email}', RegistrationSuccess::class)->name('registration_success');
 
 //Workshop
 Route::get('/daftar-workshop', FormWorkshop::class)->name('workshop_register');

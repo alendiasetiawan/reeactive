@@ -379,6 +379,17 @@ class FormNewMember extends Component
             $kecamatan = $this->districtId;
         }
 
+        //check program and class
+        $program = Program::find($this->selectedProgram);
+        $programName = $program->program_name;
+        $coach = Coach::where('code', $this->selectedCoach)->first();
+        $coachNickName = $coach->nick_name;
+        $coachFullName = $coach->coach_name;
+        $class = ClassModel::find($this->selectedClass);
+        $classDay = $class->day;
+        $classStartTime = $class->start_time;
+        $classEndTime = $class->end_time;
+
         //convert rupiah format
         $priceStr = preg_replace("/[^0-9]/","", $this->price);
         $priceInt = (int) $priceStr;
@@ -434,7 +445,16 @@ class FormNewMember extends Component
                 ]);
 
                 DB::commit();
-                $this->redirect(route('registration_success', $this->memberName));
+                $this->redirectRoute('registration_success', [
+                    'memberName' => $this->memberName,
+                    'programName' => $programName,
+                    'coachFullName' => $coachFullName,
+                    'coachNickName' => $coachNickName,
+                    'classDay' => $classDay,
+                    'classStartTime' => $classStartTime,
+                    'classEndTime' => $classEndTime,
+                    'email' => $this->phone,
+                ]);
 
             } catch (Exception) {
                 DB::rollBack();
