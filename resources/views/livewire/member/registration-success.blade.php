@@ -7,11 +7,16 @@
         <div class="col-lg-7">
             <div class="card mx-auto mb-3">
                 <div class="card-body">
-                    <div class="row text-center">
+                    <div class="row text-left">
                         <div class="col-lg-12">
                             <p>
-                                Selamat <b class="text-primary">{{ $nama }}</b>, anda telah berhasil daftar workshop, sekarang
-                                silahkan anda <b class="text-primary">Login Ke Aplikasi</b> untuk mendapatkan informasi selanjutnya.
+                                Selamat <b class="text-primary">{{ $memberName }}</b>, anda telah resmi menjadi member <b>Reeactive.</b> Berikut data pendaftaran anda :<br><br>
+
+                                Program : <b>{{ $programName }}</b><br>
+                                Coach : <b>{{ $coachNickName }} ({{ $coachFullName }})</b> <br>
+                                Kelas : <b>{{ $classDay }} ({{ \Carbon\Carbon::parse($classStartTime)->format('H:i') }} - {{ \Carbon\Carbon::parse($classEndTime)->format('H:i') }})</b><br><br>
+
+                                silahkan anda <b class="text-primary">Login Ke Aplikasi</b> menggunakan <b>Username : {{ $email }}</b> untuk mendapatkan informasi selanjutnya.
                             </p>
                         </div>
                     </div>
