@@ -342,11 +342,11 @@
                                 </div>
                                 <div class="row">
                                     <ul class="custom-li list-unstyled list-icon-2 d-inline-block">
-                                        <li>Program intensif 10 pekan</li>
-                                        <li>Latihan 3x per pekan</li>
+                                        <li>Program intensif 10 sesi</li>
+                                        <li>Latihan 2x seminggu (5 pekan) atau 3x seminggu (4 pekan)</li>
                                         <li>Durasi latihan 40 - 60 menit</li>
                                         <li>Menggunakan zoom premium</li>
-                                        <li>Jumlah maksimal peserta 15 orang</li>
+                                        <li>Jumlah peserta 4-6 orang</li>
                                     </ul>
                                 </div>
                                 <div class="row align-items-center">
