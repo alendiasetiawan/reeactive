@@ -93,7 +93,7 @@ class RenewalForm extends Component
                 ->where('coach_code', $this->selectedCoach)
                 ->first();
 
-            if ($this->selectedSession == 1) {
+            if ($this->selectedSession == 1 || $this->selectedSession == 4) {
                 $priceNumber = $pricelist->price_session_20;
             } else {
                 if ($member->batch_id == 1) {
