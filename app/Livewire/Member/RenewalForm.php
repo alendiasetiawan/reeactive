@@ -30,7 +30,7 @@ class RenewalForm extends Component
     public $selectedProgram;
     public $selectedCoach;
     public $selectedClass;
-    public $selectedLevel;
+    public $selectedLevel = 1;
     public $price;
     public $levels;
     public $showProgressBar = false;
