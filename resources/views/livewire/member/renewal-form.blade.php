@@ -43,7 +43,7 @@
                     </x-inputs.select>
                 </div>
 
-                @if ($selectedProgram != null)
+                @if ($selectedProgram != null && $selectedProgram != 3 && $selectedProgram != 4)
                 <div class="col-lg-6 col-12 mb-2">
                     <x-inputs.label>Level</x-inputs.label>
                     <x-inputs.select wire:model.live="selectedLevel" required
