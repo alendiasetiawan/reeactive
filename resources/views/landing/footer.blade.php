@@ -3,7 +3,7 @@
         <div class="container">
             <div class="copyright">
                 <div class="row align-items-center">
-                    <div class="col-lg-6 col-md-12"> <span>© Copyright 2023 - <a href="/">Reeactive</a> | Fit for Deen</span>
+                    <div class="col-lg-6 col-md-12"> <span>© Copyright {{ date('Y') }} - <a href="/">Reeactive</a> | Fit for Deen</span>
                     </div>
                 </div>
             </div>

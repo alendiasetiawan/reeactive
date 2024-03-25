@@ -14,15 +14,19 @@
                 <div class="w-content">
                     <form wire:submit.prevent="saveData">
                         <div class="row">
-                            <div class="col-lg-4 col-md-6 col-12 mb-3">
-                                <x-inputs.label>Nama Lengkap</x-inputs.label>
-                                <x-inputs.disable-text placeholder="{{ $paymentDetail->member_name }}"></x-inputs.disable-text>
-                            </div>
-                            <div class="col-lg-4 col-md-6 col-12 mb-3">
+                            <div class="col-lg-6 col-md-6 col-12 mb-3">
                                 <x-inputs.label>Jenis Registrasi</x-inputs.label>
                                 <x-inputs.disable-text placeholder="{{ $paymentDetail->registration_category }}"></x-inputs.disable-text>
                             </div>
-                            <div class="col-lg-4 col-12 mb-3">
+                            <div class="col-lg-6 col-md-6 col-12 mb-3">
+                                <x-inputs.label>Tipe Registrasi</x-inputs.label>
+                                <x-inputs.disable-text placeholder="{{ $paymentDetail->registration_type }}"></x-inputs.disable-text>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-12 mb-3">
+                                <x-inputs.label>Nama Lengkap</x-inputs.label>
+                                <x-inputs.disable-text placeholder="{{ $paymentDetail->member_name }}"></x-inputs.disable-text>
+                            </div>
+                            <div class="col-lg-6 col-12 mb-3">
                                 <x-inputs.label>Program</x-inputs.label>
                                 <x-inputs.disable-text placeholder="{{ $paymentDetail->program_name }}"></x-inputs.disable-text>
                             </div>
@@ -44,6 +48,7 @@
                             <div class="col-lg-6 col-12 mb-3">
                                 <x-inputs.label>Nominal Transfer</x-inputs.label>
                                 <x-inputs.disable-text placeholder="{{ 'Rp '.number_format($paymentDetail->amount_pay,0,',','.') }}"></x-inputs.disable-text>
+                                <small class="text-muted">Biaya Program : {{ CurrencyHelper::formatRupiah($paymentDetail->program_price) }} + Admin Fee : {{ CurrencyHelper::formatRupiah($paymentDetail->admin_fee) }}</small>
                             </div>
                             <div class="col-lg-6 col-12 mb-3">
                                 <x-inputs.label>Waktu Upload</x-inputs.label>

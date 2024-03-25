@@ -1,6 +1,6 @@
 <div class="footer-wrapper">
     <div class="footer-section f-section-1">
-        <p class="">Copyright © <span class="dynamic-year">2023</span>
+        <p class="">Copyright © <span class="dynamic-year">{{ date('Y') }}</span>
             <a target="_blank" href="https://reeactive.com">Reeactive</a>, v0.11.15
         </p>
     </div>

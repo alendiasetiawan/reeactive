@@ -209,7 +209,7 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-6 col-12 layout-spacing">
+        <div class="col-lg-8 col-12 layout-spacing">
             <div class="widget widget-table-two">
 
                 <div class="widget-heading">
@@ -255,7 +255,7 @@
 
                             </tbody>
                         </table>
-                        <a wire:navigate href="#">
+                        <a wire:navigate href="{{ route('admin::payment_verification') }}">
                             <x-buttons.solid-primary>Detail</x-buttons.solid-primary>
                         </a>
                     </div>
