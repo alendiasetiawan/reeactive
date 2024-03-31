@@ -56,7 +56,7 @@
                 </div>
                 @endif
 
-                @if ($selectedProgram)
+                {{-- @if ($selectedProgram)
                 <div class="col-lg-6 col-12 mb-2">
                     <x-inputs.label>Jumlah Sesi</x-inputs.label>
                     <x-inputs.select wire:model.live="selectedSession" required
@@ -72,9 +72,9 @@
                     </x-inputs.select>
                     <small class="text-dark">Pilih sesi yang anda inginkan</small>
                 </div>
-                @endif
+                @endif --}}
 
-                @if ($selectedSession)
+                @if ($selectedProgram)
                 <div class="col-lg-6 col-12 mb-2">
                     <x-inputs.label>Coach</x-inputs.label>
                     <x-inputs.select wire:model.live="selectedCoach" required
@@ -112,10 +112,27 @@
                 @endif
             </div>
 
+            @if ($selectedClass)
             <div class="row">
+                <div class="col-12">
+                    @if ($isDiscountApply)
+                    <div class="alert alert-light-success alert-dismissible fade show border-0 mt-1" role="alert">
+                        <strong>Selamat!</strong> Anda mendapatkan diskon 5% untuk pendaftaran Early Bird</button>
+                    </div>
+                    @endif
+                </div>
                 <div class="col-lg-6 col-12 mb-3">
-                    <x-inputs.label>Harga</x-inputs.label>
-                    <x-inputs.disable-text placeholder="{{ $price }}" />
+                    <b>Detail Biaya</b>
+                    <br>
+                    @if ($isDiscountApply)
+                        Biaya Program : <b>{{ CurrencyHelper::formatRupiah($price) }}</b>
+                        <br>
+                        Discount ({{ $discount * 100 }}%) : <b>(-{{ CurrencyHelper::formatRupiah($amountDisc) }})</b>
+                        <br>
+                        Total : <b class="text-primary">{{ CurrencyHelper::formatRupiah($totalPrice) }}</b>
+                    @else
+                        Total : <b class="text-primary">{{ CurrencyHelper::formatRupiah($totalPrice) }}</b>
+                    @endif
                 </div>
                 <div class="col-lg-6 col-12 mb-3">
                     <x-inputs.label>Bukti Transfer</x-inputs.label>
@@ -156,6 +173,8 @@
                     </div>
                 @enderror
             </div>
+            @endif
+
 
             <div class="row">
                 <div class="col-12">

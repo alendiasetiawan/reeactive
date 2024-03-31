@@ -83,7 +83,7 @@ class FormNewMember extends Component
     public $medicalFileName;
     public $medical_condition;
     public $discount;
-    public bool $isDiscountApply = false, $alertUserExist = false, $alertQuota = false, $alertAddress = false;
+    public bool $alertUserExist = false, $alertQuota = false, $alertAddress = false;
     public ?string $registrationType;
 
     public $totalSteps = 4;
@@ -265,23 +265,9 @@ class FormNewMember extends Component
             }
 
             $this->adminFee = $this->batch->admin_fee;
+            $this->priceAfterDisc = $this->price;
+            $this->totalPrice = $this->price + $this->adminFee;
 
-            //Cek apakah tanggal daftar kurang dari tanggal buka batch
-            $openDate = $this->batch->start_date;
-            $dateToday = Carbon::now()->format('Y-m-d');
-
-            if ($dateToday < $openDate) {
-                $this->isDiscountApply = true;
-                $this->amountDisc = $this->price * $this->discount;
-                $this->priceAfterDisc = $this->price - $this->amountDisc;
-                $this->totalPrice = $this->priceAfterDisc + $this->adminFee;
-                $this->registrationType = 'Early Bird';
-            } else {
-                $this->isDiscountApply = false;
-                $this->priceAfterDisc = $this->price;
-                $this->totalPrice = $this->price + $this->adminFee;
-                $this->registrationType = 'Reguler';
-            }
         }
 
         if ($property == 'questionOne') {
@@ -449,7 +435,7 @@ class FormNewMember extends Component
                     'file_upload' => $this->fileUpload->storeAs($batchId, $this->uploadedFileName, 'public'),
                     'payment_status' => 'Process',
                     'registration_category' => 'New Member',
-                    'registration_type' => $this->registrationType,
+                    'registration_type' => 'Reguler',
                     'program_id' => $this->selectedProgram,
                     'level_id' => 1,
                     'coach_id' => $this->coach->id,

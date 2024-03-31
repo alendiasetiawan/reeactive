@@ -386,13 +386,6 @@
                                 </div>
                                 <!--Transfer Instruction-->
                                 <div class="row">
-                                    <div class="col-12">
-                                        @if ($isDiscountApply)
-                                        <div class="alert alert-light-success alert-dismissible fade show border-0" role="alert">
-                                            <strong>Selamat!</strong> Anda mendapatkan diskon 5% untuk pendaftaran Early Bird</button>
-                                        </div>
-                                        @endif
-                                    </div>
                                     <div class="col-lg-6 col-12 mb-3">
                                         @if ($selectedClass)
                                             <b>Rekening Pembayaran</b>
@@ -405,21 +398,11 @@
                                             <div class="mb-2">
                                                 <b>Detail Biaya</b>
                                                 <br>
-                                                @if ($isDiscountApply)
-                                                    Biaya Program : <b>{{ CurrencyHelper::formatRupiah($price) }}</b>
-                                                    <br>
-                                                    Discount ({{ $discount * 100 }}%) : <b>(-{{ CurrencyHelper::formatRupiah($amountDisc) }})</b>
-                                                    <br>
-                                                    Biaya Admin : <b>{{ CurrencyHelper::formatRupiah($adminFee) }}</b>
-                                                    <br>
-                                                    Total : <b class="text-primary">{{ CurrencyHelper::formatRupiah($totalPrice) }}</b>
-                                                @else
                                                     Biaya Program : <b>{{ CurrencyHelper::formatRupiah($price) }}</b>
                                                     <br>
                                                     Biaya Admin : <b>{{ CurrencyHelper::formatRupiah($adminFee) }}</b>
                                                     <br>
                                                     Total : <b class="text-primary">{{ CurrencyHelper::formatRupiah($totalPrice) }}</b>
-                                                @endif
                                                 <br>
                                             </div>
                                         @endif

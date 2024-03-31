@@ -2,20 +2,22 @@
 
 namespace App\Livewire\Member;
 
+use Carbon\Carbon;
 use App\Models\Batch;
 use App\Models\Coach;
+use App\Models\Level;
 use App\Models\Program;
 use Livewire\Component;
 use App\Models\Pricelist;
 use App\Models\ClassModel;
 use App\Models\ClassSession;
-use App\Models\Level;
 use App\Models\Registration;
-use App\Services\RegistrationService;
+use App\Services\BatchService;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\Auth;
+use App\Services\RegistrationService;
 
 class RenewalForm extends Component
 {
@@ -33,7 +35,7 @@ class RenewalForm extends Component
     public $selectedLevel = 1;
     public $price;
     public $levels;
-    public $showProgressBar = false;
+    public bool $isDiscountApply = false, $showProgressBar = false;
     public $uploadedFileName;
     public $registrationCategory;
     public $programs;
@@ -41,8 +43,16 @@ class RenewalForm extends Component
     public $alertQuota = false;
     public $registeredMember;
     public $selectedSession;
+    public ?int $amountDisc, $priceAfterDisc, $totalPrice;
+    public object $batch;
+    public $discount;
 
     protected $registrationService;
+
+    public function mount(BatchService $batchService) {
+        $this->batch = $batchService->batchQuery();
+        $this->discount = $this->batch->disc_early_bird;
+    }
 
     public function boot(RegistrationService $registrationService) {
         $this->programs = Program::where('program_status', 'Open')->where('program_type', 'Reguler')->get();
@@ -88,21 +98,22 @@ class RenewalForm extends Component
         }
 
         if ($property == 'selectedCoach') {
-            $member = Registration::where('member_code', Auth::user()->email)->first();
+            // $member = Registration::where('member_code', Auth::user()->email)->first();
             $pricelist = Pricelist::where('program_id', $this->selectedProgram)
                 ->where('coach_code', $this->selectedCoach)
                 ->first();
 
-            if ($this->selectedSession == 1 || $this->selectedSession == 4) {
-                $priceNumber = $pricelist->price_session_20;
-            } else {
-                if ($member->batch_id == 1) {
-                    $priceNumber = $pricelist->price_session_27_old;
-                } else {
-                    $priceNumber = $pricelist->price_session_27_new;
-                }
-            }
-            $this->price = 'Rp '.number_format($priceNumber,0,',','.');
+            // if ($this->selectedSession == 1 || $this->selectedSession == 4) {
+            //     $priceNumber = $pricelist->price_renewal;
+            // } else {
+            //     if ($member->batch_id == 1) {
+            //         $priceNumber = $pricelist->price_session_27_old;
+            //     } else {
+            //         $priceNumber = $pricelist->price_session_27_new;
+            //     }
+            // }
+
+            $this->price = $pricelist->price_renewal;
             $this->reset('selectedClass', 'quotaLeft');
         }
 
@@ -113,6 +124,21 @@ class RenewalForm extends Component
                 $this->alertQuota = true;
             } else {
                 $this->alertQuota = false;
+            }
+
+            // Cek apakah tanggal daftar kurang dari tanggal buka batch
+            $openDate = $this->batch->start_date;
+            $dateToday = Carbon::now()->format('Y-m-d');
+
+            if ($dateToday < $openDate) {
+                $this->isDiscountApply = true;
+                $this->amountDisc = $this->price * $this->discount;
+                $this->priceAfterDisc = $this->price - $this->amountDisc;
+                $this->totalPrice = $this->priceAfterDisc;
+            } else {
+                $this->isDiscountApply = false;
+                $this->priceAfterDisc = $this->price;
+                $this->totalPrice = $this->price;
             }
         }
 
@@ -143,16 +169,16 @@ class RenewalForm extends Component
     }
 
     public function saveData() {
-        $priceStr = preg_replace("/[^0-9]/","", $this->price);
-        $priceInt = (int) $priceStr;
-
         Registration::insert([
             'member_code' => Auth::user()->email,
             'batch_id' => $this->batchId,
-            'amount_pay' => $priceInt,
+            'amount_pay' => $this->totalPrice,
+            'admin_fee' => 0,
+            'program_price' => $this->priceAfterDisc,
             'file_upload' => $this->fileUpload->storeAs($this->batchId, $this->uploadedFileName, 'public'),
             'payment_status' => 'Process',
             'registration_category' => $this->registrationCategory,
+            'registration_type' => 'Reguler',
             'program_id' => $this->selectedProgram,
             'level_id' => $this->selectedLevel,
             'coach_id' => $this->coach->id,
