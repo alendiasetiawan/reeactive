@@ -21,10 +21,14 @@
                             <div class="col-lg-6 col-md-6 col-12 mb-3">
                                 <x-inputs.label>Tipe Registrasi</x-inputs.label>
                                 <x-inputs.disable-text placeholder="{{ $paymentDetail->registration_type }}"></x-inputs.disable-text>
+                                @if ($paymentDetail->registration_type == 'Early Bird')
+                                    <small class="text-muted">Mendapatkan diskon {{ $discEarlyBird }}% Biaya Program</small>
+                                @endif
                             </div>
                             <div class="col-lg-6 col-md-6 col-12 mb-3">
                                 <x-inputs.label>Nama Lengkap</x-inputs.label>
                                 <x-inputs.disable-text placeholder="{{ $paymentDetail->member_name }}"></x-inputs.disable-text>
+                                <small class="text-muted">Member sejak {{ $firstBatchName }}</small>
                             </div>
                             <div class="col-lg-6 col-12 mb-3">
                                 <x-inputs.label>Program</x-inputs.label>
@@ -32,11 +36,11 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-6 col-12 mb-3">
+                            <div class="col-lg-6 col-12 mb-4">
                                 <x-inputs.label>Coach</x-inputs.label>
                                 <x-inputs.disable-text placeholder="{{ $paymentDetail->coach_name }}"></x-inputs.disable-text>
                             </div>
-                            <div class="col-lg-6 col-12 mb-3">
+                            <div class="col-lg-6 col-12 mb-4">
                                 <x-inputs.label>Kelas</x-inputs.label>
                                 <x-inputs.disable-text placeholder="
                                 {{ $paymentDetail->day }} ({{ \Carbon\Carbon::parse($paymentDetail->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($paymentDetail->end_time)->format('H:i') }})">
@@ -45,12 +49,12 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-lg-6 col-12 mb-3">
+                            <div class="col-lg-6 col-12 mb-4">
                                 <x-inputs.label>Nominal Transfer</x-inputs.label>
                                 <x-inputs.disable-text placeholder="{{ 'Rp '.number_format($paymentDetail->amount_pay,0,',','.') }}"></x-inputs.disable-text>
                                 <small class="text-muted">Biaya Program : {{ CurrencyHelper::formatRupiah($paymentDetail->program_price) }} + Admin Fee : {{ CurrencyHelper::formatRupiah($paymentDetail->admin_fee) }}</small>
                             </div>
-                            <div class="col-lg-6 col-12 mb-3">
+                            <div class="col-lg-6 col-12 mb-4">
                                 <x-inputs.label>Waktu Upload</x-inputs.label>
                                 <x-inputs.disable-text placeholder="{{ $paymentDetail->created_at->isoFormat('LLLL') }}"></x-inputs.disable-text>
                             </div>

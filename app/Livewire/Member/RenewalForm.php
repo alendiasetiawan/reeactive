@@ -46,6 +46,7 @@ class RenewalForm extends Component
     public ?int $amountDisc, $priceAfterDisc, $totalPrice;
     public object $batch;
     public $discount;
+    public ?string $registrationType;
 
     protected $registrationService;
 
@@ -98,22 +99,6 @@ class RenewalForm extends Component
         }
 
         if ($property == 'selectedCoach') {
-            // $member = Registration::where('member_code', Auth::user()->email)->first();
-            $pricelist = Pricelist::where('program_id', $this->selectedProgram)
-                ->where('coach_code', $this->selectedCoach)
-                ->first();
-
-            // if ($this->selectedSession == 1 || $this->selectedSession == 4) {
-            //     $priceNumber = $pricelist->price_renewal;
-            // } else {
-            //     if ($member->batch_id == 1) {
-            //         $priceNumber = $pricelist->price_session_27_old;
-            //     } else {
-            //         $priceNumber = $pricelist->price_session_27_new;
-            //     }
-            // }
-
-            $this->price = $pricelist->price_renewal;
             $this->reset('selectedClass', 'quotaLeft');
         }
 
@@ -126,6 +111,20 @@ class RenewalForm extends Component
                 $this->alertQuota = false;
             }
 
+            $member = Registration::where('member_code', Auth::user()->email)
+            ->orderBy('id', 'asc')
+            ->limit(1)
+            ->first();
+            $pricelist = Pricelist::where('program_id', $this->selectedProgram)
+                ->where('coach_code', $this->selectedCoach)
+                ->first();
+
+            if ($member->batch_id <= 2) {
+                $this->price = $pricelist->price_session_27_old;
+            } else {
+                $this->price = $pricelist->price_session_27_new;
+            }
+
             // Cek apakah tanggal daftar kurang dari tanggal buka batch
             $openDate = $this->batch->start_date;
             $dateToday = Carbon::now()->format('Y-m-d');
@@ -135,10 +134,12 @@ class RenewalForm extends Component
                 $this->amountDisc = $this->price * $this->discount;
                 $this->priceAfterDisc = $this->price - $this->amountDisc;
                 $this->totalPrice = $this->priceAfterDisc;
+                $this->registrationType = 'Early Bird';
             } else {
                 $this->isDiscountApply = false;
                 $this->priceAfterDisc = $this->price;
                 $this->totalPrice = $this->price;
+                $this->registrationType = 'Reguler';
             }
         }
 
@@ -178,7 +179,7 @@ class RenewalForm extends Component
             'file_upload' => $this->fileUpload->storeAs($this->batchId, $this->uploadedFileName, 'public'),
             'payment_status' => 'Process',
             'registration_category' => $this->registrationCategory,
-            'registration_type' => 'Reguler',
+            'registration_type' => $this->registrationType,
             'program_id' => $this->selectedProgram,
             'level_id' => $this->selectedLevel,
             'coach_id' => $this->coach->id,
