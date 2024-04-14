@@ -188,6 +188,7 @@ return [
         // 'Example' => App\Facades\Example::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
+        'CurrencyHelper' => App\Helpers\CurrencyHelper::class
     ])->toArray(),
 
 ];

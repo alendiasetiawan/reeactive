@@ -72,7 +72,7 @@ class Registration extends Model
         ->join('classes', 'registrations.class_id', 'classes.id')
         ->where('registrations.id', $id)
         ->select('registrations.*', 'members.member_name', 'batches.batch_name', 'programs.program_name', 'levels.level_name', 'coaches.nick_name', 'coaches.coach_name',
-        'classes.day', 'classes.start_time', 'classes.end_time', 'classes.link_wa')
+        'classes.day', 'classes.start_time', 'classes.end_time', 'classes.link_wa', 'disc_early_bird')
         ->first();
     }
 
@@ -89,4 +89,13 @@ class Registration extends Model
         ->get();
     }
 
+    //Find first batch registered
+    public static function firstBatchRegistered($memberCode) {
+        return Registration::join('batches', 'registrations.batch_id', 'batches.id')
+        ->where('member_code', $memberCode)
+        ->select('batches.*', 'registrations.member_code')
+        ->orderBy('id', 'asc')
+        ->limit(1)
+        ->first();
+    }
 }

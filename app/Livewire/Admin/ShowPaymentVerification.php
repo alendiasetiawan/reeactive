@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Member;
 use Livewire\Component;
 use App\Models\Registration;
 use Livewire\Attributes\Title;
@@ -17,10 +18,15 @@ class ShowPaymentVerification extends Component
     public $showReasonInvalid;
     public $paymentId;
     public $invalidReason;
+    public ?int $discEarlyBird;
+    public ?string $firstBatchName;
 
     public function mount($id) {
         $this->paymentDetail = Registration::showRegistrationDetail($id);
         $this->paymentId = $id;
+        $this->discEarlyBird = ($this->paymentDetail->disc_early_bird)*100;
+        $registration = Registration::firstBatchRegistered($this->paymentDetail->member_code);
+        $this->firstBatchName = $registration->batch_name;
     }
 
     public function updated($property, $value) {
