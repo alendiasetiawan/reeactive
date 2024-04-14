@@ -19,6 +19,7 @@ use Livewire\WithFileUploads;
 use App\Services\BatchService;
 use Livewire\Attributes\Title;
 use App\Services\RegistrationService;
+use Carbon\Carbon;
 use Exception;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Computed;
@@ -52,7 +53,7 @@ class FormNewMember extends Component
     public $questionSeven;
     public $questionEight;
     public $questionNine;
-    public $price;
+    public ?int $price, $amountDisc, $priceAfterDisc, $adminFee, $totalPrice;
     public $healthScreenings;
     public $phoneCodes;
     public $countries;
@@ -76,14 +77,14 @@ class FormNewMember extends Component
     public $phone;
     public $medicalFile;
     public $password;
-    public $alertUserExist = false;
     public $quotaLeft;
-    public $alertQuota = false;
     public $selectedLevel = 1;
     public $registered;
     public $medicalFileName;
-    public $alertAddress = false;
     public $medical_condition;
+    public $discount;
+    public bool $alertUserExist = false, $alertQuota = false, $alertAddress = false;
+    public ?string $registrationType;
 
     public $totalSteps = 4;
     public $currentStep = 1;
@@ -112,6 +113,7 @@ class FormNewMember extends Component
         $this->phoneCodes = PhoneCode::all();
         $this->countries = Country::orderBy('country_name', 'asc')->pluck('country_name', 'id');
         $this->provinces = Province::all();
+        $this->discount = $this->batch->disc_early_bird;
     }
 
     #[Computed]
@@ -186,11 +188,13 @@ class FormNewMember extends Component
             [
                 'selectedProgram' => 'required',
                 'selectedCoach' => 'required',
-                'selectedClass' => 'required'
+                'selectedClass' => 'required',
+                'fileUpload' => 'required'
             ], [
                 'selectedProgram.required' => 'Program apa yang anda ikuti?',
                 'selectedCoach.required' => 'Silahkan pilih 1 coach',
-                'selectedClass.required' => 'Pilih jadwal yang sesuai'
+                'selectedClass.required' => 'Pilih jadwal yang sesuai',
+                'fileUpload.required' => 'Mohon untuk melampirkan bukti transfer, '
             ]
             );
         }
@@ -237,16 +241,7 @@ class FormNewMember extends Component
         }
 
         if ($property == 'selectedCoach') {
-            $pricelist = Pricelist::where('program_id', $this->selectedProgram)
-                ->where('coach_code', $this->selectedCoach)
-                ->first();
-            if ($this->specialCase == TRUE) {
-                $priceNumber = $pricelist->price_special;
-            } else {
-                $priceNumber = $pricelist->price_per_person;
-            }
 
-            $this->price = 'Rp '.number_format($priceNumber,0,',','.');
             $this->reset('selectedClass');
         }
 
@@ -259,6 +254,20 @@ class FormNewMember extends Component
             } else {
                 $this->alertQuota = false;
             }
+
+            $pricelist = Pricelist::where('program_id', $this->selectedProgram)
+            ->where('coach_code', $this->selectedCoach)
+            ->first();
+            if ($this->specialCase == TRUE) {
+                $this->price = $pricelist->price_special;
+            } else {
+                $this->price = $pricelist->price_per_person;
+            }
+
+            $this->adminFee = $this->batch->admin_fee;
+            $this->priceAfterDisc = $this->price;
+            $this->totalPrice = $this->price + $this->adminFee;
+
         }
 
         if ($property == 'questionOne') {
@@ -390,18 +399,14 @@ class FormNewMember extends Component
         $classStartTime = $class->start_time;
         $classEndTime = $class->end_time;
 
-        //convert rupiah format
-        $priceStr = preg_replace("/[^0-9]/","", $this->price);
-        $priceInt = (int) $priceStr;
-
         $this->quotaLeft = $this->registrationService->quotaLeft($this->selectedProgram, $this->selectedLevel, $this->coach->id, $this->selectedClass, $this->batch->id);
 
         if ($this->quotaLeft <= 0) {
             session()->flash('fullQuota', 'Daftar Gagal! Kelas yang anda pilih sudah penuh');
             $this->redirect(route('new_member'));
         } else {
+            DB::beginTransaction();
             try {
-                DB::beginTransaction();
                 Member::updateOrCreate([
                     'code' => $this->phone,
                 ], [
@@ -424,10 +429,13 @@ class FormNewMember extends Component
                     'member_code' => $this->phone,
                 ], [
                     'batch_id' => $batchId,
-                    'amount_pay' => $priceInt,
+                    'amount_pay' => $this->totalPrice,
+                    'admin_fee' => $this->adminFee,
+                    'program_price' => $this->priceAfterDisc,
                     'file_upload' => $this->fileUpload->storeAs($batchId, $this->uploadedFileName, 'public'),
                     'payment_status' => 'Process',
                     'registration_category' => 'New Member',
+                    'registration_type' => 'Reguler',
                     'program_id' => $this->selectedProgram,
                     'level_id' => 1,
                     'coach_id' => $this->coach->id,

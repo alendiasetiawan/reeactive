@@ -318,31 +318,12 @@
                                 <small>Langkah 3/4</small>
                             </div>
                             <div class="card-body">
-                                <b>Rekening Pembayaran</b>
-                                <p>
-                                    Bank : <b class="text-primary">Muamalat</b> <br>
-                                    Rekening : <b class="text-primary">11300-11061</b> <br>
-                                    Nama : <b class="text-primary">Khairino Firman Baisya</b> <br>
-                                    Kode Bank : <b class="text-primary">147</b>
-                                </p>
-                                <div class="row text-center mt-2 mb-2">
-                                    <b>Nominal Pembayaran :
-                                        <em class="text-primary">
-                                            @if (!$selectedCoach)
-                                            Pilih Program dan Coach Terlebih Dahulu
-                                            @else
-                                            {{ $price }}
-                                            @endif
-                                        </em>
-                                    </b>
-                                </div>
                                 @if ($specialCase)
                                 <p class="text-center">
                                     Kondisi Khusus : <em class="text-primary">{{ $medical_condition }}</em>
                                 </p>
                                 @endif
                                 <div class="row">
-                                    <x-inputs.basic type="hidden" wire:model='price'/>
                                     <div class="col-lg-6 col-12 mb-3">
                                         <x-inputs.label>Program</x-inputs.label>
                                         <x-inputs.select wire:model.live='selectedProgram'>
@@ -358,7 +339,7 @@
                                         <small class="text-danger">@error('selectedProgram') {{ $message }} @enderror</small>
                                     </div>
 
-                                    @if ($selectedProgram)
+                                    {{-- @if ($selectedProgram) --}}
                                         <div class="col-lg-6 col-12 mb-3">
                                             <x-inputs.label>Coach</x-inputs.label>
                                             <x-inputs.select wire:model.live='selectedCoach'>
@@ -377,31 +358,98 @@
                                             </x-inputs.select>
                                             <small class="text-danger">@error('selectedCoach') {{ $message }} @enderror</small>
                                         </div>
-                                    @endif
+                                    {{-- @endif --}}
 
-                                    @if ($selectedCoach)
-                                    <div class="col-lg-6 col-12 mb-3">
-                                        <x-inputs.label>Kelas</x-inputs.label>
-                                        <x-inputs.select wire:model.live='selectedClass'>
-                                            <x-inputs.select-option value="" selected>--Pilih--</x-inputs.select-option>
-                                            @foreach ($this->classes as $class)
-                                                <x-inputs.select-option value="{{ $class->id }}">
-                                                    {{ $class->day }}
-                                                    ({{ \Carbon\Carbon::parse($class->start_time)->format('H:i') }}
-                                                    -
-                                                    {{ \Carbon\Carbon::parse($class->end_time)->format('H:i') }})
-                                                </x-inputs.select-option>
-                                            @endforeach
-                                        </x-inputs.select>
-                                        <small class="text-danger">@error('selectedClass') {{ $message }} @enderror</small>
-                                    </div>
-                                    @endif
+                                    {{-- @if ($selectedCoach) --}}
+                                        <div class="col-lg-6 col-12 mb-3">
+                                            <x-inputs.label>Kelas</x-inputs.label>
+                                            <x-inputs.select wire:model.live='selectedClass'>
+                                                <x-inputs.select-option value="" selected>--Pilih--</x-inputs.select-option>
+                                                @foreach ($this->classes as $class)
+                                                    <x-inputs.select-option value="{{ $class->id }}">
+                                                        {{ $class->day }}
+                                                        ({{ \Carbon\Carbon::parse($class->start_time)->format('H:i') }}
+                                                        -
+                                                        {{ \Carbon\Carbon::parse($class->end_time)->format('H:i') }})
+                                                    </x-inputs.select-option>
+                                                @endforeach
+                                            </x-inputs.select>
+                                            <small class="text-danger">@error('selectedClass') {{ $message }} @enderror</small>
+                                        </div>
+                                    {{-- @endif --}}
+
                                     <div class="col-lg-6 col-12">
                                         @if ($alertQuota)
                                             <span class="text-danger">Mohon maaf, quota habis. Silahkan pilih kelas yang lain!</span>
                                         @endif
                                     </div>
                                 </div>
+                                <!--Transfer Instruction-->
+                                <div class="row">
+                                    <div class="col-lg-6 col-12 mb-3">
+                                        @if ($selectedClass)
+                                            <b>Rekening Pembayaran</b>
+                                            <p>
+                                                Bank : <b class="text-primary">Muamalat</b> <br>
+                                                Rekening : <b class="text-primary">11300-11061</b> <br>
+                                                Nama : <b class="text-primary">Khairino Firman Baisya</b> <br>
+                                                Kode Bank : <b class="text-primary">147</b>
+                                            </p>
+                                            <div class="mb-2">
+                                                <b>Detail Biaya</b>
+                                                <br>
+                                                    Biaya Program : <b>{{ CurrencyHelper::formatRupiah($price) }}</b>
+                                                    <br>
+                                                    Biaya Admin : <b>{{ CurrencyHelper::formatRupiah($adminFee) }}</b>
+                                                    <br>
+                                                    Total : <b class="text-primary">{{ CurrencyHelper::formatRupiah($totalPrice) }}</b>
+                                                <br>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <x-inputs.basic type="hidden" wire:model='price'/>
+                                    <div class="col-lg-6 col-12 mb-3">
+                                        @if ($selectedClass)
+                                            <x-inputs.label>Bukti Transfer</x-inputs.label>
+                                            <div x-data="{ uploading: false, progress: 5 }" x-on:livewire-upload-start="uploading = true"
+                                                x-on:livewire-upload-finish="uploading = false; progress = 5;"
+                                                x-on:livewire-upload-error="uploading = false"
+                                                x-on:livewire-upload-progress="progress = $event.detail.progress">
+                                                <!--Choose File-->
+                                                <x-inputs.basic type="file" wire:click='selectFile' wire:model='fileUpload'
+                                                    accept="image/png, image/jpg, image/jpeg" required
+                                                    oninvalid="this.setCustomValidity('Silahkan lampirkan bukti transfer anda')"
+                                                    oninput="this.setCustomValidity('')" />
+
+                                                <!--Progress Bar-->
+                                                @if ($showProgressBar == true)
+                                                    <div x-show="uploading">
+                                                        <div class="progress mt-2">
+                                                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                                                                role="progressbar" x-bind:style="`width: ${progress}%`"></div>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                            @error('fileUpload')
+                                                <small class="text-danger">
+                                                    {{ $message }}
+                                                    Anda bisa mengecilkan ukuran file <a href="https://tinyjpg.com/" target="_blank"><b class="text-info">Disini!</b></a>
+                                                </small>
+                                            @enderror
+                                            @error('fileUpload')
+                                                <!--Tampilkan Gambar Rusak-->
+                                            @else
+                                                <div class="col-lg-6 col-12 mt-2">
+                                                    @if ($fileUpload)
+                                                        <img src="{{ $fileUpload->temporaryUrl() }}" width="200px" height="auto">
+                                                    @endif
+                                                </div>
+                                            @enderror
+                                        @endif
+                                    </div>
+                                </div>
+                                <!--#Transfer Instruction-->
                             </div>
                         </div>
                     @endif
@@ -526,47 +574,9 @@
 
                             <div class="row">
                                 <div class="col-lg-6 col-12 mb-3">
-                                    <x-inputs.label>Bukti Transfer</x-inputs.label>
-                                    <div x-data="{ uploading: false, progress: 5 }" x-on:livewire-upload-start="uploading = true"
-                                        x-on:livewire-upload-finish="uploading = false; progress = 5;"
-                                        x-on:livewire-upload-error="uploading = false"
-                                        x-on:livewire-upload-progress="progress = $event.detail.progress">
-                                        <!--Choose File-->
-                                        <x-inputs.basic type="file" wire:click='selectFile' wire:model='fileUpload'
-                                            accept="image/png, image/jpg, image/jpeg" required
-                                            oninvalid="this.setCustomValidity('Silahkan lampirkan bukti transfer anda')"
-                                            oninput="this.setCustomValidity('')" />
-
-                                        <!--Progress Bar-->
-                                        @if ($showProgressBar == true)
-                                            <div x-show="uploading">
-                                                <div class="progress mt-2">
-                                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
-                                                        role="progressbar" x-bind:style="`width: ${progress}%`"></div>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    </div>
-                                    @error('fileUpload')
-                                        <small class="text-danger">
-                                            {{ $message }}
-                                            Anda bisa mengecilkan ukuran file <a href="https://tinyjpg.com/" target="_blank"><b class="text-info">Disini!</b></a>
-                                        </small>
-                                    @enderror
-                                </div>
-                                <div class="col-lg-6 col-12 mb-3">
                                     <x-inputs.label>Hasil Pemeriksaan Medis (Jika Ada) .pdf</x-inputs.label>
                                     <x-inputs.basic type="file" wire:model='medicalFile' accept=".pdf, .docx.s"/>
                                 </div>
-                                @error('fileUpload')
-                                    <!--Tampilkan Gambar Rusak-->
-                                @else
-                                    <div class="col-lg-6 col-12 mb-3">
-                                        @if ($fileUpload)
-                                            <img src="{{ $fileUpload->temporaryUrl() }}" width="200px" height="auto">
-                                        @endif
-                                    </div>
-                                @enderror
                             </div>
                             <hr />
                             <span>Simpan dan catat dengan baik <b class="text-primary">username dan password</b> anda! Keduanya akan digunakan untuk login ke member area reeactive</span>
