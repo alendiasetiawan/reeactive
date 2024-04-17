@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div class="row text-center mb-4">
-                <h2 class="text-theme"><em>Rp 1.350.000/orang</em></h2>
+                <h2 class="text-theme"><em>Rp 1.450.000/orang</em></h2>
             </div>
             <div class="row align-items-center">
                 @foreach ($largeCoaches as $coach)
