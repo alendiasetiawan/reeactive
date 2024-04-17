@@ -126,7 +126,7 @@ class RenewalForm extends Component
             }
 
             // Cek apakah tanggal daftar kurang dari tanggal buka batch
-            $openDate = $this->batch->start_date;
+            $openDate = $this->batch->early_bird_end;
             $dateToday = Carbon::now()->format('Y-m-d');
 
             if ($dateToday < $openDate) {
