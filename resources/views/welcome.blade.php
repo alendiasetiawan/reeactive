@@ -374,7 +374,7 @@
                             <!--Large Groups-->
                             <div role="tabpanel" class="tab-pane fade" id="tab1-4">
                                 <div class="row text-center mb-4">
-                                    <h3 class="text-theme"><em>Rp 1.350.000/orang</em></h3>
+                                    <h3 class="text-theme"><em>Rp 1.450.000/orang</em></h3>
                                 </div>
                                 <div class="row">
                                     <ul class="custom-li list-unstyled list-icon-2 d-inline-block">
