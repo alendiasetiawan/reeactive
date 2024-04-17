@@ -381,7 +381,7 @@
                                         <li>Program intensif 10 pekan</li>
                                         <li>Latihan 3x per pekan</li>
                                         <li>Durasi latihan 40 - 60 menit</li>
-                                        <li>Menggunakan zoom premium</li>
+                                        <li>Menggunakan Zoom Premium atau Google Meet</li>
                                         <li>Jumlah maksimal peserta 15 orang</li>
                                     </ul>
                                 </div>
