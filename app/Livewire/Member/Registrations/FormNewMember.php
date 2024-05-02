@@ -258,11 +258,8 @@ class FormNewMember extends Component
             $pricelist = Pricelist::where('program_id', $this->selectedProgram)
             ->where('coach_code', $this->selectedCoach)
             ->first();
-            if ($this->specialCase == TRUE) {
-                $this->price = $pricelist->price_special;
-            } else {
-                $this->price = $pricelist->price_per_person;
-            }
+
+            $this->price = $pricelist->price_per_person;
 
             $this->adminFee = $this->batch->admin_fee;
             $this->priceAfterDisc = $this->price;
