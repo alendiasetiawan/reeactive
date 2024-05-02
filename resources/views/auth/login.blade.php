@@ -79,8 +79,8 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <x-inputs.label>Username</x-inputs.label>
-                                            <input class="form-control" type="text" name="email" autofocus required
+                                            <x-inputs.label>Username (No. HP Tanpa Kode Negara)</x-inputs.label>
+                                            <input class="form-control" type="text" name="email" autofocus required placeholder="Contoh : 85775745484"
                                             @if(\Cookie::has('saveuser')) value="{{ \Cookie::get('saveuser') }}" @endif/>
                                         </div>
                                     </div>
