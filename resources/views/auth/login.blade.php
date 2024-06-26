@@ -85,16 +85,13 @@
                                         </div>
                                     </div>
                                     <div class="col-12">
-                                        <div class="mb-4">
+                                        <div class="mb-2">
                                             <x-inputs.label>Password</x-inputs.label>
                                             <input type="password" class="form-control" name="password" required
                                             @if(\Cookie::has('savepwd')) value="{{ \Cookie::get('savepwd') }}" @endif />
                                         </div>
                                     </div>
-                                    <div class="col-12">
-
-                                    </div>
-                                    <div class="col-12">
+                                    <div class="col-12 d-flex justify-content-between">
                                         <div class="mb-3">
                                             <div class="form-check form-check-primary form-check-inline">
                                                 <input class="form-check-input me-1" type="checkbox"
@@ -103,6 +100,11 @@
                                                     Simpan Password
                                                 </label>
                                             </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <a href="{{ route('reset_password') }}" wire:navigate class="text-primary">
+                                                Lupa Password?
+                                            </a>
                                         </div>
                                     </div>
 
