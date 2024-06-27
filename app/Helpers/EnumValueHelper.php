@@ -4,6 +4,6 @@ namespace App\Helpers;
 
 class EnumValueHelper {
 
-    public const OPEN = 'Open';
-    public const CLOSE = 'Close';
+    public const RESET_STATUS_OPEN = 'Open';
+    public const RESET_STATUS_CLOSE = 'Close';
 }

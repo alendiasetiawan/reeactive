@@ -49,9 +49,9 @@
                                             Kondisi Khusus : {{ $this->showMember?->medical_condition }}
                                         @endif
                                         <br/>
-                                        Program : {{ $this->showMember?->registrations[0]->program?->program_name }} <br/>
-                                        Coach : {{ $this->showMember?->registrations[0]->coach?->coach_name }} ({{ $this->showMember->registrations[0]->coach?->nick_name }}) <br/>
-                                        Kelas : {{ $this->showMember?->registrations[0]->class_model?->day }} ({{ $this->showMember->registrations[0]->class_model?->start_time }} - {{ $this->showMember->registrations[0]->class_model?->end_time }})
+                                        Program : {{ $this->showMember?->registrations[0]?->program?->program_name }} <br/>
+                                        Coach : {{ $this->showMember?->registrations[0]?->coach?->coach_name }} ({{ $this->showMember->registrations[0]->coach?->nick_name }}) <br/>
+                                        Kelas : {{ $this->showMember?->registrations[0]?->class_model?->day }} ({{ $this->showMember->registrations[0]->class_model?->start_time }} - {{ $this->showMember->registrations[0]->class_model?->end_time }})
                                 </div>
                                 @else
                                 <div class="col-12 mb-1">

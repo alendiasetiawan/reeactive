@@ -74,7 +74,7 @@ class ResetPassword extends Component
 
         ModelsResetPassword::updateOrCreate([
             'member_code' => $this->showMember->code,
-            'reset_status' => EnumValueHelper::OPEN
+            'reset_status' => EnumValueHelper::RESET_STATUS_OPEN
         ], [
             'member_name' => $memberName,
             'program' => $program,
@@ -85,9 +85,7 @@ class ResetPassword extends Component
             'notif' => 0
         ]);
 
-        // $this->url = "https://api.whatsapp.com/send?phone=".$whatsapp."&text=*_KONFIRMASI RESET PASSWORD_*%0A%0AUntuk melakukan reset password pada data di bawah ini:%0A%0ANama Lengkap: *".$memberName."*%0AProgram: *".$program."*%0ACoach: *".$coach."*%0AKelas: *".$class."*%0A%0Asilahkan klik link berikut: https://apps.reeactive.com/link-reset/".$resetCode."%0A%0A_Admin Reeactive_";
-
-        $url = "https://api.whatsapp.com/send?phone=6281319847072&text=*_LUPA PASSWORD_*%0A%0AHalo admin, saya butuh bantuan untuk reset password dengan data berikut:%0A%0ANama Lengkap: *".$memberName."*%0AProgram: *".$program."*%0ACoach: *".$coach."*%0AKelas: *".$class."*%0A%0A_Terima Kasih_";
+        $url = "https://api.whatsapp.com/send?phone=628111777021&text=*_LUPA PASSWORD_*%0A%0AHalo admin, saya butuh bantuan untuk reset password dengan data berikut:%0A%0ANama Lengkap: *".$memberName."*%0AProgram: *".$program."*%0ACoach: *".$coach."*%0AKelas: *".$class."*%0A%0A_Terima Kasih_";
 
         $this->dispatch('sending-request', url:$url);
         session()->flash('reset-sent', 'Aplikasi whatsapp akan terbuka, silahkan kirim pesan yang tertera kepada admin');
