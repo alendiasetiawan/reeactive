@@ -9,18 +9,9 @@ use App\Http\Controllers\CompanyProfile\PricelistController;
 use App\Livewire\Member\Registrations\FormNewMember;
 use App\Livewire\Member\Registrations\FormWorkshop;
 use App\Livewire\Member\RegistrationSuccess;
+use App\Livewire\PasswordBaru;
+use App\Livewire\ResetPassword;
 use App\Livewire\WatchPrivateVideo;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
 Auth::routes();
 Route::get('/', [LandingPageController::class, 'index'])->name('landing');
@@ -41,7 +32,8 @@ Route::get('/private-video', WatchPrivateVideo::class)->name('private_video');
 
 //Change Password
 Route::get('/ganti-password', ChangePassword::class)->name('ganti_password');
-
+Route::get('/reset-password', ResetPassword::class)->name('reset_password');
+Route::get('/link-reset/{resetCode}', PasswordBaru::class)->name('password_baru');
 
 require __DIR__ . '/member.php';
 

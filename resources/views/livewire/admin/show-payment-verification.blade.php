@@ -6,7 +6,7 @@
 
     <div class="row layout-top-spacing">
         <!--Verification Form-->
-        <div class="col-lg-8 col-12">
+        <div class="col-lg-8 col-12 mb-3">
             <div class="widget">
                 <div class="w-header layout-spacing">
                     <h5>Detail Pembayaran Member <b class="text-primary">{{ $paymentDetail->batch_name }}</b></h5>

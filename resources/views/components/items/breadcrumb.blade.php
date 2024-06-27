@@ -6,7 +6,9 @@
                     {{ $mainPage }}
                 </a>
             </li>
+            @isset($currentPage)
             <li class="breadcrumb-item active" aria-current="page">{{ $currentPage }}</li>
+            @endisset
         </ol>
     </nav>
 </div>
