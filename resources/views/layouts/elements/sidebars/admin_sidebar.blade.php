@@ -110,6 +110,14 @@
                 </div>
             </li>
 
+            <li class="menu {{ Route::is('admin::request_reset_password') ? 'active' : '' }}">
+                <a wire:navigate href="{{ route('admin::request_reset_password') }}" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-cw"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                        <span>Reset Password</span>
+                    </div>
+                </a>
+            </li>
             <li class="menu">
                 <a wire:navigate href="#" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
@@ -117,6 +125,8 @@
                         <span>Password</span>
                     </div>
                 </a>
+            </li>
+            <li class="menu">
                 <a href="/logout" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>

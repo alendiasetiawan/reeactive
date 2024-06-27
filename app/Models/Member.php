@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Member extends Model
@@ -11,6 +12,11 @@ class Member extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function registrations(): HasMany
+    {
+        return $this->hasMany(Registration::class, 'member_code', 'code');
+    }
 
     public static function memberActive($batchId) {
         return Registration::join('members', 'registrations.member_code', 'members.code')
@@ -141,5 +147,30 @@ class Member extends Model
         'classes.day', 'classes.start_time', 'classes.end_time', 'members.mobile_phone')
         ->orderBy('members.member_name', 'asc')
         ->get();
+    }
+
+    //Find one data member
+    public static function findMember($phone) {
+        return Member::with([
+            'registrations' => function($q) {
+                return $q->with([
+                    'coach' => function($q) {
+                        return $q->select('id', 'nick_name', 'coach_name');
+                    },
+                    'class_model' => function($q) {
+                        return $q->select('id', 'day', 'start_time', 'end_time');
+                    },
+                    'program' => function($q) {
+                        return $q->select('id', 'program_name');
+                    }
+                ])
+                ->orderBy('id', 'desc')
+                ->limit(1)
+                ->select('member_code', 'program_id', 'coach_id', 'class_id');
+            }
+        ])
+        ->where('mobile_phone', $phone)
+        ->select('code', 'member_name', 'mobile_phone', 'medical_condition')
+        ->firstOrFail();
     }
 }
