@@ -1,6 +1,7 @@
 <div>
-    @use('App\Helpers\TanggalHelper')
-
+    @push('customCss')
+    <link rel="stylesheet" type="text/css" href="{{ asset('template/src/assets/css/light/elements/alert.css') }}">
+    @endpush
     <x-items.breadcrumb>
         <x-slot name="mainPage" href="{{ route('admin::dashboard') }}">Dashboard</x-slot>
         <x-slot name="currentPage">Request Reset Password</x-slot>
@@ -18,7 +19,7 @@
             <div class="col-lg-4 col-md-6 col-12 mb-2">
                 <x-cards.user>
                     <x-slot:userName>{{ $member->member_name }}</x-slot:userName>
-                    <x-slot:userTitle>{{ TanggalHelper::konversiTanggalPenuh($member->created_at) }}</x-slot:userTitle>
+                    <x-slot:userTitle>{{ \App\Helpers\TanggalHelper::konversiTanggalPenuh($member->created_at) }}</x-slot:userTitle>
                     Program: {{ $member->program }} <br/>
                     Coach : {{ $member->coach }} <br/>
                     Kelas : {{ $member->class }} <br/>
