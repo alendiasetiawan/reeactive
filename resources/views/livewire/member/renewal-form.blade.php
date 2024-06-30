@@ -117,7 +117,7 @@
                 <div class="col-12">
                     @if ($isDiscountApply)
                     <div class="alert alert-light-success alert-dismissible fade show border-0 mt-1" role="alert">
-                        <strong>Selamat!</strong> Anda mendapatkan diskon 5% untuk pendaftaran Early Bird</button>
+                        <strong>Selamat!</strong> Anda mendapatkan diskon untuk pendaftaran Early Bird</button>
                     </div>
                     @endif
                 </div>
@@ -127,7 +127,7 @@
                     @if ($isDiscountApply)
                         Biaya Program : <b>{{ CurrencyHelper::formatRupiah($price) }}</b>
                         <br>
-                        Discount ({{ $discount * 100 }}%) : <b>(-{{ CurrencyHelper::formatRupiah($amountDisc) }})</b>
+                        Discount : <b>(-{{ CurrencyHelper::formatRupiah($amountDisc) }})</b>
                         <br>
                         Total : <b class="text-primary">{{ CurrencyHelper::formatRupiah($totalPrice) }}</b>
                     @else

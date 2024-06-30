@@ -131,7 +131,7 @@ class RenewalForm extends Component
 
             if ($dateToday < $openDate) {
                 $this->isDiscountApply = true;
-                $this->amountDisc = $this->price * $this->discount;
+                $this->amountDisc = $this->discount;
                 $this->priceAfterDisc = $this->price - $this->amountDisc;
                 $this->totalPrice = $this->priceAfterDisc;
                 $this->registrationType = 'Early Bird';
