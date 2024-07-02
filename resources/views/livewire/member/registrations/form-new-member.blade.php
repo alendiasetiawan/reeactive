@@ -328,7 +328,9 @@
                                         <x-inputs.label>Program</x-inputs.label>
                                         <x-inputs.select wire:model.live='selectedProgram'>
                                             <x-inputs.select-option value="" selected>--Pilih--</x-inputs.select-option>
-                                            @if ($medical_condition == 'Cardiovascular' || $medical_condition == 'Otot Tulang Sendi' || $medical_condition == 'Spinal Culvature' )
+                                            @if ($medical_condition == 'Cardiovascular')
+                                                <x-inputs.select-option value="4">Special Case Small Group</x-inputs.select-option>
+                                            @elseif ($medical_condition == 'Otot Tulang Sendi' || $medical_condition == 'Spinal Culvature')
                                                 <x-inputs.select-option value="{{ $specialProgram->id }}">{{ $specialProgram->program_name }}</x-inputs.select-option>
                                             @else
                                                 @foreach ($this->programs as $program)
