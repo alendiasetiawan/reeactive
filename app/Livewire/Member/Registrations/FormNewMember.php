@@ -104,7 +104,7 @@ class FormNewMember extends Component
             $this->medical_condition = $this->questionNine;
         }
 
-        $this->specialProgram = Program::find(4);
+        $this->specialProgram = Program::find(3);
     }
 
     public function mount(BatchService $batchService) {
