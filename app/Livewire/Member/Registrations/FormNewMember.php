@@ -85,6 +85,7 @@ class FormNewMember extends Component
     public $discount;
     public bool $alertUserExist = false, $alertQuota = false, $alertAddress = false;
     public ?string $registrationType;
+    public $openDate;
 
     public $totalSteps = 4;
     public $currentStep = 1;
@@ -109,6 +110,7 @@ class FormNewMember extends Component
 
     public function mount(BatchService $batchService) {
         $this->batch = $batchService->batchQuery();
+        $this->openDate = $this->batch->start_date;
         $this->currentStep = 1;
         $this->phoneCodes = PhoneCode::all();
         $this->countries = Country::orderBy('country_name', 'asc')->pluck('country_name', 'id');
