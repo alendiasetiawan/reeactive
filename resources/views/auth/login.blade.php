@@ -132,7 +132,7 @@
                                     </div>
                                     <div class="col-12">
                                         <div class="text-center">
-                                            <p class="mb-0"><a href="/"><b class="text-primary">Beranda</b></a> | <a href="https://wa.me/628111777021"><b class="text-primary">Kontak</b></a></p>
+                                            <p class="mb-0"><a href="/"><b class="text-primary">Beranda</b></a> | <a href="https://wa.me/628111777021"><b class="text-primary">Kontak</b></a> | <a href="{{ route('privacy_policy') }}"><b class="text-primary">Privacy Policy</b></a></p>
                                         </div>
                                     </div>
 

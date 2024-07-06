@@ -10,10 +10,12 @@ use App\Livewire\Member\Registrations\FormNewMember;
 use App\Livewire\Member\Registrations\FormWorkshop;
 use App\Livewire\Member\RegistrationSuccess;
 use App\Livewire\PasswordBaru;
+use App\Livewire\PrivacyPolicy;
 use App\Livewire\ResetPassword;
 use App\Livewire\WatchPrivateVideo;
 
 Auth::routes();
+Route::get('/privacy-policy', PrivacyPolicy::class)->name('privacy_policy');
 Route::get('/', [LandingPageController::class, 'index'])->name('landing');
 Route::get('/logout', [LoginController::class, 'logout']);
 Route::controller(PricelistController::class)->group(function() {
