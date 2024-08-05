@@ -62,4 +62,21 @@ class ClassModel extends Model
         ->orderBy('start_time', 'asc')
         ->get();
     }
+
+    public static function classByFilter($filter) {
+        return ClassModel::with([
+            'program',
+            'coach'
+        ])
+        ->when(isset($filter['status']), function ($query) use ($filter) {
+            $query->where('class_status', $filter['status'])
+            ->orWhere('class_status_eksternal', $filter['status']);
+        })
+        ->when(isset($filter['programId']), function ($query) use ($filter) {
+            $query->where('program_id', $filter['programId']);
+        })
+        ->when(isset($filter['coachCode']), function ($query) use ($filter) {
+            $query->where('coach_code', $filter['coachCode']);
+        });
+    }
 }

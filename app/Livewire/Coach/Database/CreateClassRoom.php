@@ -2,48 +2,61 @@
 
 namespace App\Livewire\Coach\Database;
 
-use App\Models\ClassModel;
 use App\Models\Program;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use App\Models\ClassModel;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\Reactive;
+use Illuminate\Support\Facades\Auth;
 
 class CreateClassRoom extends Component
 {
-    #[Layout('layouts.app')]
-    #[Title('Request Tambah Kelas')]
+    //Object
+    public $listPrograms;
+    //Integer
+    public $selectedProgram = "";
+    //String
+    public $day, $startTime, $endTime, $linkWa;
+    //Boolean
+    public $isSubmitActive;
 
-    #[Locked]
-    public $programId;
+    #[Reactive]
+    public $idModal;
 
-    public Program $program;
-    public $programName;
-    public $day;
-    public $startTime;
-    public $endTime;
+    public function mount($idModal) {
+        $this->idModal = $idModal;
+        $this->listPrograms = Program::where('program_type', 'Reguler')->get();
+    }
 
-    public function mount($id) {
-        $this->program = Program::findOrFail($id);
-        $this->programName = $this->program->program_name;
-        $this->programId = $id;
+    //Check if all fields are filled
+    public function isFormFilled() {
+        if(!empty($this->selectedProgram) && !empty($this->day) && !empty($this->startTime) && !empty($this->endTime) && !empty($this->linkWa)) {
+            $this->isSubmitActive = "1";
+        } else {
+            $this->isSubmitActive = "0";
+        }
+    }
+
+    public function updated() {
+        $this->isFormFilled();
     }
 
     public function sendRequest() {
-        ClassModel::create([
-            'coach_code' => Auth::user()->email,
-            'program_id' => $this->programId,
-            'start_time' => $this->startTime,
-            'end_time' => $this->endTime,
-            'day' => $this->day,
-            'class_status' => 'Pending',
-        ]);
+        // ClassModel::create([
+        //     'coach_code' => Auth::user()->email,
+        //     'program_id' => $this->programId,
+        //     'start_time' => $this->startTime,
+        //     'end_time' => $this->endTime,
+        //     'day' => $this->day,
+        //     'class_status' => 'Pending',
+        // ]);
 
-        session()->flash('send_request', true);
+        $this->dispatch('request-sent');
 
-        $this->redirect(route('coach::class_room'), navigate:true);
+        // $this->redirect(route('coach::class_room'), navigate:true);
     }
 
     public function render()

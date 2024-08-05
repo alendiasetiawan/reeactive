@@ -9,6 +9,7 @@ use App\Livewire\Admin\RegistrationQuota;
 use App\Livewire\Admin\Registrations\ShowMemberInClass;
 use App\Livewire\Admin\Registrations\ShowWorkshopVerification;
 use App\Livewire\Admin\Registrations\WorkshopPaymentVerification;
+use App\Livewire\Admin\RequestClass;
 use App\Livewire\Admin\RequestResetPassword;
 use App\Livewire\Admin\ShowPaymentVerification;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,7 @@ Route::group(['middleware' => ['auth', 'admin'], 'as' => 'admin::'], function() 
 
         //Database
         Route::get('/database-member', DatabaseMember::class)->name('database_member');
+        Route::get('/request-class', RequestClass::class)->name('request_class');
 
         //Download Excel
         Route::get('/excel-all-member/{batch_id}', [ExportExcelController::class, 'allMember'])->name('excel_all_member');
