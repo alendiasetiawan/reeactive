@@ -14,6 +14,11 @@
         <div class="modal-body">
             {{ $slot }}
         </div>
+        @isset($modalFooter)
+            <div class="modal-footer">
+                {{ $modalFooter }}
+            </div>
+        @endisset
       </div>
     </div>
 </div>

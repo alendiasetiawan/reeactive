@@ -7,7 +7,7 @@
                 </div>
             @endisset
             <div class="media-body">
-                <h4 class="mb-0">{{ $userName }}</h4>
+                <h5 class="mb-0">{{ $userName }}</h5>
                 <span class="text-muted">{{ $userTitle }}</span>
             </div>
             @isset($icon)
