@@ -14,6 +14,6 @@ Route::group(['middleware' => ['auth', 'coach'], 'as' => 'coach::'], function() 
         //Database
         Route::get('/member', ActiveMembers::class)->name('active_members');
         Route::get('/kelas', ClassRoom::class)->name('class_room');
-        Route::get('/kelas/{id}', CreateClassRoom::class)->name('class_room.create');
+        // Route::get('/kelas/{id}', CreateClassRoom::class)->name('class_room.create');
     });
 });
