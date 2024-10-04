@@ -1,9 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Member\RenewalRegistrationController;
 use App\Livewire\Member\DashboardMember;
+use App\Livewire\Member\Programs\ReferralMember;
 use App\Livewire\Member\Registrations\ContinueWorkshopForm;
+use App\Http\Controllers\Member\RenewalRegistrationController;
 
 Route::group(['middleware' => ['auth', 'member'], 'as' => 'member::'], function() {
     Route::prefix('member')->group(function() {
@@ -16,5 +17,6 @@ Route::group(['middleware' => ['auth', 'member'], 'as' => 'member::'], function(
             Route::get('/renewal-registration/{id}', 'show')->name('renewal_registration.show');
         });
         Route::get('/workshop-lanjutan', ContinueWorkshopForm::class)->name('continue_workshop_form');
+        Route::get('/referral-member', ReferralMember::class)->name('referral_member');
     });
 });

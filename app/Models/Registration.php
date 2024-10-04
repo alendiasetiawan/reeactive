@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -36,6 +37,11 @@ class Registration extends Model
     public function member(): BelongsTo
     {
         return $this->belongsTo(Member::class, 'member_code', 'code');
+    }
+
+    public function referralRegistration(): HasOne
+    {
+        return $this->hasOne(ReferralRegistration::class, 'registration_id', 'id');
     }
 
     public static function personalRegistrationLogs() {

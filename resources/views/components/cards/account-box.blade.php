@@ -1,4 +1,4 @@
-<div class="widget widget-card-five">
+<div class="widget widget-card-five" style="max-height: 250px">
     <div class="widget-content">
         <div class="account-box">
             <div class="info-box">
