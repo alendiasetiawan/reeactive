@@ -18,22 +18,49 @@ class ReferralRegistration extends Model
         return $this->belongsTo(Registration::class, 'registration_id', 'id');
     }
 
+    public function batch(): BelongsTo
+    {
+        return $this->belongsTo(Batch::class, 'batch_id', 'id');
+    }
+
+    //Scrope to check type of referral
+    public function scopeCashback($query, $type) {
+        return $query->where('is_cashback', $type);
+    }
+
     //Count data of registered member using referral code in certain batch
     public static function countRegisteredMember($memberCode, $batchId) {
         return ReferralRegistration::where('member_code', $memberCode)->where('batch_id', $batchId)->count();
     }
 
     //Get data of registered member using referral code in certain batch
-    public static function getReferralMember($memberCode, $batchId) {
+    public static function getReferralMember($memberCode, $batchId, $limitData) {
         return ReferralRegistration::with([
             'registration' => function ($query) {
                 $query->with('member')
                 ->join('coaches', 'registrations.coach_id', 'coaches.id')
-                ->select('registrations.id', 'registrations.member_code', 'registrations.coach_id');
-            }
+                ->select('registrations.id', 'registrations.member_code', 'registrations.coach_id', 'coaches.coach_name');
+            },
+            'batch'
         ])
         ->where('member_code', $memberCode)
         ->where('batch_id', $batchId)
-        ->get();
+        ->paginate($limitData);
+    }
+
+    //Sum total discount get by user
+    public static function sumDiscount($memberCode, $batchId) {
+        return ReferralRegistration::where('member_code', $memberCode)
+        ->where('batch_id', $batchId)
+        ->cashback(false)
+        ->sum('discount');
+    }
+
+    //Sum total cashback get by user
+    public static function sumCashback($memberCode, $batchId) {
+        return ReferralRegistration::where('member_code', $memberCode)
+        ->where('batch_id', $batchId)
+        ->cashback(true)
+        ->sum('discount');
     }
 }
