@@ -34,18 +34,20 @@ class ReferralRegistration extends Model
     }
 
     //Get data of registered member using referral code in certain batch
-    public static function getReferralMember($memberCode, $batchId, $limitData) {
+    public static function getReferralMember($memberCode, $batchId) {
         return ReferralRegistration::with([
             'registration' => function ($query) {
                 $query->with('member')
                 ->join('coaches', 'registrations.coach_id', 'coaches.id')
-                ->select('registrations.id', 'registrations.member_code', 'registrations.coach_id', 'coaches.coach_name');
+                ->join('programs', 'registrations.program_id', 'programs.id')
+                ->select('registrations.id', 'registrations.member_code', 'registrations.coach_id', 'coaches.nick_name', 'programs.program_name');
             },
             'batch'
         ])
         ->where('member_code', $memberCode)
         ->where('batch_id', $batchId)
-        ->paginate($limitData);
+        ->orderBy('id', 'desc')
+        ->get();
     }
 
     //Sum total discount get by user

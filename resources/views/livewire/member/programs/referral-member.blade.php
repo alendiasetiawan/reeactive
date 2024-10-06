@@ -31,7 +31,7 @@
                             <x-slot:mainContent>{{ Str::excerpt($member->registration->member->member_name, '', [
                                 'radius' => $isMobile ? '20' : '25',
                             ]) }}</x-slot:mainContent>
-                            <x-slot:subContent>{{ $member->batch->batch_name }} - Coach {{ $member->registration->nick_name }}</x-slot:subContent>
+                            <x-slot:subContent>{{ $member->registration->program_name }} - Coach {{ $member->registration->nick_name }}</x-slot:subContent>
                             <x-slot:label>{{ TanggalHelper::konversiTanggal($member->created_at) }}</x-slot:label>
                         </x-cards.transaction-list>
                     @empty

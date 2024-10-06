@@ -149,8 +149,8 @@
                     <x-slot name="image">
                         <img src="{{ asset('template/src/assets/img/icon/dumble.png') }}" alt="dumble">
                     </x-slot>
-                    <x-slot name="title">Hi, {{ \Str::excerpt('Alendia Desta Setiawan Budi', '', [
-                        'radius' => 18,
+                    <x-slot name="title">Hi, {{ \Str::excerpt(Auth::user()->full_name, '', [
+                        'radius' => 19,
                     ]) }}</x-slot>
                     <x-slot name="subTitle">{{ $member->program_name }}</x-slot>
                     <x-slot name="badgeLabel">

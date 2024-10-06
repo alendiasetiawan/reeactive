@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 class ReferralMember extends Component
 {
     //Integer
-    public $selectedBatch, $limitData = 2;
+    public $selectedBatch;
     //String
     public $memberCode;
     //Boolean
@@ -36,7 +36,7 @@ class ReferralMember extends Component
     //PROPERTY - List of members registered using referral code
     #[Computed]
     public function referralMembers() {
-        return ReferralRegistration::getReferralMember($this->memberCode, $this->selectedBatch, $this->limitData);
+        return ReferralRegistration::getReferralMember($this->memberCode, $this->selectedBatch);
     }
 
     //PROPERTY - Sum discount get by user
