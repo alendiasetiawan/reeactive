@@ -17,8 +17,6 @@ class ReferralMember extends Component
     public $selectedBatch;
     //String
     public $memberCode;
-    //Boolean
-    public $isMobile;
     //Object
     public $lastBatches;
 
@@ -26,10 +24,9 @@ class ReferralMember extends Component
     #[Title('Referral Member')]
 
     //HOOK - Execute once when component is rendered
-    public function mount(BatchService $batchService, MobileDetect $mobileDetect) {
+    public function mount(BatchService $batchService) {
         $this->memberCode = Auth::user()->email;
         $this->selectedBatch = $batchService->batchIdActive();
-        $this->isMobile = $mobileDetect->isMobile();
         $this->lastBatches = $batchService->getLastBatch();
     }
 
