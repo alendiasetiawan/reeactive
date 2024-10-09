@@ -1,6 +1,4 @@
 <div>
-    @use('App\Helpers\TanggalHelper')
-
     <x-modals.form id="{{ $idModal }}" wire:ignore.self>
         <x-slot:modalHeader>Update Status Claim Cashback</x-slot:modalHeader>
         <form wire:submit='saveStatusClaim'>

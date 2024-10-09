@@ -1,6 +1,4 @@
 <div>
-    @use('App\Helpers\CurrencyHelper')
-
     <x-items.breadcrumb>
         <x-slot name="mainPage" href="{{ route('member::renewal_registration') }}">Verifikasi</x-slot>
         <x-slot name="currentPage">Detail Pembayaran</x-slot>
@@ -52,12 +50,12 @@
                                 <x-inputs.label>Nominal Transfer</x-inputs.label>
                                 <x-inputs.disable-text placeholder="{{ 'Rp '.number_format($paymentDetail->amount_pay,0,',','.') }}"></x-inputs.disable-text>
                                 <small class="text-muted">
-                                    Biaya Program : {{ CurrencyHelper::formatRupiah($paymentDetail->program_price) }}
+                                    Biaya Program : {{ \App\Helpes\CurrencyHelper::formatRupiah($paymentDetail->program_price) }}
                                     <br/>
-                                    Admin Fee : {{ CurrencyHelper::formatRupiah($paymentDetail->admin_fee) }}
+                                    Admin Fee : {{ \App\Helpes\CurrencyHelper::formatRupiah($paymentDetail->admin_fee) }}
                                     <br/>
                                     @if ($isDiscountApply)
-                                        Diskon : (-{{ CurrencyHelper::formatRupiah($amountDisc) }})
+                                        Diskon : (-{{ \App\Helpes\CurrencyHelper::formatRupiah($amountDisc) }})
                                         <br/>
                                         Jenis Diskon : {{ $discountType }}
                                     @endif
