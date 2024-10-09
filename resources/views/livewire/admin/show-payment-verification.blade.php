@@ -50,12 +50,12 @@
                                 <x-inputs.label>Nominal Transfer</x-inputs.label>
                                 <x-inputs.disable-text placeholder="{{ 'Rp '.number_format($paymentDetail->amount_pay,0,',','.') }}"></x-inputs.disable-text>
                                 <small class="text-muted">
-                                    Biaya Program : {{ \App\Helpes\CurrencyHelper::formatRupiah($paymentDetail->program_price) }}
+                                    Biaya Program : {{ \App\Helpers\CurrencyHelper::formatRupiah($paymentDetail->program_price) }}
                                     <br/>
-                                    Admin Fee : {{ \App\Helpes\CurrencyHelper::formatRupiah($paymentDetail->admin_fee) }}
+                                    Admin Fee : {{ \App\Helpers\CurrencyHelper::formatRupiah($paymentDetail->admin_fee) }}
                                     <br/>
                                     @if ($isDiscountApply)
-                                        Diskon : (-{{ \App\Helpes\CurrencyHelper::formatRupiah($amountDisc) }})
+                                        Diskon : (-{{ \App\Helpers\CurrencyHelper::formatRupiah($amountDisc) }})
                                         <br/>
                                         Jenis Diskon : {{ $discountType }}
                                     @endif
