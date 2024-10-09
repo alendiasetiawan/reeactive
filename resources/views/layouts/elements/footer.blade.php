@@ -1,7 +1,7 @@
 <div class="footer-wrapper">
     <div class="footer-section f-section-1">
         <p class="">Copyright © <span class="dynamic-year">{{ date('Y') }}</span>
-            <a target="_blank" href="https://reeactive.com">Reeactive</a>, v0.15.25
+            <a target="_blank" href="https://reeactive.com">Reeactive</a>, v0.15.26
         </p>
     </div>
     <div class="footer-section f-section-2">
