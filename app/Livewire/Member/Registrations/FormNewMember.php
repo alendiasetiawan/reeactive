@@ -89,7 +89,7 @@ class FormNewMember extends Component
     public ?string $registrationType;
     public $openDate;
     public $referralCode, $memberCode;
-    public $isReferralFound, $isRegisteredEarly, $isCashBack, $isRegistered, $isReferralCodeError;
+    public $isReferralFound, $isRegisteredEarly, $isCashBack, $isRegistered, $isReferralCodeError = false;
 
     public $totalSteps = 4;
     public $currentStep = 1;
@@ -373,6 +373,10 @@ class FormNewMember extends Component
             if (!$this->isReferralFound || ($this->countReferralUsed >= $this->referralLimit) || $this->isRegisteredEarly) {
                 $this->isReferralCodeError = true;
             } else {
+                $this->isReferralCodeError = false;
+            }
+
+            if ($this->referralCode == null) {
                 $this->isReferralCodeError = false;
             }
         }
