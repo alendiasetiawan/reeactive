@@ -14,6 +14,8 @@ use App\Models\Province;
 use App\Models\PhoneCode;
 use App\Models\Pricelist;
 use App\Models\ClassModel;
+use App\Models\Referral;
+use App\Models\ReferralRegistration;
 use App\Models\Registration;
 use Livewire\WithFileUploads;
 use App\Services\BatchService;
@@ -53,7 +55,7 @@ class FormNewMember extends Component
     public $questionSeven;
     public $questionEight;
     public $questionNine;
-    public ?int $price, $amountDisc, $priceAfterDisc, $adminFee, $totalPrice;
+    public $price, $amountDisc, $priceAfterDisc, $adminFee, $totalPrice, $discountReferral, $referralId, $countReferralUsed, $referralLimit;
     public $healthScreenings;
     public $phoneCodes;
     public $countries;
@@ -86,6 +88,8 @@ class FormNewMember extends Component
     public bool $alertUserExist = false, $alertQuota = false, $alertAddress = false;
     public ?string $registrationType;
     public $openDate;
+    public $referralCode, $memberCode;
+    public $isReferralFound, $isRegisteredEarly, $isCashBack, $isRegistered, $isReferralCodeError;
 
     public $totalSteps = 4;
     public $currentStep = 1;
@@ -116,6 +120,7 @@ class FormNewMember extends Component
         $this->countries = Country::orderBy('country_name', 'asc')->pluck('country_name', 'id');
         $this->provinces = Province::all();
         $this->discount = $this->batch->disc_early_bird;
+        $this->referralLimit = $this->batch->referral_limit;
     }
 
     #[Computed]
@@ -340,10 +345,47 @@ class FormNewMember extends Component
             }
         }
 
+        if ($property == 'referralCode') {
+            //Check if code exists
+            $this->isReferralFound = Referral::where('code', $this->referralCode)->exists();
+
+            //Check if code's owner is registered by early bird
+            if ($this->isReferralFound) {
+                $queryReferral = Referral::where('code', $this->referralCode)->first();
+                $this->memberCode = $queryReferral->member_code;
+                $this->discountReferral = $this->batch->discount_referral;
+                $this->referralId = $queryReferral->id;
+
+                $this->isRegisteredEarly = Registration::where('member_code', $this->memberCode)
+                ->where('batch_id', $this->batch->id)
+                ->where('registration_type', 'Early Bird')
+                ->exists();
+
+                $this->isRegistered = Registration::where('member_code', $this->memberCode)
+                ->where('batch_id', $this->batch->id)
+                ->exists();
+
+                $this->countReferralUsed = ReferralRegistration::where('member_code', $this->memberCode)
+                ->where('batch_id', $this->batch->id)
+                ->count();
+            }
+
+            if (!$this->isReferralFound || ($this->countReferralUsed >= $this->referralLimit) || $this->isRegisteredEarly) {
+                $this->isReferralCodeError = true;
+            } else {
+                $this->isReferralCodeError = false;
+            }
+        }
+
     }
 
     public function selectFile() {
         $this->showProgressBar = true;
+    }
+
+    public function clearReferralCode() {
+        $this->reset('referralCode');
+        $this->isReferralCodeError = false;
     }
 
     public function register() {
@@ -406,6 +448,7 @@ class FormNewMember extends Component
         } else {
             DB::beginTransaction();
             try {
+                //Add data member
                 Member::updateOrCreate([
                     'code' => $this->phone,
                 ], [
@@ -424,7 +467,8 @@ class FormNewMember extends Component
                     'medical_file' => $uploadMedicalFile,
                 ]);
 
-                Registration::updateOrCreate([
+                //Insert data registration
+                $registration = Registration::updateOrCreate([
                     'member_code' => $this->phone,
                 ], [
                     'batch_id' => $batchId,
@@ -441,6 +485,7 @@ class FormNewMember extends Component
                     'class_id' => $this->selectedClass,
                 ]);
 
+                //Create data user login
                 User::updateOrCreate([
                     'email' => $this->phone,
                 ], [
@@ -450,6 +495,28 @@ class FormNewMember extends Component
                     'gender' => 'Perempuan',
                     'default_pw' => 0,
                 ]);
+
+                //Insert data user who registered using referral code
+                if ($this->isReferralFound && !$this->isRegisteredEarly && ($this->countReferralUsed < $this->referralLimit)) {
+                    if ($this->isRegistered) {
+                        $isCashBack = 1;
+                        $isUsed = 0;
+                    } else {
+                        $isCashBack = 0;
+                        $isUsed = 1;
+                    }
+
+                    ReferralRegistration::create([
+                        'batch_id' => $this->batch->id,
+                        'referral_id' => $this->referralId,
+                        'member_code' => $this->memberCode,
+                        'registration_id' => $registration->id,
+                        'date' => date('Y-m-d'),
+                        'is_cashback' => $isCashBack,
+                        'is_used' => $isUsed,
+                        'discount' => $this->discountReferral
+                    ]);
+                }
 
                 DB::commit();
                 $this->redirectRoute('registration_success', [

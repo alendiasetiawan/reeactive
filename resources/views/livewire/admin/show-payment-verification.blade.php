@@ -1,4 +1,6 @@
 <div>
+    @use('App\Helpers\CurrencyHelper')
+
     <x-items.breadcrumb>
         <x-slot name="mainPage" href="{{ route('member::renewal_registration') }}">Verifikasi</x-slot>
         <x-slot name="currentPage">Detail Pembayaran</x-slot>
@@ -21,9 +23,6 @@
                             <div class="col-lg-6 col-md-6 col-12 mb-3">
                                 <x-inputs.label>Tipe Registrasi</x-inputs.label>
                                 <x-inputs.disable-text placeholder="{{ $paymentDetail->registration_type }}"></x-inputs.disable-text>
-                                @if ($paymentDetail->registration_type == 'Early Bird')
-                                    <small class="text-muted">Mendapatkan diskon {{ $discEarlyBird }}% Biaya Program</small>
-                                @endif
                             </div>
                             <div class="col-lg-6 col-md-6 col-12 mb-3">
                                 <x-inputs.label>Nama Lengkap</x-inputs.label>
@@ -52,7 +51,17 @@
                             <div class="col-lg-6 col-12 mb-4">
                                 <x-inputs.label>Nominal Transfer</x-inputs.label>
                                 <x-inputs.disable-text placeholder="{{ 'Rp '.number_format($paymentDetail->amount_pay,0,',','.') }}"></x-inputs.disable-text>
-                                <small class="text-muted">Biaya Program : {{ CurrencyHelper::formatRupiah($paymentDetail->program_price) }} + Admin Fee : {{ CurrencyHelper::formatRupiah($paymentDetail->admin_fee) }}</small>
+                                <small class="text-muted">
+                                    Biaya Program : {{ CurrencyHelper::formatRupiah($paymentDetail->program_price) }}
+                                    <br/>
+                                    Admin Fee : {{ CurrencyHelper::formatRupiah($paymentDetail->admin_fee) }}
+                                    <br/>
+                                    @if ($isDiscountApply)
+                                        Diskon : (-{{ CurrencyHelper::formatRupiah($amountDisc) }})
+                                        <br/>
+                                        Jenis Diskon : {{ $discountType }}
+                                    @endif
+                                </small> <br/>
                             </div>
                             <div class="col-lg-6 col-12 mb-4">
                                 <x-inputs.label>Waktu Upload</x-inputs.label>

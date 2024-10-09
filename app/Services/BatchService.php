@@ -70,4 +70,11 @@ class BatchService {
 
         return $batch;
     }
+
+    //Get last 3 active batch
+    public function getLastBatch() {
+        return Batch::orderBy('id', 'desc')
+        ->limit(3)
+        ->get();
+    }
 }

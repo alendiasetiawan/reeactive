@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -16,6 +17,16 @@ class Member extends Model
     public function registrations(): HasMany
     {
         return $this->hasMany(Registration::class, 'member_code', 'code');
+    }
+
+    public function referralRegistrations(): HasMany
+    {
+        return $this->hasMany(ReferralRegistration::class, 'member_code', 'code');
+    }
+
+    public function referral(): HasOne
+    {
+        return $this->hasOne(Referral::class, 'member_code', 'code');
     }
 
     public static function memberActive($batchId) {
@@ -172,5 +183,34 @@ class Member extends Model
         ->where('mobile_phone', $phone)
         ->select('code', 'member_name', 'mobile_phone', 'medical_condition')
         ->firstOrFail();
+    }
+
+    //Get data of member who have new member registered using his code
+    public static function queryClaimReferral($batchId) {
+        return Member::whereHas('referralRegistrations', function($query) use($batchId) {
+            $query->where('batch_id', $batchId);
+        })
+        ->with('registrations', function($query) {
+            $query->join('coaches', 'registrations.coach_id', 'coaches.id')
+            ->join('programs', 'registrations.program_id', 'programs.id')
+            ->select('registrations.id','member_code', 'coach_id', 'program_id', 'batch_id', 'coaches.nick_name', 'programs.program_name')
+            ->orderBy('registrations.id', 'desc');
+        })
+        ->with([
+            'referralRegistrations' => function($query) use($batchId) {
+                $query->where('batch_id', $batchId)
+                ->with('registration', function($query) {
+                    $query->select('id', 'member_code')
+                    ->with(
+                        'member', function($query) {
+                            $query->select('code', 'member_name');
+                        }
+                    );
+                });
+            }
+        ])
+        ->with('referral')
+        ->withMax('referralRegistrations', 'id')
+        ->orderBy('referral_registrations_max_id', 'desc');
     }
 }

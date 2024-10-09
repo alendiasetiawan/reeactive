@@ -18,6 +18,11 @@ class Batch extends Model
         return $this->hasMany(Registration::class, 'batch_id', 'id');
     }
 
+    public function referralRegistrations(): HasMany
+    {
+        return $this->hasMany(ReferralRegistration::class, 'batch_id', 'id');
+    }
+
     public static function checkRegisteredBatch() {
         return Batch::with([
             'registrations' => function ($query) {

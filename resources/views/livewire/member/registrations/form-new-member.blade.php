@@ -61,7 +61,33 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="row mt-2 mb-2">
+                                        <div class="col-lg-6 col-12">
+                                            <x-inputs.label>
+                                                Kode Referral
+                                                @if ($referralCode != null)
+                                                    <x-items.badges.solid-danger wire:click='clearReferralCode'>Hapus</x-items.badges.solid-danger>
+                                                @endif
+                                            </x-inputs.label>
+                                            <x-inputs.basic wire:model.live.debounce.350ms='referralCode' placeholder="Tulis jika anda memiliki kode"/>
+                                            @if ($referralCode != null)
+                                                @if ($isReferralFound)
+                                                    @if (!$isRegisteredEarly && ($countReferralUsed < $referralLimit))
+                                                        <small class="text-success">Selamat! Kode Referral Valid</small>
+                                                    @elseif ($isRegisteredEarly)
+                                                        <small class="text-danger">Maaf, Kode Referral Sudah Tidak Berlaku</small>
+                                                    @else
+                                                        <small class="text-danger">Maaf, Kode Tidak Bisa Digunakan Lebih Dari {{ $referralLimit }}x</small>
+                                                    @endif
+                                                @else
+                                                    <small class="text-danger">Maaf! Kode Referral Tidak Valid</small>
+                                                @endif
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="row mt-4 mb-2">
                                         <div class="col-12">
+                                            <span class="text-muted">Silahkan isi pertanyaan di bawah ini</span>
+                                            <br/>
                                             <x-inputs.label>Apakah anda dalam kondisi Postpartum (Pasca Melahirkan)?</x-inputs.label>
                                             <br>
                                             <x-inputs.radio-primary>
@@ -624,15 +650,15 @@
                                     @endif
 
                                     @if ($currentStep < $totalSteps)
-                                        @if (!$nextStep)
+                                        @if (!$nextStep || $isReferralCodeError)
                                         <x-buttons.solid-dark type="button" disabled>
-                                            Isi Pertanyaan Di atas
+                                            Lanjut
                                         </x-buttons.solid-dark>
                                         @else
                                             @if ($alertQuota)
                                                 <x-buttons.solid-dark type="button" disabled>Tidak Bisa Daftar</x-buttons.solid-dark>
                                             @else
-                                                @if ($questionThree != 'Less' && $questionFour != 'Iya' && $questionFive != 'Less' && $questionSix != 'Iya')
+                                                @if ($questionThree != 'Less' && $questionFour != 'Iya' && $questionFive != 'Less' && $questionSix != 'Iya' && !$isReferralCodeError)
                                                 <x-buttons.icon-primary type="button" wire:click='increaseStep'>
                                                     Lanjut
                                                     <x-slot name="icon">
