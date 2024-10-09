@@ -36,10 +36,15 @@ class GenerateReferralCode extends Component
     //ONCLICK - Generate Referral Code
     /**Create referral code when user doesn't have it*/
     public function generateCode() {
-        $randomString = Str::upper(Str::random(6));
+        $randomString = Str::upper(Str::random(4));
+        //Count how many referral codes already exist
+        $countReferral = Referral::count();
+        $addDigit = $countReferral + 1;
+        $code = ''.$randomString.''.$addDigit.'';
+
         Referral::create([
             'member_code' => $this->memberCode,
-            'code' => $randomString
+            'code' => $code
         ]);
 
         $this->redirect(route('member::dashboard'), navigate:true);

@@ -19,7 +19,7 @@
     <div class="row layout-top-spacing">
         <!--Registration Alert-->
         @if ($batchOpen == 1)
-            <div class="col-12">
+            <div class="col-12 mb-3">
                 @if ($checkBatch[0]->registrations->count() == 0)
                     <x-items.alerts.light-info>
                         Pendaftaran <b>"{{ $checkBatch[0]->batch_name }}"</b> telah dibuka, ayo daftar sekarang! Batas waktu sampai {{ \Carbon\Carbon::parse($checkBatch[0]->end_date)->isoFormat('D MMM Y') }}
@@ -35,9 +35,9 @@
         @endif
         <!--#Registration Alert-->
 
-        <livewire:member.registration-log />
-
         <livewire:member.renewal-form :batchOpen='$batchOpen' :checkBatch='$checkBatch'/>
+
+        <livewire:member.registration-log />
     </div>
 @endsection
 

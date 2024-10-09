@@ -28,6 +28,11 @@ class ReferralRegistration extends Model
         return $query->where('is_cashback', $type);
     }
 
+    public function member(): BelongsTo
+    {
+        return $this->belongsTo(Member::class, 'member_code', 'code');
+    }
+
     //Count data of registered member using referral code in certain batch
     public static function countRegisteredMember($memberCode, $batchId) {
         return ReferralRegistration::where('member_code', $memberCode)->where('batch_id', $batchId)->count();
@@ -64,5 +69,27 @@ class ReferralRegistration extends Model
         ->where('batch_id', $batchId)
         ->cashback(true)
         ->sum('discount');
+    }
+
+    //Get data of registered member using referral code in certain batch
+    public static function discountReferrals($memberCode, $batchId) {
+        return ReferralRegistration::where('member_code', $memberCode)
+        ->where('batch_id', $batchId)
+        ->where('is_cashback', 0)
+        ->get();
+    }
+
+    //Take specific data of one new member registered using referral code
+    public static function takeOneMemberReferral($id) {
+        return ReferralRegistration::with([
+            'registration' => function ($query) {
+                $query->join('members', 'registrations.member_code', 'members.code')
+                ->join('coaches', 'registrations.coach_id', 'coaches.id')
+                ->join('programs', 'registrations.program_id', 'programs.id')
+                ->select('registrations.id', 'registrations.member_code', 'registrations.coach_id', 'coaches.nick_name', 'programs.program_name', 'members.member_name');
+            }
+        ])
+        ->where('id', $id)
+        ->first();
     }
 }
