@@ -48,7 +48,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Total Diskon</h5>
-                            <p class="mb-0">{{ \App\Helpes\CurrencyHelper::formatRupiah($this->totalDiscount) }}</p>
+                            <p class="mb-0">{{ \App\Helpers\CurrencyHelper::formatRupiah($this->totalDiscount) }}</p>
                         </div>
                     </div>
                     <!--#Total Discount Get By User-->
@@ -58,7 +58,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Total Cashback</h5>
-                            <p class="mb-0">{{ \App\Helpes\CurrencyHelper::formatRupiah($this->totalCashback) }}</p>
+                            <p class="mb-0">{{ \App\Helpers\CurrencyHelper::formatRupiah($this->totalCashback) }}</p>
                         </div>
                     </div>
                     <!--#Total Cashback Get By User-->

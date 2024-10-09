@@ -34,6 +34,10 @@
                     Request Kelas
                     <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
                 </a>
+                <a wire:navigate href="{{ route('admin::registered_by_referral') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    Claim Referral Code
+                    <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+                </a>
             </div>
         </div>
     </div>
