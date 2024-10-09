@@ -1,6 +1,5 @@
 <div>
     @use('App\Helpers\TanggalHelper')
-    @use('App\Helpers\CurrencyHelper')
 
     <x-modals.form id="{{ $idModal }}" wire:ignore.self>
         <x-slot:modalHeader>Update Status Claim Cashback</x-slot:modalHeader>
@@ -12,7 +11,7 @@
                 </div>
                 <div class="col-lg-6 col-12 mb-3">
                     <h6>Tanggal Daftar</h6>
-                    <span>{{ TanggalHelper::konversiTanggal($this->dataReferral->created_at ?? '') }}</span>
+                    <span>{{ \App\Helpers\TanggalHelper::konversiTanggal($this->dataReferral->created_at ?? '') }}</span>
                 </div>
                 <div class="col-lg-6 col-12 mb-3">
                     <h6>Coach</h6>
@@ -24,7 +23,7 @@
                 </div>
                 <div class="col-lg-6 col-12 mb-3">
                     <h6>Nominal</h6>
-                    <span>{{ CurrencyHelper::formatRupiah($this->dataReferral->discount ?? 0) }}</span>
+                    <span>{{ \App\Helpers\CurrencyHelper::formatRupiah($this->dataReferral->discount ?? 0) }}</span>
                 </div>
                 <div class="col-lg-6 col-12 mb-3">
                     <x-inputs.label>Status Claim</x-inputs.label>
