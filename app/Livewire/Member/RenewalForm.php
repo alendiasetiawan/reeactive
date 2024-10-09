@@ -2,20 +2,24 @@
 
 namespace App\Livewire\Member;
 
+use Exception;
 use Carbon\Carbon;
 use App\Models\Batch;
 use App\Models\Coach;
 use App\Models\Level;
 use App\Models\Program;
 use Livewire\Component;
+use App\Models\Referral;
 use App\Models\Pricelist;
 use App\Models\ClassModel;
 use App\Models\ClassSession;
 use App\Models\Registration;
-use App\Services\BatchService;
 use Livewire\WithFileUploads;
+use App\Services\BatchService;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Computed;
+use Illuminate\Support\Facades\DB;
+use App\Models\ReferralRegistration;
 use Illuminate\Support\Facades\Auth;
 use App\Services\RegistrationService;
 
@@ -35,7 +39,7 @@ class RenewalForm extends Component
     public $selectedLevel = 1;
     public $price;
     public $levels;
-    public bool $isDiscountApply = false, $showProgressBar = false;
+    public $isDiscountApply = false, $showProgressBar = false, $isEarlyBirdPhase;
     public $uploadedFileName;
     public $registrationCategory;
     public $programs;
@@ -44,9 +48,10 @@ class RenewalForm extends Component
     public $registeredMember;
     public $selectedSession;
     public ?int $amountDisc, $priceAfterDisc, $totalPrice;
-    public object $batch;
+    //Object
+    public $batch, $referralMembers;
     public $discount;
-    public ?string $registrationType;
+    public $registrationType, $discountType;
 
     protected $registrationService;
 
@@ -129,17 +134,31 @@ class RenewalForm extends Component
             $openDate = $this->batch->early_bird_end;
             $dateToday = Carbon::now()->format('Y-m-d');
 
-            if ($dateToday < $openDate) {
+            //Check if there is a referral code applied
+            $this->referralMembers = ReferralRegistration::discountReferrals(Auth::user()->email, $this->batchId);
+
+            if ($dateToday <= $openDate) {
                 $this->isDiscountApply = true;
                 $this->amountDisc = $this->discount;
                 $this->priceAfterDisc = $this->price - $this->amountDisc;
                 $this->totalPrice = $this->priceAfterDisc;
+                $this->discountType = 'Early Bird';
                 $this->registrationType = 'Early Bird';
+                $this->isEarlyBirdPhase = true;
             } else {
-                $this->isDiscountApply = false;
-                $this->priceAfterDisc = $this->price;
-                $this->totalPrice = $this->price;
+                if ($this->referralMembers->count() > 0) {
+                    $this->isDiscountApply = true;
+                    $this->amountDisc = $this->referralMembers->sum('discount');
+                    $this->priceAfterDisc = $this->price - $this->amountDisc;
+                    $this->totalPrice = $this->priceAfterDisc;
+                    $this->discountType = 'Referral';
+                } else {
+                    $this->isDiscountApply = false;
+                    $this->priceAfterDisc = $this->price;
+                    $this->totalPrice = $this->price;
+                }
                 $this->registrationType = 'Reguler';
+                $this->isEarlyBirdPhase = false;
             }
         }
 
@@ -170,24 +189,43 @@ class RenewalForm extends Component
     }
 
     public function saveData() {
-        Registration::insert([
-            'member_code' => Auth::user()->email,
-            'batch_id' => $this->batchId,
-            'amount_pay' => $this->totalPrice,
-            'admin_fee' => 0,
-            'program_price' => $this->priceAfterDisc,
-            'file_upload' => $this->fileUpload->storeAs($this->batchId, $this->uploadedFileName, 'public'),
-            'payment_status' => 'Process',
-            'registration_category' => $this->registrationCategory,
-            'registration_type' => $this->registrationType,
-            'program_id' => $this->selectedProgram,
-            'level_id' => $this->selectedLevel,
-            'coach_id' => $this->coach->id,
-            'class_id' => $this->selectedClass,
-        ]);
 
-        session()->flash('registrationSuccess', 'Success');
-        $this->redirect('/member/renewal-registration', navigate:true);
+        DB::beginTransaction();
+        try {
+            if ($this->referralMembers->count() > 0 && $this->isEarlyBirdPhase == true) {
+                ReferralRegistration::where('member_code', Auth::user()->email)
+                ->where('batch_id', $this->batchId)
+                ->where('is_cashback', 0)
+                ->update([
+                    'is_cashback' => 1,
+                    'is_used' => 0
+                ]);
+            }
+            Registration::insert([
+                'member_code' => Auth::user()->email,
+                'batch_id' => $this->batchId,
+                'amount_pay' => $this->totalPrice,
+                'admin_fee' => 0,
+                'program_price' => $this->price,
+                'file_upload' => $this->fileUpload->storeAs($this->batchId, $this->uploadedFileName, 'public'),
+                'payment_status' => 'Process',
+                'registration_category' => $this->registrationCategory,
+                'registration_type' => $this->registrationType,
+                'program_id' => $this->selectedProgram,
+                'level_id' => $this->selectedLevel,
+                'coach_id' => $this->coach->id,
+                'class_id' => $this->selectedClass,
+            ]);
+
+            DB::commit();
+            session()->flash('registrationSuccess', 'Success');
+            $this->redirect('/member/renewal-registration', navigate:true);
+        } catch (Exception) {
+            DB::rollBack();
+            session()->flash('failed-registration', 'Daftar Gagal, Cek Koneksi dan Kolom Isian Anda');
+            $this->redirect(route('new_member'));
+        }
+
 
     }
 

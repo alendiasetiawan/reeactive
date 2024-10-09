@@ -2,7 +2,7 @@
     <div class="widget-heading">
         <h5
         {{ $cardTitle->attributes->merge([
-            'class' => 'text-primary' ?? ''
+            'class' => 'text-bold' ?? ''
         ])}}
         >
             {{ $cardTitle }}

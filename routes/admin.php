@@ -6,6 +6,7 @@ use App\Livewire\Admin\DatabaseMember;
 use App\Livewire\Admin\MobileMainMenu;
 use App\Livewire\Admin\PaymentVerification;
 use App\Livewire\Admin\RegistrationQuota;
+use App\Livewire\Admin\Registrations\RegisteredByReferral;
 use App\Livewire\Admin\Registrations\ShowMemberInClass;
 use App\Livewire\Admin\Registrations\ShowWorkshopVerification;
 use App\Livewire\Admin\Registrations\WorkshopPaymentVerification;
@@ -35,6 +36,7 @@ Route::group(['middleware' => ['auth', 'admin'], 'as' => 'admin::'], function() 
         Route::get('/verifikasi-transfer/{id}', ShowPaymentVerification::class)->name('payment_verification.show');
         Route::get('/kuota-pendaftaran', RegistrationQuota::class)->name('registration_quota');
         Route::get('/member-per-kelas/{classId}/{batchId}/{nickName}', ShowMemberInClass::class)->name('member_in_class');
+        Route::get('/pendaftar-referral', RegisteredByReferral::class)->name('registered_by_referral');
 
         //Workshop
         Route::get('/verifikasi-transfer-workshop', WorkshopPaymentVerification::class)->name('workshop_verification');

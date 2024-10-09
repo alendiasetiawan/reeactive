@@ -1,3 +1,3 @@
 <button {{ $attributes->class(['btn btn-outline-primary'])->merge(['']) }}>
-    {{ $slot }}
+    <span>{{ $slot }}</span>
 </button>
