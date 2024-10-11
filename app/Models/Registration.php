@@ -44,6 +44,11 @@ class Registration extends Model
         return $this->hasOne(ReferralRegistration::class, 'registration_id', 'id');
     }
 
+    public function voucherMerchandise(): HasOne
+    {
+        return $this->hasOne(VoucherMerchandise::class, 'registration_id', 'id');
+    }
+
     public static function personalRegistrationLogs() {
         return Registration::join('coaches', 'registrations.coach_id', 'coaches.id')
         ->join('batches', 'registrations.batch_id', 'batches.id')

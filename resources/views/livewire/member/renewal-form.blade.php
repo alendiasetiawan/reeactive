@@ -9,6 +9,13 @@
             Atas Nama : <b>CV MUSLIMAH BUGAR INDONESIA</b> <br>
             Kode Bank : <b>451</b>
         </p>
+
+        @if (session('failed-registration'))
+            <x-items.alerts.light-danger>
+                {{ session('failed-registration') }}
+            </x-items.alerts.light-danger>
+        @endif
+
         <form wire:submit.prevent='saveData' class="mt-3">
             <div class="row">
                 <div class="col-lg-6 col-12 mb-2">

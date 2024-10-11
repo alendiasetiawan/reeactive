@@ -18,6 +18,7 @@ use Livewire\WithFileUploads;
 use App\Services\BatchService;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Computed;
+use App\Models\VoucherMerchandise;
 use Illuminate\Support\Facades\DB;
 use App\Models\ReferralRegistration;
 use Illuminate\Support\Facades\Auth;
@@ -52,12 +53,14 @@ class RenewalForm extends Component
     public $batch, $referralMembers;
     public $discount;
     public $registrationType, $discountType;
+    public $voucherValidDate;
 
     protected $registrationService;
 
     public function mount(BatchService $batchService) {
         $this->batch = $batchService->batchQuery();
         $this->discount = $this->batch->disc_early_bird;
+        $this->voucherValidDate = Carbon::parse($this->batch->start_date)->addDays(90)->format('Y-m-d');
     }
 
     public function boot(RegistrationService $registrationService) {
@@ -201,7 +204,8 @@ class RenewalForm extends Component
                     'is_used' => 0
                 ]);
             }
-            Registration::insert([
+
+            $registration = Registration::create([
                 'member_code' => Auth::user()->email,
                 'batch_id' => $this->batchId,
                 'amount_pay' => $this->totalPrice,
@@ -217,13 +221,16 @@ class RenewalForm extends Component
                 'class_id' => $this->selectedClass,
             ]);
 
+            //Create voucher code
+            VoucherMerchandise::generateVoucherMerchandise($this->batch->id, Auth::user()->email, $this->voucherValidDate, $registration->id);
+
             DB::commit();
             session()->flash('registrationSuccess', 'Success');
             $this->redirect('/member/renewal-registration', navigate:true);
         } catch (Exception) {
             DB::rollBack();
             session()->flash('failed-registration', 'Daftar Gagal, Cek Koneksi dan Kolom Isian Anda');
-            $this->redirect(route('new_member'));
+            $this->redirect('/member/renewal-registration', navigate:true);
         }
 
 
