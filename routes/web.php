@@ -39,7 +39,7 @@ Route::get('/reset-password', ResetPassword::class)->name('reset_password');
 Route::get('/link-reset/{resetCode}', PasswordBaru::class)->name('password_baru');
 
 //Loyalti Program
-Route::get('/validasi-voucher/{code}', VoucherMerchandiseValidation::class)->name('voucher_merchandise_validation');
+Route::get('/validasi-voucher-merchandise/{code}', VoucherMerchandiseValidation::class)->name('voucher_merchandise_validation');
 
 require __DIR__ . '/member.php';
 

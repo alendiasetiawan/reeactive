@@ -61,13 +61,17 @@
                     <x-slot name="userImage">
                         <x-cards.user-image src="{{ asset('template/src/assets/img/avatar/user_akhwat.png') }}"></x-cards.user-image>
                     </x-slot>
-                    <x-slot name="userName">{{ $voucher->member_name }}</x-slot>
+                    <x-slot name="userName">{{ Str::excerpt($voucher->member_name, '', ['radius' => 20]) }}</x-slot>
                     <x-slot name="userTitle">
                         <small>{{ $voucher->registration->program_name }} - Coach {{ $voucher->registration->nick_name }}</small>
                     </x-slot>
                     <x-slot name="icon" href="https://wa.me/{{ $voucher->no_wa }}" target="_blank">
                         <i class="fa-brands fa-whatsapp fa-xl" style="color: #19c502;"></i>
                     </x-slot>
+                    <div class="text-center mb-1">
+                        ID: #{{ $voucher->qr_code }}
+                    </div>
+
                     <div class="text-center mb-3">
                         {{ \SimpleSoftwareIO\QrCode\Facades\QrCode::size(120)->generate(url('validasi-voucher-merchandise/'.$voucher->qr_code)) }}
                     </div>
