@@ -6,7 +6,7 @@ use App\Models\Member;
 
 class MemberService
 {
-    public function paginateMemberClaimReferral($batchId, $limitData) {
-        return Member::queryClaimReferral($batchId)->paginate($limitData);
+    public function paginateMemberClaimReferral($batchId, $limitData, $searchMember = null) {
+        return Member::queryClaimReferral($batchId, $searchMember)->paginate($limitData);
     }
 }

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Member\DashboardMember;
 use App\Livewire\Member\Programs\ReferralMember;
+use App\Http\Controllers\Member\DownloadVoucherMerchandise;
 use App\Livewire\Member\Registrations\ContinueWorkshopForm;
 use App\Http\Controllers\Member\RenewalRegistrationController;
 
@@ -18,5 +19,8 @@ Route::group(['middleware' => ['auth', 'member'], 'as' => 'member::'], function(
         });
         Route::get('/workshop-lanjutan', ContinueWorkshopForm::class)->name('continue_workshop_form');
         Route::get('/referral-member', ReferralMember::class)->name('referral_member');
+
+        //Reeactive Loyalty Program
+        Route::get('/download-voucher-merchandise/{id}', [DownloadVoucherMerchandise::class, 'create'])->name('download_voucher_merchandise.create');
     });
 });

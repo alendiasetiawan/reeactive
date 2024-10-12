@@ -100,7 +100,14 @@
                     </li>
                 </ul>
             </li>
+            <!--#Member Area-->
 
+            <!--Loyalty Program-->
+            <li class="menu menu-heading">
+                <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    <span>LOYALTY PROGRAM</span>
+                </div>
+            </li>
             <li class="menu {{ Route::is('admin::registered_by_referral') ? 'active' : '' }}">
                 <a wire:navigate href="{{ route('admin::registered_by_referral') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
@@ -109,7 +116,15 @@
                     </div>
                 </a>
             </li>
-            <!--#Member Area-->
+            <li class="menu {{ Route::is('admin::merchandise_voucher_verification') ? 'active' : '' }}">
+                <a wire:navigate href="{{ route('admin::merchandise_voucher_verification') }}" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        <span>Voucher Merchan</span>
+                    </div>
+                </a>
+            </li>
+            <!--#Loyalty Program
 
             <!--Settings-->
             <li class="menu menu-heading">

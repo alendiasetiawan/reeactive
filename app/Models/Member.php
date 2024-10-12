@@ -186,7 +186,7 @@ class Member extends Model
     }
 
     //Get data of member who have new member registered using his code
-    public static function queryClaimReferral($batchId) {
+    public static function queryClaimReferral($batchId, $searchMember = null) {
         return Member::whereHas('referralRegistrations', function($query) use($batchId) {
             $query->where('batch_id', $batchId);
         })
@@ -211,6 +211,9 @@ class Member extends Model
         ])
         ->with('referral')
         ->withMax('referralRegistrations', 'id')
-        ->orderBy('referral_registrations_max_id', 'desc');
+        ->orderBy('referral_registrations_max_id', 'desc')
+        ->when($searchMember != null, function($query) use($searchMember) {
+            $query->where('member_name', 'like', '%'.$searchMember.'%');
+        });
     }
 }
