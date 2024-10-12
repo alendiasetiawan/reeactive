@@ -7,10 +7,13 @@ use App\Models\Batch;
 use App\Models\Member;
 use Livewire\Component;
 use App\Models\Registration;
+use App\Models\VoucherMerchandise;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
 use App\Models\WorkshopRegistration;
+use App\Services\BatchService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 
 class DashboardMember extends Component
 {
@@ -25,11 +28,15 @@ class DashboardMember extends Component
     public object $activeWorkshop;
     public bool $isRegisteredInReeactive;
     public bool $isWorkshopPaymentProcess;
-    public object $personalInfo;
+    //Object
+    public $personalInfo, $lastVoucherMerchandise, $batchQuery;
+    //String
+    public $linkVoucher;
 
     protected $batchService;
 
-    public function mount() {
+    public function mount(BatchService $batchService) {
+        $this->batchQuery = $batchService->batchQuery();
         $this->isRegisteredInWorkshop = WorkshopRegistration::where('member_code', Auth::user()->email)->exists();
         $this->isRegisteredInReeactive = Registration::where('member_code', Auth::user()->email)->exists();
         $this->personalInfo = Member::where('code', Auth::user()->email)->first();
@@ -46,6 +53,8 @@ class DashboardMember extends Component
             $this->registrations = Registration::personalRegistrationLogs();
             $this->batchOpen = Batch::where('batch_status', 'Open')->count();
             $this->checkBatch = Batch::checkRegisteredBatch();
+            $this->lastVoucherMerchandise = VoucherMerchandise::latestVoucher(Auth::user()->email, $this->member->batch_id);
+            $this->linkVoucher = ''.route("landing").'/validasi-voucher-merchandise/'.$this->lastVoucherMerchandise->qr_code.'';
         }
     }
 

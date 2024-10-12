@@ -27,8 +27,6 @@
 
     </div>
 
-    <hr/>
-
     {{ $slot }}
 
     @isset($callToAction)

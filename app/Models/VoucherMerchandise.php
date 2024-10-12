@@ -38,4 +38,26 @@ class VoucherMerchandise extends Model
             'is_used' => 0,
         ]);
     }
+
+    public static function latestVoucher($memberCode, $batchId) {
+        return VoucherMerchandise::where('member_code', $memberCode)
+        ->where('batch_id', $batchId)
+        ->latest()
+        ->first();
+    }
+
+    public static function getOneVoucher($code) {
+        return VoucherMerchandise::with([
+            'registration' => function ($query) {
+                $query->join('programs', 'registrations.program_id', 'programs.id')
+                ->join('coaches', 'registrations.coach_id', 'coaches.id')
+                ->select('registrations.*', 'programs.program_name', 'coaches.nick_name');
+            }
+        ])
+        ->join('members', 'members.code', 'voucher_merchandises.member_code')
+        ->join('batches', 'batches.id', 'voucher_merchandises.batch_id')
+        ->where('qr_code', $code)
+        ->select('voucher_merchandises.*', 'members.member_name', 'batches.batch_name', 'batches.merchandise_voucher')
+        ->first();
+    }
 }

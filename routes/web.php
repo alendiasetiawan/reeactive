@@ -1,18 +1,19 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use App\Livewire\Member\ChangePassword;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\LandingPageController;
-use App\Http\Controllers\CompanyProfile\PricelistController;
-use App\Livewire\Member\Registrations\FormNewMember;
-use App\Livewire\Member\Registrations\FormWorkshop;
-use App\Livewire\Member\RegistrationSuccess;
 use App\Livewire\PasswordBaru;
 use App\Livewire\PrivacyPolicy;
 use App\Livewire\ResetPassword;
 use App\Livewire\WatchPrivateVideo;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use App\Livewire\Member\ChangePassword;
+use App\Livewire\Member\RegistrationSuccess;
+use App\Http\Controllers\Auth\LoginController;
+use App\Livewire\VoucherMerchandiseValidation;
+use App\Http\Controllers\LandingPageController;
+use App\Livewire\Member\Registrations\FormWorkshop;
+use App\Livewire\Member\Registrations\FormNewMember;
+use App\Http\Controllers\CompanyProfile\PricelistController;
 
 Auth::routes();
 Route::get('/privacy-policy', PrivacyPolicy::class)->name('privacy_policy');
@@ -36,6 +37,9 @@ Route::get('/private-video', WatchPrivateVideo::class)->name('private_video');
 Route::get('/ganti-password', ChangePassword::class)->name('ganti_password');
 Route::get('/reset-password', ResetPassword::class)->name('reset_password');
 Route::get('/link-reset/{resetCode}', PasswordBaru::class)->name('password_baru');
+
+//Loyalti Program
+Route::get('/validasi-voucher/{code}', VoucherMerchandiseValidation::class)->name('voucher_merchandise_validation');
 
 require __DIR__ . '/member.php';
 

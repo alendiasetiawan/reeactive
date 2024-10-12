@@ -18,6 +18,7 @@
         "livewire/volt": "^1.6",
         "maatwebsite/excel": "^3.1",
         "mobiledetect/mobiledetectlib": "^4.8",
+        "simplesoftwareio/simple-qrcode": "^4.2",
         "wireui/wireui": "^1.18"
     },
     "require-dev": {

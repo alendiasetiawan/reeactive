@@ -55,6 +55,7 @@ class Registration extends Model
         ->join('programs', 'registrations.program_id', 'programs.id')
         ->where('member_code', Auth::user()->email)
         ->select('registrations.*', 'coaches.nick_name', 'batches.batch_name', 'programs.program_name')
+        ->limit(5)
         ->orderBy('registrations.id', 'desc')
         ->get();
     }
