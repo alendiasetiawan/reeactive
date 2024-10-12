@@ -284,6 +284,7 @@
             </div>
 
             <div class="col-lg-6 col-12 layout-spacing">
+                @if ($isVoucherExist)
                 <x-cards.wallet>
                     <x-slot:header>Voucher Merchandise - {{ $batchQuery->batch_name }}</x-slot:header>
                     <x-slot:mainTitle>
@@ -311,6 +312,7 @@
                         <x-items.alerts.light-danger>{{ session('error-id') }}</x-items.alerts.light-danger>
                     @endif
                 </x-cards.wallet>
+                @endif
             </div>
         @endif
     </div>

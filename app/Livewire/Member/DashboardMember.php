@@ -32,6 +32,8 @@ class DashboardMember extends Component
     public $personalInfo, $lastVoucherMerchandise, $batchQuery;
     //String
     public $linkVoucher;
+    //Boolean
+    public $isVoucherExist;
 
     protected $batchService;
 
@@ -53,8 +55,15 @@ class DashboardMember extends Component
             $this->registrations = Registration::personalRegistrationLogs();
             $this->batchOpen = Batch::where('batch_status', 'Open')->count();
             $this->checkBatch = Batch::checkRegisteredBatch();
-            $this->lastVoucherMerchandise = VoucherMerchandise::latestVoucher(Auth::user()->email, $this->member->batch_id);
-            $this->linkVoucher = ''.route("landing").'/validasi-voucher-merchandise/'.$this->lastVoucherMerchandise->qr_code.'';
+
+            $this->isVoucherExist = VoucherMerchandise::where('member_code', Auth::user()->email)
+            ->where('batch_id', $this->batchQuery->id)
+            ->exists();
+
+            if ($this->isVoucherExist) {
+                $this->lastVoucherMerchandise = VoucherMerchandise::latestVoucher(Auth::user()->email, $this->member->batch_id);
+                $this->linkVoucher = url('validasi-voucher-merchandise/'.$this->lastVoucherMerchandise->qr_code);
+            }
         }
     }
 

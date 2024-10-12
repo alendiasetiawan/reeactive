@@ -43,7 +43,7 @@ class VoucherMerchandise extends Model
         return VoucherMerchandise::where('member_code', $memberCode)
         ->where('batch_id', $batchId)
         ->latest()
-        ->first();
+        ->firstOrFail();
     }
 
     public static function getOneVoucher($code) {
@@ -59,5 +59,24 @@ class VoucherMerchandise extends Model
         ->where('qr_code', $code)
         ->select('voucher_merchandises.*', 'members.member_name', 'batches.batch_name', 'batches.merchandise_voucher')
         ->first();
+    }
+
+    public static function getListOfVouchers($batchId, $limitData, $searchMember = null) {
+        return VoucherMerchandise::with([
+            'registration' => function ($query) {
+                $query->join('programs', 'registrations.program_id', 'programs.id')
+                ->join('coaches', 'registrations.coach_id', 'coaches.id')
+                ->select('registrations.*', 'programs.program_name', 'coaches.nick_name');
+            }
+        ])
+        ->join('members', 'members.code', 'voucher_merchandises.member_code')
+        ->join('batches', 'batches.id', 'voucher_merchandises.batch_id')
+        ->where('batch_id', $batchId)
+        ->select('voucher_merchandises.*', 'members.member_name', 'members.mobile_phone as no_wa', 'batches.batch_name', 'batches.merchandise_voucher as discount')
+        ->orderBy('id', 'desc')
+        ->when($searchMember != null, function ($query) use ($searchMember) {
+            $query->where('members.member_name', 'like', '%' . $searchMember . '%');
+        })
+        ->paginate($limitData);
     }
 }
