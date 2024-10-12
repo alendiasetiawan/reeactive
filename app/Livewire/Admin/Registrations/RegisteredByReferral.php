@@ -16,6 +16,8 @@ class RegisteredByReferral extends Component
     public $lastBatches;
     //Integer
     public $limitData = 9, $selectedBatch;
+    //String
+    public $searchMember = null;
 
     protected MemberService $memberService;
     protected BatchService $batchService;
@@ -37,10 +39,10 @@ class RegisteredByReferral extends Component
     //PROPERTY - List of members that has new member registered using referral code
     #[Computed]
     public function upReferralMembers() {
-        return $this->memberService->paginateMemberClaimReferral($this->selectedBatch, $this->limitData);
+        return $this->memberService->paginateMemberClaimReferral($this->selectedBatch, $this->limitData, $this->searchMember);
     }
 
-    //PROPERTY - List of members that has new member registered using referral code
+    //PROPERTY - Count how many existing member that has new member registered using referral code
     #[Computed]
     public function countTotalReferralMembers() {
         return ReferralRegistration::distinct()

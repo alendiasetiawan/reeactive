@@ -3,6 +3,7 @@
 use App\Http\Controllers\ExportExcelController;
 use App\Livewire\Admin\DashboardAdmin;
 use App\Livewire\Admin\DatabaseMember;
+use App\Livewire\Admin\MerchandiseVoucherVerification;
 use App\Livewire\Admin\MobileMainMenu;
 use App\Livewire\Admin\PaymentVerification;
 use App\Livewire\Admin\RegistrationQuota;
@@ -36,7 +37,6 @@ Route::group(['middleware' => ['auth', 'admin'], 'as' => 'admin::'], function() 
         Route::get('/verifikasi-transfer/{id}', ShowPaymentVerification::class)->name('payment_verification.show');
         Route::get('/kuota-pendaftaran', RegistrationQuota::class)->name('registration_quota');
         Route::get('/member-per-kelas/{classId}/{batchId}/{nickName}', ShowMemberInClass::class)->name('member_in_class');
-        Route::get('/pendaftar-referral', RegisteredByReferral::class)->name('registered_by_referral');
 
         //Workshop
         Route::get('/verifikasi-transfer-workshop', WorkshopPaymentVerification::class)->name('workshop_verification');
@@ -44,5 +44,9 @@ Route::group(['middleware' => ['auth', 'admin'], 'as' => 'admin::'], function() 
 
         //Setting
         Route::get('/request-reset-password', RequestResetPassword::class)->name('request_reset_password');
+
+        //Loyalty Program
+        Route::get('/verifikasi-voucher-merchandise', MerchandiseVoucherVerification::class)->name('merchandise_voucher_verification');
+        Route::get('/pendaftar-referral', RegisteredByReferral::class)->name('registered_by_referral');
     });
 });

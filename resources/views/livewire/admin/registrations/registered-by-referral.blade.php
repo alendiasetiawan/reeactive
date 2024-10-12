@@ -5,6 +5,11 @@
     </x-items.breadcrumb>
 
     <div class="row layout-top-spacing">
+        <div class="col-lg-4 col-12">
+            <x-inputs.label>Cari Member</x-inputs.label>
+            <x-inputs.basic placeholder="Ketik nama member..." wire:model.live.debounce.250ms='searchMember'/>
+        </div>
+
         <!--Select Batch-->
         <div class="col-lg-4 col-12">
             <x-inputs.label>Pilih Batch</x-inputs.label>
@@ -36,7 +41,7 @@
 
         <!--List Of Members-->
             @forelse ($this->upReferralMembers as $member)
-                <div class="col-lg-4 col-12 mb-3">
+                <div class="col-lg-4 col-12 mb-3" wire:key='{{ $member->id }}'>
                     <div class="widget widget-five">
                         <div class="widget-heading">
                             <a href="javascript:void(0)" class="task-info">

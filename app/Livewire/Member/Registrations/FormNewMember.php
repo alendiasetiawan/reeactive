@@ -17,6 +17,7 @@ use App\Models\ClassModel;
 use App\Models\Referral;
 use App\Models\ReferralRegistration;
 use App\Models\Registration;
+use App\Models\VoucherMerchandise;
 use Livewire\WithFileUploads;
 use App\Services\BatchService;
 use Livewire\Attributes\Title;
@@ -87,7 +88,7 @@ class FormNewMember extends Component
     public $discount;
     public bool $alertUserExist = false, $alertQuota = false, $alertAddress = false;
     public ?string $registrationType;
-    public $openDate;
+    public $openDate, $voucherValidDate;
     public $referralCode, $memberCode;
     public $isReferralFound, $isRegisteredEarly, $isCashBack, $isRegistered, $isReferralCodeError = false;
 
@@ -121,6 +122,7 @@ class FormNewMember extends Component
         $this->provinces = Province::all();
         $this->discount = $this->batch->disc_early_bird;
         $this->referralLimit = $this->batch->referral_limit;
+        $this->voucherValidDate = Carbon::parse($this->openDate)->addDays(90)->format('Y-m-d');
     }
 
     #[Computed]
@@ -521,6 +523,9 @@ class FormNewMember extends Component
                         'discount' => $this->discountReferral
                     ]);
                 }
+
+                //Create Voucher Merchandise
+                VoucherMerchandise::generateVoucherMerchandise($this->batch->id, $this->phone, $this->voucherValidDate, $registration->id);
 
                 DB::commit();
                 $this->redirectRoute('registration_success', [
