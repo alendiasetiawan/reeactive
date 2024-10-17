@@ -72,7 +72,7 @@
                                             @if ($referralCode != null)
                                                 @if ($isReferralFound)
                                                     @if (!$isRegisteredEarly && ($countReferralUsed < $referralLimit))
-                                                        <small class="text-success">Selamat! Kode Referral Valid</small>
+                                                        <small class="text-success">Selamat! Anda Mendapatkan Diskon Pendaftaran Sebesar {{ CurrencyHelper::formatRupiah($discountReferral) }}</small>
                                                     @elseif ($isRegisteredEarly)
                                                         <small class="text-danger">Maaf, Kode Referral Sudah Tidak Berlaku</small>
                                                     @else
@@ -431,6 +431,10 @@
                                                         <br>
                                                         Biaya Admin : <b>{{ CurrencyHelper::formatRupiah($adminFee) }}</b>
                                                         <br>
+                                                        @if (!$isReferralCodeError && $isReferralFound)
+                                                            Diskon : (-{{ CurrencyHelper::formatRupiah($discountReferral) }})
+                                                            <br/>
+                                                        @endif
                                                         Total : <b class="text-primary">{{ CurrencyHelper::formatRupiah($totalPrice) }}</b>
                                                     <br>
                                                 </div>
