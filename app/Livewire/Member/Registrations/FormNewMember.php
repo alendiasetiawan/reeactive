@@ -56,7 +56,7 @@ class FormNewMember extends Component
     public $questionSeven;
     public $questionEight;
     public $questionNine;
-    public $price, $amountDisc, $priceAfterDisc, $adminFee, $totalPrice, $discountReferral, $referralId, $countReferralUsed, $referralLimit;
+    public $price, $amountDisc, $priceAfterDisc, $adminFee, $totalPrice, $discountReferral, $referralId, $countReferralUsed, $referralLimit, $discountReferralAmount;
     public $healthScreenings;
     public $phoneCodes;
     public $countries;
@@ -269,11 +269,15 @@ class FormNewMember extends Component
             ->first();
 
             $this->price = $pricelist->price_per_person;
-
             $this->adminFee = $this->batch->admin_fee;
-            $this->priceAfterDisc = $this->price;
-            $this->totalPrice = $this->price + $this->adminFee;
 
+            if (!$this->isReferralCodeError) {
+                $this->priceAfterDisc = $this->price - $this->discountReferral;
+            } else {
+                $this->priceAfterDisc = $this->price;
+            }
+
+            $this->totalPrice = $this->priceAfterDisc + $this->adminFee;
         }
 
         if ($property == 'questionOne') {
@@ -480,7 +484,7 @@ class FormNewMember extends Component
                     'batch_id' => $batchId,
                     'amount_pay' => $this->totalPrice,
                     'admin_fee' => $this->adminFee,
-                    'program_price' => $this->priceAfterDisc,
+                    'program_price' => $this->price,
                     'file_upload' => $this->fileUpload->storeAs($batchId, $this->uploadedFileName, 'public'),
                     'payment_status' => 'Process',
                     'registration_category' => 'New Member',
