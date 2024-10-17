@@ -25,7 +25,7 @@ class ShowPaymentVerification extends Component
     //String
     public $registrationType;
     //Boolean
-    public $isDiscountApply;
+    public $isDiscountApply, $isRegisteredViaReferral;
     //Object
     public $batch;
 
@@ -43,15 +43,23 @@ class ShowPaymentVerification extends Component
 
         $referralMembers = ReferralRegistration::discountReferrals($memberCode, $batchId);
 
+        //Check if member registered using referral code
+        $this->isRegisteredViaReferral = ReferralRegistration::where('registration_id', $id)->count() > 0 ? true : false;
+
         if ($registrationType == 'Early Bird') {
             $this->discountType = 'Early Bird';
             $this->isDiscountApply = true;
             $this->amountDisc = $this->discEarlyBird;
         } else {
-            if ($referralMembers->count() > 0) {
+            if ($referralMembers->count() > 0 || $this->isRegisteredViaReferral) {
                 $this->discountType = 'Referral';
                 $this->isDiscountApply = true;
-                $this->amountDisc = $referralMembers->sum('discount');
+
+                if ($referralMembers->count() > 0) {
+                    $this->amountDisc = $referralMembers->sum('discount');
+                } else {
+                    $this->amountDisc = $this->batch->discount_referral;
+                }
             } else {
                 $this->isDiscountApply = false;
             }
