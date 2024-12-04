@@ -1,0 +1,150 @@
+/*================================================================================
+	Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
+	Version: 2.0
+	Author: PIXINVENT
+	Author URL: http://www.themeforest.net/user/pixinvent
+================================================================================
+
+NOTE:
+------
+PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
+WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
+
+.navigation-main {
+    font-family: 'Poppins', serif;
+}
+
+.nav-item {
+    font-family: 'Poppins', serif;
+}
+
+body {
+    font-family: 'Poppins', serif;
+}
+
+div.stickybar {
+position: -webkit-sticky;
+position: sticky;
+top: 20;
+}
+.blink_me {
+animation: blinker 1.5s linear infinite;
+}
+
+@keyframes blinker {
+85% {
+    opacity: 0;
+}
+}
+
+.scroller {
+    overflow: auto;
+    padding-right: 3px;
+    height: 280px;
+}
+
+.small-scroller {
+overflow: auto;
+padding-right: 3px;
+height: 150px;
+}
+
+.scroller2 {
+overflow: auto;
+padding-right: 3px;
+height: 190px;
+}
+
+.scroller3 {
+overflow: auto;
+padding-right: 3px;
+height: 400px;
+}
+
+.scroller4 {
+overflow: auto;
+padding-right: 4px;
+height: 300px;
+}
+
+.scroller5 {
+overflow: auto;
+padding-right: 4px;
+height: 450px;
+}
+
+.scroller6 {
+overflow: auto;
+padding-right: 3px;
+height: 400px;
+}
+
+.scroller7 {
+overflow: auto;
+padding-right: 3px;
+height: 700px;
+}
+
+/* width */
+::-webkit-scrollbar {
+width: 3px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+box-shadow: inset 0 0 5px grey;
+border-radius: 3px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+background: #74AF28;
+border-radius: 3px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+background: #74AF28;
+}
+
+/* Dot Animation */
+@keyframes dot-elastic {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.dots-wrapper {
+    display: inline-flex;
+    align-items: center;
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    margin: 0 2px;
+    background-color: #74AF28;
+    border-radius: 50%;
+    animation: dot-elastic 1s infinite;
+}
+
+.dot:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
