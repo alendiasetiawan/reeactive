@@ -14,6 +14,8 @@ use App\Http\Controllers\LandingPageController;
 use App\Livewire\Member\Registrations\FormWorkshop;
 use App\Livewire\Member\Registrations\FormNewMember;
 use App\Http\Controllers\CompanyProfile\PricelistController;
+use App\Livewire\Registrations\FormAdditionalProgram;
+use App\Livewire\Registrations\LandingProgram;
 
 Auth::routes();
 Route::get('/privacy-policy', PrivacyPolicy::class)->name('privacy_policy');
@@ -25,8 +27,12 @@ Route::controller(PricelistController::class)->group(function() {
     Route::get('/special-case-groups', 'specialCase');
     Route::get('/large-groups', 'large');
 });
+
+//Registrations
 Route::get('/member-baru', FormNewMember::class)->name('new_member');
 Route::get('/registrasi-berhasil/{memberName}/{programName}/{coachFullName}/{coachNickName}/{classDay}/{classStartTime}/{classEndTime}/{email}', RegistrationSuccess::class)->name('registration_success');
+Route::get('/landing-program', LandingProgram::class)->name('landing_program');
+Route::get('/form-program-lepas', FormAdditionalProgram::class)->name('form_additional_program');
 
 //Workshop
 Route::get('/daftar-workshop', FormWorkshop::class)->name('workshop_register');
