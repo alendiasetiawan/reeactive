@@ -18,9 +18,9 @@
         <div class="col-lg-6 col-12 m-0 mb-1">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Program Kelas Lepas</h4>
+                    <h4 class="card-title">Kelas Lepasan</h4>
                     <p class="card-text">
-                        Program khusus yang terdiri dari 1 - 4 sesi, dengan pilihan tanggal latihan yang fleksibel
+                        Kelas non-program (tidak terikat) yang dapat diikuti per sesi ataupun paket per bulan (4 sesi).
                     </p>
                     <a wire:navigate href="{{ route('form_additional_program') }}" class="btn btn-primary waves-effect">Daftar</a>
                 </div>
