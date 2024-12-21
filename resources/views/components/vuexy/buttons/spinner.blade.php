@@ -2,6 +2,7 @@
 {{ $attributes->merge([
     'class' => 'btn btn-outline-primary',
     'type' => 'button',
+    'disabled' => 'disabled'
 ]) }}>
     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
     @isset($buttonName)

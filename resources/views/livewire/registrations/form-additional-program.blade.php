@@ -33,6 +33,198 @@
         <br/>
         <small>Pastiken anda menggunakan browser terbaru yang disarankan : <strong>Chrome/Edge/Firefox</strong></small>
         <form wire:submit='register'>
+            <!--Program-->
+            <div class="row">
+                <div class="col-12">
+                    <x-items.divider color="primary" position="center">
+                        Program
+                    </x-items.divider>
+                </div>
+                <div class="col-lg-3 col-md-6 col-12 mb-1">
+                    <x-inputs.label>Program</x-inputs.label>
+                    <x-inputs.vuexy-select wire:model.live='selectedProgram'>
+                        <x-inputs.vuexy-select-option value="" selected disabled>--Pilih--</x-inputs.vuexy-select-option>
+                        @foreach ($programs as $program)
+                            <x-inputs.vuexy-select-option value="{{ $program->id }}">{{ $program->program_name }}</x-inputs.vuexy-select-option>
+                        @endforeach
+                    </x-inputs.vuexy-select>
+                </div>
+                <div class="col-lg-3 col-md-6 col-12 mb-1">
+                    <x-inputs.label>Coach</x-inputs.label>
+                    <x-inputs.vuexy-select wire:model.live='selectedCoach'>
+                        <x-inputs.vuexy-select-option value="" selected disabled>--Pilih--</x-inputs.vuexy-select-option>
+                        @foreach ($this->coaches as $coach)
+                            <x-inputs.vuexy-select-option value="{{ $coach->code }}">Coach {{ $coach->nick_name }}</x-inputs.vuexy-select-option>
+                        @endforeach
+                    </x-inputs.vuexy-select>
+                </div>
+                <div class="col-lg-3 col-md-6 col-12 mb-1">
+                    <x-inputs.label>Kelas</x-inputs.label>
+                    <x-inputs.vuexy-select wire:model.live='selectedClass'>
+                        <x-inputs.vuexy-select-option value="" selected disabled>--Pilih--</x-inputs.vuexy-select-option>
+                        @foreach ($this->classes as $class)
+                            <x-inputs.vuexy-select-option value="{{ $class->id }}">
+                                {{ \App\Helpers\TanggalHelper::convertImplodeDay($class->day) }} ({{ $class->start_time }} - {{ $class->end_time }})
+                            </x-inputs.vuexy-select-option>
+                        @endforeach
+                    </x-inputs.vuexy-select>
+                </div>
+                <div class="col-lg-3 col-md-6 col-12 mb-1">
+                    <x-inputs.label>Jumlah Sesi</x-inputs.label>
+                    <x-inputs.vuexy-select wire:model.live='selectedSession'>
+                        <x-inputs.vuexy-select-option value=null selected disabled>--Pilih--</x-inputs.vuexy-select-option>
+                        @if ($selectedClass)
+                            <x-inputs.vuexy-select-option value="1">1 Sesi</x-inputs.vuexy-select-option>
+                            <x-inputs.vuexy-select-option value="4">4 Sesi</x-inputs.vuexy-select-option>
+                        @endif
+                    </x-inputs.vuexy-select>
+                </div>
+            </div>
+
+            @if ($selectedSession != null)
+                <div class="row">
+                    <small class="text-muted">Silahkan pilih tanggal yang sesuai dengan hari yang tersedia : <strong class="text-danger">({{ \App\Helpers\TanggalHelper::convertImplodeDay($selectedDay) }})</strong></small>
+                    @for ($i = 0; $i < $selectedSession; $i++)
+                        <div class="col-lg-3 col-md-6 col-12 mb-1" wire:ignore>
+                            <x-inputs.label>Pilih Tanggal {{ $i + 1 }}</x-inputs.label>
+                            <x-inputs.date-picker wire:model.live='selectedDate.{{ $i }}' required
+                            oninvalid="this.setCustomValidity('Tanggal tidak boleh kosong')"
+                            oninput="this.setCustomValidity('')" />
+                        </div>
+                    @endfor
+                </div>
+
+                @if ($invalidDay)
+                    <div class="row">
+                        <div class="col-12">
+                            <x-alerts.main-alert color="danger">
+                                Upss.. Tanggal yang anda pilih tidak sesuai dengan pilihan hari yang tersedia, silahkan pilih tanggal lainnya!
+                            </x-alerts.main-alert>
+                        </div>
+                    </div>
+                @endif
+            @endif
+            <!--#Program-->
+
+            <!--Screening-->
+            @if ($selectedSession && $isPregnantFriendly == 0)
+                <div class="row">
+                    <div class="col-12">
+                        <x-items.divider color="primary" position="center">
+                            Screening
+                        </x-items.divider>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12 mb-1">
+                        <x-inputs.label>Usia Kandungan</x-inputs.label>
+                        <x-inputs.vuexy-basic type="number" step="any" placeholder="... pekan" wire:model.live.debounce.250ms='pregnantWeek'/>
+                        @error('pregnantWeek')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    @if ($pregnantWeek >= 12)
+                        <div class="col-lg-4 col-md-6 col-12 mb-1">
+                            <x-inputs.label>Apakah ada keluhan selama kehamilan?</x-inputs.label>
+                            <br/>
+                            <x-inputs.radio-primary>
+                                <x-inputs.check-radio id="answer-yes" name="pregnant-syndrom" value="Yes" wire:model.live='isPregnantSyndrom' required
+                                oninvalid="this.setCustomValidity('Wajib diisi!')"
+                                oninput="this.setCustomValidity('')"></x-inputs.check-radio>
+                                <x-slot name="labelRadio" for="answer-yes">Iya</x-slot>
+                            </x-inputs.radio-primary>
+                            <x-inputs.radio-primary>
+                                <x-inputs.check-radio id="answer-no" name="pregnant-syndrom" value="No" wire:model.live='isPregnantSyndrom'></x-inputs.check-radio>
+                                <x-slot name="labelRadio" for="answer-no">Tidak</x-slot>
+                            </x-inputs.radio-primary>
+                        </div>
+                    @endif
+                    @if ($isPregnantSyndrom == 'Yes')
+                        <div class="col-lg-4 col-md-6 col-12 mb-1">
+                            <x-inputs.label>Detail Keluhan</x-inputs.label>
+                            <x-inputs.textarea placeholder="Tuliskan detail keluhan yang anda rasakan selama kehamilan" rows="3" wire:model.live.debounce.250ms='pregnantSyndromDetail'></x-inputs.textarea>
+                            @error('pregnantSyndromDetail')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    @endif
+                </div>
+
+                @if ($pregnantWeek && $pregnantWeek < 12)
+                    <div class="row">
+                        <div class="col-12">
+                            <x-alerts.main-alert color="danger">
+                                Usia kandungan anda kurang dari 12 pekan, mohon maaf anda belum bisa mengikuti kelas ini!
+                            </x-alerts.main-alert>
+                        </div>
+                    </div>
+                @endif
+            @endif
+            <!--#Screening-->
+
+            <!--Payment-->
+            @if ($selectedSession)
+                <div class="row">
+                    <div class="col-12">
+                        <x-items.divider color="primary" position="center">
+                            Biaya
+                        </x-items.divider>
+                    </div>
+                    <div class="col-lg-6 col-12">
+                        <p>
+                            <b>Detail Biaya</b>
+                            <br/>
+                            Biaya Program : <strong class="text-primary">{{ \App\Helpers\CurrencyHelper::formatRupiah($programPrice) }}</strong>
+                            <br/><br/>
+                            <b>Rekening Pembayaran</b>
+                            <br/>
+                            Bank : <b class="text-primary">Muamalat</b> <br>
+                            Rekening : <b class="text-primary">1130011061</b> <br>
+                            Nama : <b class="text-primary">Khairino Firman Baisya</b> <br>
+                            Kode Bank : <b class="text-primary">147</b>
+                        </p>
+                    </div>
+                    <div class="col-lg-6 col-12">
+                        <x-inputs.label>Lampiran Bukti Transfer (Max : 1 Mb)</x-inputs.label>
+                        <div x-data="{ uploading: false, progress: 5 }" x-on:livewire-upload-start="uploading = true"
+                            x-on:livewire-upload-finish="uploading = false; progress = 5;"
+                            x-on:livewire-upload-error="uploading = false"
+                            x-on:livewire-upload-progress="progress = $event.detail.progress">
+                            <!--Choose File-->
+                            <x-inputs.vuexy-basic type="file" wire:click='selectFile' wire:model.live='fileUpload'
+                                accept="image/png, image/jpg, image/jpeg" required
+                                oninvalid="this.setCustomValidity('Silahkan lampirkan bukti transfer anda')"
+                                oninput="this.setCustomValidity('')" />
+
+                            <!--Progress Bar-->
+                            @if ($showProgressBar == true)
+                                <div x-show="uploading">
+                                    <div class="progress mt-2">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                                            role="progressbar" x-bind:style="`width: ${progress}%`"></div>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        <small class="text-muted">Anda bisa mengecilkan ukuran file <a href="https://tinyjpg.com/" target="_blank"><b class="text-info">Disini!</b></a></small>
+                        <br/>
+                        @error('fileUpload')
+                            <small class="text-danger">
+                                {{ $message }}
+                            </small>
+                        @enderror
+                        @error('fileUpload')
+                            <!--Tampilkan Gambar Rusak-->
+                        @else
+                            <div class="col-lg-6 col-12 mt-2">
+                                @if ($fileUpload)
+                                    <img src="{{ $fileUpload->temporaryUrl() }}" width="200px" height="auto">
+                                @endif
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+            @endif
+            <!--#Payment-->
+
             <!--Biodata-->
             <div class="row">
                 <div class="col-12">
@@ -83,6 +275,11 @@
                     @error('phone')
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
+                    @if ($isUserRegistered)
+                        <small class="text-danger">Nomor anda sudah terdaftar, silahkan login!
+                            <a href="{{ route('login') }}"><u>Member Area</u></a>
+                        </small>
+                    @endif
                 </div>
                 <div class="col-lg-6 col-12 mb-1">
                     <x-inputs.label>Alamat</x-inputs.label>
@@ -166,201 +363,16 @@
             </div>
             <!--Account Detail-->
 
-            <!--Program-->
             <div class="row">
-                <div class="col-12">
-                    <x-items.divider color="primary" position="center">
-                        Program
-                    </x-items.divider>
+                <div class="col-12" wire:loading.remove wire:target='register'>
+                    <x-buttons.basic color="primary" type="submit" :disabled="$isSubmitActive && !$errors->any() && !$isUserRegistered ? false : true">
+                        Daftar
+                    </x-buttons.basic>
                 </div>
-                <div class="col-lg-3 col-md-6 col-12 mb-1">
-                    <x-inputs.label>Program</x-inputs.label>
-                    <x-inputs.vuexy-select wire:model.live='selectedProgram'>
-                        <x-inputs.vuexy-select-option value="" selected disabled>--Pilih--</x-inputs.vuexy-select-option>
-                        @foreach ($programs as $program)
-                            <x-inputs.vuexy-select-option value="{{ $program->id }}">{{ $program->program_name }}</x-inputs.vuexy-select-option>
-                        @endforeach
-                    </x-inputs.vuexy-select>
-                </div>
-                <div class="col-lg-3 col-md-6 col-12 mb-1">
-                    <x-inputs.label>Coach</x-inputs.label>
-                    <x-inputs.vuexy-select wire:model.live='selectedCoach'>
-                        <x-inputs.vuexy-select-option value="" selected disabled>--Pilih--</x-inputs.vuexy-select-option>
-                        @foreach ($this->coaches as $coach)
-                            <x-inputs.vuexy-select-option value="{{ $coach->code }}">Coach {{ $coach->nick_name }}</x-inputs.vuexy-select-option>
-                        @endforeach
-                    </x-inputs.vuexy-select>
-                </div>
-                <div class="col-lg-3 col-md-6 col-12 mb-1">
-                    <x-inputs.label>Kelas</x-inputs.label>
-                    <x-inputs.vuexy-select wire:model.live='selectedClass'>
-                        <x-inputs.vuexy-select-option value="" selected disabled>--Pilih--</x-inputs.vuexy-select-option>
-                        @foreach ($this->classes as $class)
-                            <x-inputs.vuexy-select-option value="{{ $class->id }}">
-                                {{ \App\Helpers\TanggalHelper::convertImplodeDay($class->day) }} ({{ $class->start_time }} - {{ $class->end_time }})
-                            </x-inputs.vuexy-select-option>
-                        @endforeach
-                    </x-inputs.vuexy-select>
-                </div>
-                <div class="col-lg-3 col-md-6 col-12 mb-1">
-                    <x-inputs.label>Jumlah Sesi</x-inputs.label>
-                    <x-inputs.vuexy-select wire:model.live='selectedSession'>
-                        <x-inputs.vuexy-select-option value=null selected disabled>--Pilih--</x-inputs.vuexy-select-option>
-                        @if ($selectedClass)
-                            <x-inputs.vuexy-select-option value="1">1 Sesi</x-inputs.vuexy-select-option>
-                            <x-inputs.vuexy-select-option value="4">4 Sesi</x-inputs.vuexy-select-option>
-                        @endif
-                    </x-inputs.vuexy-select>
-                </div>
-            </div>
-
-            @if ($selectedSession != null)
-                <div class="row">
-                    <small class="text-muted">Silahkan pilih tanggal yang sesuai dengan hari yang tersedia : <strong class="text-danger">({{ \App\Helpers\TanggalHelper::convertImplodeDay($selectedDay) }})</strong></small>
-                    @for ($i = 0; $i < $selectedSession; $i++)
-                        <div class="col-lg-3 col-md-6 col-12 mb-1" wire:ignore.self>
-                            <x-inputs.label>Pilih Tanggal {{ $i + 1 }}</x-inputs.label>
-                            <x-inputs.date-picker wire:model.live='selectedDate.{{ $i }}' required
-                            oninvalid="this.setCustomValidity('Tanggal tidak boleh kosong')"
-                            oninput="this.setCustomValidity('')" />
-                        </div>
-                    @endfor
-                </div>
-
-                @if ($invalidDay)
-                    <div class="row">
-                        <div class="col-12">
-                            <x-alerts.main-alert color="danger">
-                                Upss.. Tanggal yang anda pilih tidak sesuai dengan pilihan hari yang tersedia, silahkan pilih tanggal lainnya!
-                            </x-alerts.main-alert>
-                        </div>
-                    </div>
-                @endif
-            @endif
-            <!--#Program-->
-
-            <!--Screening-->
-            @if ($selectedProgram && $isPregnantFriendly == 0)
-                <div class="row">
-                    <div class="col-12">
-                        <x-items.divider color="primary" position="center">
-                            Screening
-                        </x-items.divider>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-12 mb-1">
-                        <x-inputs.label>Usia Kandungan</x-inputs.label>
-                        <x-inputs.vuexy-basic type="number" step="any" placeholder="... pekan" wire:model.live.debounce.250ms='pregnantWeek'/>
-                        @error('pregnantWeek')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror
-                    </div>
-                    @if ($pregnantWeek >= 12)
-                        <div class="col-lg-4 col-md-6 col-12 mb-1">
-                            <x-inputs.label>Apakah ada keluhan selama kehamilan?</x-inputs.label>
-                            <br/>
-                            <x-inputs.radio-primary>
-                                <x-inputs.check-radio id="answer-yes" name="pregnant-syndrom" value="Yes" wire:model.live='isPregnantSyndrom' required
-                                oninvalid="this.setCustomValidity('Wajib diisi!')"
-                                oninput="this.setCustomValidity('')"></x-inputs.check-radio>
-                                <x-slot name="labelRadio" for="answer-yes">Iya</x-slot>
-                            </x-inputs.radio-primary>
-                            <x-inputs.radio-primary>
-                                <x-inputs.check-radio id="answer-no" name="pregnant-syndrom" value="No" wire:model.live='isPregnantSyndrom'></x-inputs.check-radio>
-                                <x-slot name="labelRadio" for="answer-no">Tidak</x-slot>
-                            </x-inputs.radio-primary>
-                        </div>
-                    @endif
-                    @if ($isPregnantSyndrom == 'Yes')
-                        <div class="col-lg-4 col-md-6 col-12 mb-1">
-                            <x-inputs.label>Detail Keluhan</x-inputs.label>
-                            <x-inputs.textarea placeholder="Tuliskan detail keluhan yang anda rasakan selama kehamilan" rows="3" wire:model.live.debounce.250ms='pregnantSyndromDetail'></x-inputs.textarea>
-                            @error('pregnantSyndromDetail')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
-                    @endif
-                </div>
-
-                @if ($pregnantWeek && $pregnantWeek < 12)
-                    <div class="row">
-                        <div class="col-12">
-                            <x-alerts.main-alert color="danger">
-                                Usia kandungan anda kurang dari 12 pekan, mohon maaf anda belum bisa mengikuti kelas ini!
-                            </x-alerts.main-alert>
-                        </div>
-                    </div>
-                @endif
-            @endif
-            <!--#Screening-->
-
-            <!--Payment-->
-            @if ($selectedSession)
-                <div class="row">
-                    <div class="col-12">
-                        <x-items.divider color="primary" position="center">
-                            Biaya
-                        </x-items.divider>
-                    </div>
-                    <div class="col-lg-6 col-12">
-                        <p>
-                            <b>Detail Biaya</b>
-                            <br/>
-                            Biaya Program : <strong>{{ \App\Helpers\CurrencyHelper::formatRupiah($programPrice) }}</strong>
-                            <br/><br/>
-                            <b>Rekening Pembayaran</b>
-                            <br/>
-                            Bank : <b class="text-primary">Muamalat</b> <br>
-                            Rekening : <b class="text-primary">1130011061</b> <br>
-                            Nama : <b class="text-primary">Khairino Firman Baisya</b> <br>
-                            Kode Bank : <b class="text-primary">147</b>
-                        </p>
-                    </div>
-                    <div class="col-lg-6 col-12">
-                        <x-inputs.label>Lampiran Bukti Transfer (Max : 1 Mb)</x-inputs.label>
-                        <div x-data="{ uploading: false, progress: 5 }" x-on:livewire-upload-start="uploading = true"
-                            x-on:livewire-upload-finish="uploading = false; progress = 5;"
-                            x-on:livewire-upload-error="uploading = false"
-                            x-on:livewire-upload-progress="progress = $event.detail.progress">
-                            <!--Choose File-->
-                            <x-inputs.vuexy-basic type="file" wire:click='selectFile' wire:model.live='fileUpload'
-                                accept="image/png, image/jpg, image/jpeg" required
-                                oninvalid="this.setCustomValidity('Silahkan lampirkan bukti transfer anda')"
-                                oninput="this.setCustomValidity('')" />
-
-                            <!--Progress Bar-->
-                            @if ($showProgressBar == true)
-                                <div x-show="uploading">
-                                    <div class="progress mt-2">
-                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
-                                            role="progressbar" x-bind:style="`width: ${progress}%`"></div>
-                                    </div>
-                                </div>
-                            @endif
-                        </div>
-                        <small class="text-muted">Anda bisa mengecilkan ukuran file <a href="https://tinyjpg.com/" target="_blank"><b class="text-info">Disini!</b></a></small>
-                        <br/>
-                        @error('fileUpload')
-                            <small class="text-danger">
-                                {{ $message }}
-                            </small>
-                        @enderror
-                        @error('fileUpload')
-                            <!--Tampilkan Gambar Rusak-->
-                        @else
-                            <div class="col-lg-6 col-12 mt-2">
-                                @if ($fileUpload)
-                                    <img src="{{ $fileUpload->temporaryUrl() }}" width="200px" height="auto">
-                                @endif
-                            </div>
-                        @enderror
-                    </div>
-                </div>
-            @endif
-            <!--#Payment-->
-
-            <div class="row">
-                <div class="col-12">
-                    <x-buttons.basic color="primary" type="submit" :disabled="$isSubmitActive && !$errors->any() ? false : true">Daftar</x-buttons.basic>
+                <div class="col-12" wire:loading wire:target='register'>
+                    <x-vuexy.buttons.spinner>
+                        <x-slot:buttonName>Mengirim Data...</x-slot:buttonName>
+                    </x-vuexy.buttons.spinner>
                 </div>
             </div>
         </form>
@@ -376,6 +388,16 @@
     @push('pageScripts')
         <script src="{{ asset('style/app-assets/js/scripts/pages/auth-login.js') }}"></script>
         <script src="{{ asset('style/app-assets/js/scripts/forms/pickers/form-pickers.js') }}"></script>
+        <!--Prevent Back Button-->
+        <script type="text/javascript">
+            function preventBack() {
+                window.history.forward();
+            }
+            setTimeout("preventBack()", 0);
+
+            window.onunload = function () { null };
+        </script>
+        <!--#Prevent Back Button-->
         <script>
             Livewire.hook('morph.added',  ({ el }) => {
                 (function (window, document, $) {

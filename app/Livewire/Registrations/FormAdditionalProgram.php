@@ -2,18 +2,21 @@
 
 namespace App\Livewire\Registrations;
 
+use Exception;
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Coach;
+use App\Models\Member;
 use App\Models\Country;
 use App\Models\Program;
 use App\Models\Regency;
 use Livewire\Component;
 use App\Models\District;
 use App\Models\Province;
+use App\Models\ClassDate;
 use App\Models\PhoneCode;
 use App\Models\Pricelist;
 use App\Models\ClassModel;
-use App\Models\Member;
 use Illuminate\Support\Str;
 use Livewire\WithFileUploads;
 use App\Services\BatchService;
@@ -22,7 +25,7 @@ use WireUi\View\Components\Card;
 use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\DB;
 use App\Models\SpecialRegistration;
-use Exception;
+use Illuminate\Support\Facades\Hash;
 
 class FormAdditionalProgram extends Component
 {
@@ -31,20 +34,20 @@ class FormAdditionalProgram extends Component
     #[Title('Form Pendaftaran Program Lepas')]
 
     //Integer
-    public $countryId, $provinceId, $regencyId, $districtId, $ageStart, $bodyHeight, $bodyWeight, $countryCode = 62, $phone, $selectedProgram = '', $selectedCoach = '', $selectedClass = '', $selectedSession = null, $addressLength = 0, $maxAddressLength = 100, $totalPrice, $pregnantWeek;
+    public $countryId, $provinceId, $regencyId, $districtId, $ageStart, $bodyHeight, $bodyWeight, $countryCode = 62, $phone, $selectedProgram = '', $selectedCoach = '', $selectedClass = '', $selectedSession = null, $addressLength = 0, $maxAddressLength = 200, $totalPrice, $pregnantWeek;
     //String
-    public $memberName, $birthDate, $address, $selectedDay, $nameDay, $fileUpload, $password, $fileUploadName, $folderName, $isPregnantSyndrom, $pregnantSyndromDetail;
+    public $memberName, $birthDate, $address, $nameDay, $fileUpload, $password, $fileUploadName, $folderName, $isPregnantSyndrom, $pregnantSyndromDetail, $uploadedFileName, $programName, $classStartTime, $classEndTime, $selectedDay;
     //Array
     public array $selectedDate = [];
     //Object
     public $programs, $phoneCodes, $programPrice, $countries, $provinces;
     //Boolean
-    public $invalidDay, $isBodyHeightInvalid, $isBodyWeightInvalid, $showProgressBar, $isSubmitActive = false, $isPregnantFriendly, $isAllowedToJoin;
+    public $invalidDay, $isBodyHeightInvalid, $isBodyWeightInvalid, $showProgressBar, $isSubmitActive = false, $isPregnantFriendly, $isAllowedToJoin, $isUserRegistered;
 
     protected $rules = [
         'phone' => 'min_digits:8|max_digits:12|integer',
-        'address' => 'min:40|max:100',
-        'pregnantWeek' => 'required_if:isPregnantFriendly,true|integer|min:1|max:40',
+        'address' => 'min:40|max:200',
+        'pregnantWeek' => 'required|integer|min:1|max:40',
         'pregnantSyndromDetail' => 'required|min:10|max:500',
         'fileUpload' => 'mimes:png,jpg,jpeg|max:1024',
     ];
@@ -54,7 +57,8 @@ class FormAdditionalProgram extends Component
         'phone.max_digits' => 'Maksimal 12 angka',
         'phone.integer' => 'Tidak boleh diawali angka 0/titik(.)/koma(,)',
         'address.min' => 'Alamat tidak boleh terlalu pendek, minimal 40 karakter',
-        'address.max' => 'Alamat maksimal 100 karakter',
+        'address.max' => 'Alamat maksimal 200 karakter',
+        'pregnantWeek.required' => 'Usia kandungan harus diisi!',
         'pregnantWeek.min' => 'Minimal 1 minggu',
         'pregnantWeek.max' => 'Maksimal 40 minggu',
         'pregnantSyndromDetail.min' => 'Minimal 10 karakter',
@@ -101,6 +105,8 @@ class FormAdditionalProgram extends Component
         }
 
         if ($property == 'phone') {
+            //Check if user already registered
+            $this->isUserRegistered = Member::where('code', $this->phone)->exists();
             $this->validateOnly('phone');
         }
 
@@ -112,6 +118,8 @@ class FormAdditionalProgram extends Component
         if ($property == 'selectedClass') {
             $class = ClassModel::find($this->selectedClass);
             $this->selectedDay = $class->day;
+            $this->classStartTime = $class->start_time;
+            $this->classEndTime = $class->end_time;
         }
 
         if ($property == 'bodyHeight') {
@@ -131,6 +139,10 @@ class FormAdditionalProgram extends Component
         }
 
         if ($property == 'selectedProgram') {
+            $program = Program::where('id', $this->selectedProgram)->first();
+            $this->isPregnantFriendly = $program->is_pregnant_friendly;
+            $this->programName = $program->program_name;
+
             $this->reset(['selectedCoach', 'selectedClass', 'selectedSession', 'selectedDate', 'pregnantWeek', 'isPregnantSyndrom', 'pregnantSyndromDetail']);
         }
 
@@ -149,6 +161,8 @@ class FormAdditionalProgram extends Component
         }
 
         if ($property == 'selectedSession') {
+
+            //Setup program price
             $price = Pricelist::where('coach_code', $this->selectedCoach)
             ->where('program_id', $this->selectedProgram)
             ->select('coach_code', 'price', 'price_per_person')
@@ -161,6 +175,15 @@ class FormAdditionalProgram extends Component
             }
 
             $this->totalPrice = $this->programPrice;
+
+            $this->reset(['selectedDate.*', 'pregnantWeek', 'isPregnantSyndrom', 'pregnantSyndromDetail', 'fileUpload']);
+            $this->resetValidation('selectedDate.*', 'fileUpload');
+
+            if ($this->isPregnantFriendly == 0) {
+                $this->validateOnly('pregnantWeek');
+            } else {
+                $this->resetValidation('pregnantWeek');
+            }
         }
 
         if ($property == 'countryId') {
@@ -180,11 +203,6 @@ class FormAdditionalProgram extends Component
             $this->validateOnly('fileUpload');
         }
 
-        if ($property == 'selectedProgram') {
-            $program = Program::where('id', $this->selectedProgram)->first();
-            $this->isPregnantFriendly = $program->is_pregnant_friendly;
-        }
-
         if ($property == 'pregnantWeek') {
             if ($this->pregnantWeek < 12) {
                 $this->isAllowedToJoin = false;
@@ -200,6 +218,12 @@ class FormAdditionalProgram extends Component
             } else {
                 $this->resetValidation('pregnantSyndromDetail');
             }
+
+            $this->reset('pregnantSyndromDetail');
+        }
+
+        if ($property == 'pregnantSyndromDetail') {
+            $this->validateOnly('pregnantSyndromDetail');
         }
     }
 
@@ -230,7 +254,7 @@ class FormAdditionalProgram extends Component
 
     //ACTION - Save data
     public function register() {
-        $coachId = Coach::where('code', $this->selectedCoach)->first()->id;
+        $queryCoach = Coach::where('code', $this->selectedCoach)->first();
 
         if($this->provinceId == NULL) {
             $provinsi = NULL;
@@ -260,6 +284,7 @@ class FormAdditionalProgram extends Component
             ], [
                 'member_name' => $this->memberName,
                 'gender' => 'Perempuan',
+                'birth_date' => $this->birthDate,
                 'address' => $this->address,
                 'country_id' => $this->countryId,
                 'province_id' => $provinsi,
@@ -271,6 +296,7 @@ class FormAdditionalProgram extends Component
                 'age_start' => $this->ageStart,
             ]);
 
+            //Store data to table special registration and grab it's id
             $registration = SpecialRegistration::create([
                 'member_code' => $this->phone,
                 'amount_pay' => $this->totalPrice,
@@ -278,9 +304,38 @@ class FormAdditionalProgram extends Component
                 'file_upload' => $this->fileUpload->storeAs($this->folderName, $this->uploadedFileName, 'public'),
                 'payment_status' => 'Process',
                 'program_id' => $this->selectedProgram,
-                'coach_id' => $coachId,
+                'coach_id' => $queryCoach->id,
                 'class_id' => $this->selectedClass
             ]);
+
+            //Store data to table class_dates and using id from table special registration
+            foreach ($this->selectedDate as $date) {
+                ClassDate::create([
+                    'special_registration_id' => $registration->id,
+                    'date' => $date
+                ]);
+            }
+
+            User::updateOrCreate([
+                'email' => $this->phone,
+            ], [
+                'password' => Hash::make($this->password),
+                'role_id' => 3,
+                'full_name' => $this->memberName,
+                'gender' => 'Perempuan',
+                'default_pw' => 0,
+            ]);
+
+            DB::commit();
+            $this->redirect(route('success_additional_registration', [
+                'memberName' => $this->memberName,
+                'coachFullName' => $queryCoach->coach_name,
+                'coachNickName' => $queryCoach->nick_name,
+                'programName' => $this->programName,
+                'classDay' => $this->selectedDay,
+                'classStartTime' => $this->classStartTime,
+                'classEndTime' => $this->classEndTime
+            ]));
         } catch (Exception) {
             DB::rollBack();
             session()->flash('registration_failed', 'Daftar Gagal, Cek Koneksi dan Kolom Isian Anda. Silahkan coba lagi!');
