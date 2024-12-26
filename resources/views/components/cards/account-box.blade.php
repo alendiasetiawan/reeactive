@@ -12,13 +12,18 @@
                 @endisset
                 <div class="balance-info">
                     <h6>{{ $title }}</h6>
-                    <p style="font-size: 12px">
+                    @isset($subTitle)
+                    <p style="font-size: 12px" class="mb-2">
                         {{ $subTitle }}
                     </p>
+                    @endisset
+
                     @isset($info)
-                    <span>
-                        {{ $info }}
-                    </span>
+                    <div class="mt-2">
+                        <span>
+                            {{ $info }}
+                        </span>
+                    </div>
                     @endisset
                     @isset($moreInfo)
                     <br>
@@ -38,8 +43,11 @@
                 </div>
                 @endisset
                 {{ $slot }}
-                {{-- <a href="#" data-bs-toggle="modal" data-bs-target="#detailProgram">Detail Program</a> --}}
             </div>
+
+            @isset($action)
+                {{ $action }}
+            @endisset
         </div>
     </div>
 </div>

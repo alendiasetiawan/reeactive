@@ -45,13 +45,25 @@
                 </li>
 
                 <li class="menu {{ Route::is('member::renewal_registration') || Route::is('member::renewal_registration.show') ? 'active' : '' }}">
-                    <a wire:navigate href="{{ route('member::renewal_registration') }}" aria-expanded="false" class="dropdown-toggle">
+                    <a href="#registrasi" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                             <span>Registrasi</span>
                         </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
                     </a>
+                    <ul class="collapse submenu list-unstyled" id="registrasi">
+                        <li class="{{ Route::is('member::renewal_registration') || Route::is('member::renewal_registration.show') ? 'active' : '' }}">
+                            <a wire:navigate href="{{ route('member::renewal_registration') }}">Program Reguler</a>
+                        </li>
+                        <li class="{{ Route::is('admin::registration_quota') || Route::is('admin::member_in_class') ? 'active' : '' }}">
+                            <a wire:navigate href="{{ route('admin::registration_quota') }}">Kelas Lepasan</a>
+                        </li>
+                    </ul>
                 </li>
+
                 <!--#Member Area-->
 
                 <!--SPECIAL PROGRAM-->

@@ -35,7 +35,11 @@
         @endif
         <!--#Registration Alert-->
 
-        <livewire:member.renewal-form :batchOpen='$batchOpen' :checkBatch='$checkBatch'/>
+        @if ($isRegisteredInReguler)
+            <livewire:member.renewal-form :batchOpen='$batchOpen' :checkBatch='$checkBatch'/>
+        @else
+            <livewire:member.form-new-member-internal />
+        @endif
 
         <livewire:member.registration-log />
     </div>
@@ -59,4 +63,14 @@
                 })
         </script>
     @endif
+
+    <script type="text/javascript">
+        function preventBack() {
+            window.history.forward();
+        }
+
+        setTimeout("preventBack()", 0);
+
+        window.onunload = function () { null };
+    </script>
 @endpush
