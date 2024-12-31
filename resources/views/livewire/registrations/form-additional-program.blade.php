@@ -83,7 +83,7 @@
 
             @if ($selectedSession != null)
                 <div class="row">
-                    <small class="text-muted">Silahkan pilih tanggal yang sesuai dengan hari yang tersedia : <strong class="text-danger">({{ \App\Helpers\TanggalHelper::convertImplodeDay($selectedDay) }})</strong></small>
+                    <small class="text-muted">Silahkan pilih tanggal yang sesuai dengan hari yang tersedia, yaitu : <strong class="text-danger">{{ \App\Helpers\TanggalHelper::convertImplodeDay($selectedDay) }}</strong></small>
                     @for ($i = 0; $i < $selectedSession; $i++)
                         <div class="col-lg-3 col-md-6 col-12 mb-1" wire:ignore>
                             <x-inputs.label>Pilih Tanggal {{ $i + 1 }}</x-inputs.label>
@@ -365,7 +365,7 @@
 
             <div class="row">
                 <div class="col-12" wire:loading.remove wire:target='register'>
-                    <x-buttons.basic color="primary" type="submit" :disabled="$isSubmitActive && !$errors->any() && !$isUserRegistered ? false : true">
+                    <x-buttons.basic color="primary" type="submit" :disabled="$isSubmitActive && !$errors->any() && !$isUserRegistered && $isAllowedToJoin ? false : true">
                         Daftar
                     </x-buttons.basic>
                 </div>

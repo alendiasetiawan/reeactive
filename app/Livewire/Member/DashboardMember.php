@@ -69,8 +69,8 @@ class DashboardMember extends Component
         }
 
         if ($this->isSpecialRegistration) {
-            $this->latestSpecialRegistration = SpecialRegistration::latestRegistration(Auth::user()->email);
-            $this->specialRegistrationId = $this->latestSpecialRegistration->id;
+            $this->latestSpecialRegistration = SpecialRegistration::latestRegistration(Auth::user()->email, 1);
+            $this->specialRegistrationId = $this->latestSpecialRegistration[0]->id;
         }
     }
 

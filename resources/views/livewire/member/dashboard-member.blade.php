@@ -256,11 +256,11 @@
                     <img src="{{ asset('template/src/assets/img/icon/dumble.png') }}" alt="dumble">
                 </x-slot>
                 <x-slot name="title">Kelas Lepasan</x-slot>
-                <x-slot:subTitle>{{ $latestSpecialRegistration->program_name ?? '' }}</x-slot:subTitle>
+                <x-slot:subTitle>{{ $latestSpecialRegistration[0]->program_name ?? '' }}</x-slot:subTitle>
                 @if ($isSpecialRegistration)
                     <x-slot name="info">
-                        @if ($latestSpecialRegistration->payment_status == 'Done')
-                        <a href="{{ $latestSpecialRegistration->link_wa }}" target="_blank">
+                        @if ($latestSpecialRegistration[0]->payment_status == 'Done')
+                        <a href="{{ $latestSpecialRegistration[0]->link_wa }}" target="_blank">
                             <button class="btn btn-success btn-sm">
                                 Join WA Group
                             </button>
@@ -273,9 +273,9 @@
                 @endif
                 @if ($isSpecialRegistration)
                     <x-slot name="badgeLabel">
-                        @if ($latestSpecialRegistration->payment_status == 'Done')
-                            <x-items.badges.light-success>Coach {{ $latestSpecialRegistration->nick_name }}</x-items.badges.light-success>
-                        @elseif ($latestSpecialRegistration->payment_status == 'Invalid')
+                        @if ($latestSpecialRegistration[0]->payment_status == 'Done')
+                            <x-items.badges.light-success>Coach {{ $latestSpecialRegistration[0]->nick_name }}</x-items.badges.light-success>
+                        @elseif ($latestSpecialRegistration[0]->payment_status == 'Invalid')
                             <x-items.badges.light-danger>Pembayaran : Invalid</x-items.badges.light-danger>
                         @else
                             <x-items.badges.light-warning>Pembayaran : Pending</x-items.badges.light-warning>
@@ -288,11 +288,11 @@
                 @if ($isSpecialRegistration)
                     <a href="#" data-bs-toggle="modal" data-bs-target="#detailProgramLepas">Detail Program</a>
                 @else
-                    <a href="......">Daftar</a>
+                    <a href="{{ route('member::registration_portal') }}">Daftar</a>
                 @endif
 
                 @if ($isSpecialRegistration)
-                    @if ($latestSpecialRegistration->payment_status == 'Invalid')
+                    @if ($latestSpecialRegistration[0]->payment_status == 'Invalid')
                         <x-slot:action>
                             <a href="#" data-bs-toggle="modal" data-bs-target="#invalidPayment" wire:click='invalidSpecialProgram'>
                                 <small>
