@@ -140,7 +140,7 @@ class RenewalForm extends Component
             //Check if there is a referral code applied
             $this->referralMembers = ReferralRegistration::discountReferrals(Auth::user()->email, $this->batchId);
 
-            if ($dateToday <= $openDate) {
+            if (($dateToday <= $openDate) && ($this->selectedProgram == 5)) {
                 $this->isDiscountApply = true;
                 $this->amountDisc = $this->discount;
                 $this->priceAfterDisc = $this->price - $this->amountDisc;
