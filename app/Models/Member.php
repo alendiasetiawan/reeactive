@@ -58,7 +58,7 @@ class Member extends Model
         ->count();
     }
 
-    public static function coachActiveMembers($batchId, $coachId) {
+    public static function coachActiveMembers($batchId, $coachId, $limitData = 9) {
         return Registration::join('members', 'registrations.member_code', 'members.code')
         ->join('programs', 'registrations.program_id', 'programs.id')
         ->join('levels', 'registrations.level_id', 'levels.id')
@@ -67,9 +67,9 @@ class Member extends Model
         ->where('registrations.coach_id', $coachId)
         ->where('registrations.payment_status', 'Done')
         ->select('registrations.created_at', 'members.member_name', 'registrations.registration_category','members.mobile_phone', 'members.medical_condition', 'programs.program_name', 'programs.id', 'levels.level_name',
-        'classes.day', 'classes.start_time', 'classes.end_time')
+        'classes.day', 'classes.start_time', 'classes.end_time', 'members.body_height', 'members.body_weight')
         ->orderBy('members.member_name', 'asc')
-        ->paginate(9);
+        ->paginate($limitData);
     }
 
     public static function coachActiveMembersSearch($batchId, $coachId, $searchMember) {

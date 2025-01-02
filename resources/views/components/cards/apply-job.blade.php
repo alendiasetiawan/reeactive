@@ -1,4 +1,4 @@
-@props(['color'])
+@props(['color' => ''])
 
 <div {{ $attributes->class(['card card-apply-job']) }}>
     <div class="card-body">

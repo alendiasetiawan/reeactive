@@ -1,6 +1,6 @@
 <div class="card card-developer-meetup">
     @isset($avatar)
-        <div class="meetup-img-wrapper rounded-top text-center">
+        <div class="rounded-top text-center">
             {{ $avatar }}
         </div>
     @endisset

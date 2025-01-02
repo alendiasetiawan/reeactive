@@ -19,6 +19,34 @@
                 </a>
             </li>
             <!--#Member Area-->
+
+            <!--Program Reeactive-->
+            <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">PROGRAM REEACTIVE</span><i data-feather="more-horizontal"></i>
+            </li>
+            <li class="nav-item {{ Route::is('member::referral_member') ? 'active' : '' }}">
+                <a class="d-flex align-items-center" href="{{ route('member::referral_member') }}">
+                    <i data-feather="user-plus"></i>
+                    <span class="menu-title text-truncate">Referral Member</span>
+                </a>
+            </li>
+            <!--#Program Reeactive-->
+
+            <!--Settings-->
+            <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">PENGATURAN</span><i data-feather="more-horizontal"></i>
+            </li>
+            <li class="nav-item {{ Route::is('ganti_password') ? 'active' : '' }}">
+                <a class="d-flex align-items-center" href="{{ route('ganti_password') }}">
+                    <i data-feather="lock"></i>
+                    <span class="menu-title text-truncate">Password</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="d-flex align-items-center" href="/logout">
+                    <i data-feather="log-out"></i>
+                    <span class="menu-title text-truncate">Keluar</span>
+                </a>
+            </li>
+            <!--#Settings-->
         </ul>
     </div>
 

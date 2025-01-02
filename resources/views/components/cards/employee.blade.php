@@ -1,6 +1,11 @@
 <div class="card card-employee-task">
-    <div class="card-header">
+    <div class="card-header flex-row justify-content-between">
         <h4 class="card-title">{{ $header }}</h4>
+        @isset($option)
+            <div>
+                {{ $option }}
+            </div>
+        @endisset
         @isset($subHeader)
             {{ $subHeader }}
         @endisset

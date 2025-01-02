@@ -35,32 +35,38 @@
 </head>
 <!-- END: Head-->
 
-<!-- BEGIN: Body-->
-
 <body class="vertical-layout vertical-menu-modern navbar-floating footer-static menu-collapsed" data-open="click" data-menu="vertical-menu-modern" data-col="">
 
-    {{-- Navbar --}}
+    <!--Navbar-->
     @if (Auth::user()->role_id == 3)
-        <livewire:partials.navbars.member-navbar />
+        <livewire:partials.navbars.member-navbar/>
+    @elseif (Auth::user()->role_id == 2)
+        <livewire:partials.navbars.coach-navbar/>
     @else
         @include('layouts.parts.navbar')
     @endif
+    <!--#Navbar-->
 
-    {{-- Sidebar --}}
+    <!--Sidebar-->
     @if (Auth::user()->role_id == 3)
         @include('layouts.partials.sidebars.member-sidebar')
+    @elseif (Auth::user()->role_id == 2)
+        @include('layouts.partials.sidebars.coach-sidebar')
     @else
         @include('layouts.parts.sidebar')
     @endif
+    <!--#Sidebar-->
 
 
-    <!-- BEGIN: Bottom Navbar -->
-    {{-- @if (Auth::user()->role_id == 2) --}}
-        {{-- @include('layouts.parts.bottoms.finance-bottom-nav')
+    <!--Bottom Navbar-->
+    @if (Auth::user()->role_id == 3)
+        @include('layouts.partials.bottom_navbar.member-bottom-navbar')
+    @elseif (Auth::user()->role_id == 2)
+        @include('layouts.partials.bottom_navbar.coach-bottom-navbar')
     @else
         @include('template.component.bottom_navbar')
-    @endif --}}
-    <!-- END: Bottom Navbar -->
+    @endif
+    <!--#Bottom Navbar-->
 
     <!-- BEGIN: Content-->
     <div class="app-content content ">
@@ -106,6 +112,5 @@
     </script>
     @livewireChartsScripts
 </body>
-<!-- END: Body-->
 
 </html>

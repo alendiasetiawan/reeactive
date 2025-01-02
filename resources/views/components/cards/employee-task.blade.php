@@ -1,6 +1,8 @@
-@props(['color'])
+@props(['color' => ''])
 
-<div class="employee-task d-flex justify-content-between align-items-center">
+<div {{ $attributes->merge([
+    'class' => 'employee-task d-flex justify-content-between align-items-center'
+]) }}>
     <div class="d-flex flex-row">
         @isset($avatar)
             <div class="avatar me-75">
@@ -23,7 +25,12 @@
         </div>
     </div>
     <div class="d-flex align-items-center">
-        <small class="text-muted me-75">{{ $label }}</small>
-        {{-- <div class="employee-task-chart-primary-1"></div> --}}
+        <small class="text-muted">{{ $label }}</small>
+        @isset($action)
+            {{-- <div class="employee-task-chart-primary-1"></div> --}}
+            <div>
+                {{ $action }}
+            </div>
+        @endisset
     </div>
 </div>
