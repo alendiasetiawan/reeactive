@@ -1,5 +1,5 @@
 <div>
-    <div class="row">
+    <div class="row match-height">
         <!--Member Reguler Program-->
         <div class="col-lg-4 col-md-6 col-12">
             <x-cards.developer-meetup>
@@ -45,22 +45,33 @@
                 <x-slot:date>{{ date('d') }}</x-slot:date>
                 <x-slot:title>Total Peserta : {{ $activeMemberOpenClass }}</x-slot:title>
                 <x-slot:subTitle>Coach {{ Auth::user()->full_name }}</x-slot:subTitle>
-                <div class="small-scroller">
-                    @foreach ($membersOpenClass as $member)
-                        <x-cards.developer-meeting-item>
-                            <x-slot:icon>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock font-medium-3"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                            </x-slot:icon>
-                            <x-slot:title>{{ \App\Helpers\TanggalHelper::convertImplodeDay($member->day) }}</x-slot:title>
-                            <x-slot:subTitle>
-                                {{ \Carbon\Carbon::parse($member->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($member->end_time)->format('H:i') }}
-                            </x-slot:subTitle>
-                            <x-slot:actionButton>
-                                <x-badges.light-badge color="primary">{{ $member->specialRegistrations->count() }} Member</x-badges.light-badge>
-                            </x-slot:actionButton>
-                        </x-cards.developer-meeting-item>
-                    @endforeach
+                @if ($membersOpenClass->count() != 0)
+                    <div class="small-scroller">
+                        @foreach ($membersOpenClass as $member)
+                            <x-cards.developer-meeting-item>
+                                <x-slot:icon>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock font-medium-3"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                </x-slot:icon>
+                                <x-slot:title>{{ \App\Helpers\TanggalHelper::convertImplodeDay($member->day) }}</x-slot:title>
+                                <x-slot:subTitle>
+                                    {{ \Carbon\Carbon::parse($member->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($member->end_time)->format('H:i') }}
+                                </x-slot:subTitle>
+                                <x-slot:actionButton>
+                                    <x-badges.light-badge color="primary">{{ $member->specialRegistrations->count() }} Member</x-badges.light-badge>
+                                </x-slot:actionButton>
+                            </x-cards.developer-meeting-item>
+                        @endforeach
+                    </div>
+                @else
+                <div class="row">
+                    <div class="col-12">
+                        <x-alerts.main-alert color="danger">
+                            Anda belum memiliki peserta di Kelas Lepasan
+                        </x-alerts.main-alert>
+                    </div>
                 </div>
+                @endif
+
                 <x-slot:actionButton>
                     <a wire:navigate href="{{ route('coach::open_class_member') }}">
                         <x-buttons.basic color="primary" class="w-100">Selengkapnya</x-buttons.basic>
@@ -75,19 +86,11 @@
             <x-cards.employee>
                 <x-slot:header>Status Kelas</x-slot:header>
                 <x-slot:option>
-                    <a href="#" data-bs-toggle="dropdown">
+                    <a href="{{ route('coach::class_room') }}">
                         <x-buttons.basic color="primary" class="btn-icon btn-sm">
-                            +
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                         </x-buttons.basic>
                     </a>
-                    <div class="dropdown-menu">
-                        <a href="" class="dropdown-item d-flex align-items-center">
-                            Request Kelas Reguler
-                        </a>
-                        <a href="" class="dropdown-item d-flex align-items-center">
-                            Request Kelas Lepasan
-                        </a>
-                    </div>
                 </x-slot:option>
                 @forelse ($classLargeGroup as $class)
                     <x-cards.employee-task wire:key='{{ $class->id }}'>

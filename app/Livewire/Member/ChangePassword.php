@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 
 class ChangePassword extends Component
 {
-    #[Layout('layouts.app')]
+    #[Layout('layouts.vuexy-app')]
     #[Title('Ganti Password Akun')]
 
     #[Rule([
@@ -57,6 +57,7 @@ class ChangePassword extends Component
 
     public function render()
     {
-        return view('livewire.member.change-password');
+        // return view('livewire.member.change-password');
+        return view('livewire.vuexy-change-password');
     }
 }

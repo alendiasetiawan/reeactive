@@ -21,7 +21,7 @@
         </li>
         <li class="nav-item">
             <a wire:navigate href="{{ route('coach::class_room') }}" class="text-center nav-link">
-                <i data-feather='user-plus'
+                <i data-feather='layers'
                     class="{{ Route::is('coach::class_room')
                         ? 'text-primary'
                         : '' }}"></i>
