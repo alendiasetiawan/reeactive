@@ -123,4 +123,12 @@ class ClassModel extends Model
         ->orderBy('start_time', 'asc')
         ->get();
     }
+
+    //Check if the coach have kelas lepasan
+    public static function checkCoachLepasan($coachCode) {
+        return self::join('programs', 'classes.program_id', 'programs.id')
+        ->where('programs.program_type', 'Special')
+        ->where('coach_code', $coachCode)
+        ->exists();
+    }
 }

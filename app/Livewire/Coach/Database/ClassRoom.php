@@ -14,28 +14,47 @@ use Illuminate\Support\Facades\Crypt;
 class ClassRoom extends Component
 {
     //Object
-    public $listPrograms;
+    public $listPrograms, $listProgramsLepasan;
     //Integer
-    public $selectedProgram = null, $classId;
+    public $selectedProgram = '', $classId;
     //String
     public $day, $startTime, $endTime, $linkWa, $decryptId, $programName;
     //Boolean
-    public $isSubmitActive = false, $isClassFound = false;
+    public $isSubmitActive = false, $isClassFound = false, $isFormReguler = false, $isFormLepasan = false, $isHaveKelasLepasan = false;
+    //Array
+    public $listOfDays, $selectedDays = [];
 
-    #[Layout('layouts.app')]
+    #[Layout('layouts.vuexy-app')]
     #[Title('Daftar Kelas Coach')]
 
     #[Computed]
     public function programs() {
-        return Program::classList();
+        return Program::regulerClassList();
     }
 
-    public function mount() {
+    #[Computed]
+    public function lepasanPrograms() {
+        return Program::lepasanClassList();
+    }
+
+    public function boot() {
         $this->listPrograms = Program::where('program_type', 'Reguler')->get();
+        $this->listProgramsLepasan = Program::where('program_type', 'Special')->get();
+        $this->listOfDays = [
+            '1' => 'Senin',
+            '2' => 'Selasa',
+            '3' => 'Rabu',
+            '4' => 'Kamis',
+            '5' => 'Jumat',
+            '6' => 'Sabtu',
+            '7' => 'Minggu'
+        ];
+
+        $this->isHaveKelasLepasan = ClassModel::checkCoachLepasan(Auth::user()->email);
     }
 
-    //Check if all fields are filled
-    public function isFormFilled() {
+    //Check if all fields reguler form are filled
+    public function isFormRegulerFilled() {
         if(!empty($this->selectedProgram) && !empty($this->day) && !empty($this->startTime) && !empty($this->endTime) && !empty($this->linkWa)) {
             $this->isSubmitActive = true;
         } else {
@@ -43,8 +62,23 @@ class ClassRoom extends Component
         }
     }
 
+    //Check if all fields in lepasan form are filled
+    public function isFormLepasanFilled() {
+        if(!empty($this->selectedProgram) && !empty($this->selectedDays) && !empty($this->startTime) && !empty($this->endTime) && !empty($this->linkWa)) {
+            $this->isSubmitActive = true;
+        } else {
+            $this->isSubmitActive = false;
+        }
+    }
+
     public function updated() {
-        $this->isFormFilled();
+        if ($this->isFormReguler) {
+            $this->isFormRegulerFilled();
+        }
+
+        if ($this->isFormLepasan) {
+            $this->isFormLepasanFilled();
+        }
     }
 
     public function setValueClass($id) {
@@ -75,35 +109,51 @@ class ClassRoom extends Component
 
     //Add new class
     public function sendRequest() {
+        if ($this->isFormReguler) {
+            $days = $this->day;
+        }
+
+        if ($this->isFormLepasan) {
+            $days = implode(', ', $this->selectedDays);
+        }
+
         ClassModel::create([
             'coach_code' => Auth::user()->email,
             'program_id' => $this->selectedProgram,
             'start_time' => $this->startTime,
             'end_time' => $this->endTime,
-            'day' => $this->day,
+            'day' => $days,
             'link_wa' => $this->linkWa,
             'class_status' => 'Pending',
+            'class_status_eksternal' => 'Pending'
         ]);
 
         $this->dispatch('request-sent');
+        $this->redirect(route('coach::class_room'), navigate:true);
     }
 
-    //Edit class
-    public function editClass() {
-        ClassModel::where('id', $this->classId)->update([
-            'start_time' => $this->startTime,
-            'end_time' => $this->endTime,
-            'day' => $this->day,
-            'link_wa' => $this->linkWa,
-            'class_status' => 'Pending',
-        ]);
-
-        $this->dispatch('class-updated');
+    //ACTION - Set form type to reguler
+    public function setFormReguler() {
+        $this->isFormReguler = true;
+        $this->isFormLepasan = false;
+        $this->resetForm();
     }
 
+    //ACTION - Set form type to lepasan
+    public function setFormLepasan() {
+        $this->isFormReguler = false;
+        $this->isFormLepasan = true;
+        $this->resetForm();
+    }
+
+    //ACTION - Reset all form fields
+    public function resetForm() {
+        return $this->reset(['selectedProgram', 'selectedDays', 'day', 'startTime', 'endTime', 'linkWa', 'isSubmitActive']);
+    }
 
     public function render()
     {
-        return view('livewire.coach.database.class-room');
+        // return view('livewire.coach.database.class-room');
+        return view('livewire.coach.database.vuexy-class-room');
     }
 }
