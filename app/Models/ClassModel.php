@@ -113,4 +113,14 @@ class ClassModel extends Model
         ->orderBy('start_time', 'asc')
         ->get();
     }
+
+    //Get list of class in Kelas Lepasan for every coach
+    public static function classListLepasan($coachCode) {
+        return self::join('programs', 'classes.program_id', 'programs.id')
+        ->where('coach_code', $coachCode)
+        ->where('programs.program_type', 'Special')
+        ->select('classes.*', 'programs.program_name', 'programs.program_type')
+        ->orderBy('start_time', 'asc')
+        ->get();
+    }
 }

@@ -33,7 +33,7 @@ class ActiveMembers extends Component
     public object $classList;
     public int $filterClass = 0, $limitData = 9;
     //Boolean
-    public $isMobile;
+    public $isMobile, $isTablet;
 
     #[Computed]
     public function members() {
@@ -51,6 +51,7 @@ class ActiveMembers extends Component
         $this->activeMember = Member::activeMemberPerCoach($this->batchId, $this->coachId);
         $this->classList = ClassModel::classList();
         $mobileDetect->isMobile() ? $this->isMobile = true : $this->isMobile = false;
+        $mobileDetect->isTablet() ? $this->isTablet = true : $this->isTablet = false;
     }
 
     public function updated($property) {

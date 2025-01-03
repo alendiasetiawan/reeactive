@@ -29,6 +29,11 @@ class Member extends Model
         return $this->hasOne(Referral::class, 'member_code', 'code');
     }
 
+    public function specialRegistrations(): HasMany
+    {
+        return $this->hasMany(SpecialRegistration::class, 'member_code', 'code');
+    }
+
     public static function memberActive($batchId) {
         return Registration::join('members', 'registrations.member_code', 'members.code')
         ->join('programs', 'registrations.program_id', 'programs.id')

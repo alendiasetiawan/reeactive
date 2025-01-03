@@ -46,7 +46,7 @@
     <!--#Title and Filter-->
 
     <!--Member Lists-->
-    <div class="row scroller5">
+    <div class="row @if(!$isTablet) scroller5 @endif">
         <x-items.loading-dots wire:loading wire:target='searchMember'/>
         <x-items.loading-dots wire:loading wire:target='filterClass'/>
         @forelse ($this->members as $member)

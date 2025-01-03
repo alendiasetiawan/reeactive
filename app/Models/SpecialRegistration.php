@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class SpecialRegistration extends Model
@@ -15,6 +16,11 @@ class SpecialRegistration extends Model
     public function classDates(): HasMany
     {
         return $this->hasMany(ClassDate::class, 'special_registration_id', 'id');
+    }
+
+    public function member(): BelongsTo
+    {
+        return $this->belongsTo(Member::class, 'member_code', 'code');
     }
 
     //Get the latest special registration data
@@ -36,5 +42,45 @@ class SpecialRegistration extends Model
         ->orderBy('id', 'desc')
         ->limit(1)
         ->exists();
+    }
+
+    //Count how many members join the program
+    public static function countTotalParticipant($coachId) {
+        return self::where('coach_id', $coachId)
+        ->where('payment_status', 'Done')
+        ->count();
+    }
+
+    //Count how many participants who hasn't started their session
+    public static function notStartedParticipant($coachId) {
+        return self::join('class_dates', 'special_registrations.id', 'class_dates.special_registration_id')
+        ->where('coach_id', $coachId)
+        ->where('class_dates.date', '>=', date('Y-m-d'))
+        ->select('class_dates.special_registration_id')
+        ->distinct()
+        ->get();
+    }
+
+    //Get data all participants of selected coach
+    public static function allParticipantsPerCoach($coachId, $limitData, $searchMember = null, $filterData = null) {
+        return self::with([
+            'classDates',
+        ])
+        ->join('members', 'special_registrations.member_code', 'members.code')
+        ->join('programs', 'special_registrations.program_id', 'programs.id')
+        ->join('classes', 'special_registrations.class_id', 'classes.id')
+        ->where('coach_id', $coachId)
+        ->where('payment_status', 'Done')
+        ->when($searchMember, function ($query) use ($searchMember) {
+            $query->where('members.member_name', 'like', '%' . $searchMember . '%');
+        })
+        ->when($filterData['classId'] != 0, function ($query) use ($filterData) {
+            $query->where('special_registrations.class_id', $filterData['classId']);
+        })
+        ->when($filterData['programId'] != 0, function ($query) use ($filterData) {
+            $query->where('special_registrations.program_id', $filterData['programId']);
+        })
+        ->select('special_registrations.*', 'programs.program_name', 'classes.day', 'classes.start_time', 'classes.end_time', 'members.member_name', 'members.mobile_phone', 'members.code')
+        ->paginate($limitData);
     }
 }
