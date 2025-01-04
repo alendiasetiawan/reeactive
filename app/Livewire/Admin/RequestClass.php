@@ -17,7 +17,7 @@ class RequestClass extends Component
     //String
     public $statusNewMember, $statusRenewal;
 
-    #[Layout('layouts.app')]
+    #[Layout('layouts.vuexy-app')]
     #[Title('Request Class')]
 
     #[Computed]
@@ -50,10 +50,12 @@ class RequestClass extends Component
         ]);
 
         $this->dispatch('class-approved');
+        $this->redirect(route('admin::request_class'), navigate:true);
     }
 
     public function render()
     {
-        return view('livewire.admin.request-class');
+        // return view('livewire.admin.request-class');
+        return view('livewire.admin.vuexy-request-class');
     }
 }

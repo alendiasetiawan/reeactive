@@ -1,7 +1,14 @@
 <div>
+    @push('vendorCss')
+        <link rel="stylesheet" type="text/css" href="{{ asset('style/app-assets/vendors/css/pickers/pickadate/pickadate.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('style/app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('style/app-assets/vendors/css/extensions/toastr.min.css') }}">
+    @endpush
+
     @push('pageCss')
-        <link rel="stylesheet" type="text/css" href="{{ asset('style/app-assets/css/plugins/forms/form-validation.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ asset('style/app-assets/css/pages/authentication.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('style/app-assets/css/plugins/forms/pickers/form-flat-pickr.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('style/app-assets/css/plugins/forms/pickers/form-pickadate.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('style/app-assets/css/plugins/extensions/ext-component-toastr.css') }}">
     @endpush
 
     <x-vuexy.links.breadcrumb>
@@ -182,9 +189,39 @@
     </x-vuexy.modals.center-modal>
     <!--#Modal Add Reguler Class-->
 
+    @push('vendorScripts')
+        <script src="{{ asset('style/app-assets/vendors/js/pickers/pickadate/picker.js') }}"></script>
+        <script src="{{ asset('style/app-assets/vendors/js/pickers/pickadate/picker.date.js') }}"></script>
+        <script src="{{ asset('style/app-assets/vendors/js/pickers/pickadate/picker.time.js') }}"></script>
+        <script src="{{ asset('style/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js') }}"></script>
+        <script src="{{ asset('style/app-assets/vendors/js/extensions/toastr.min.js') }}"></script>
+    @endpush
+
     @push('pageScripts')
         <script src="{{ asset('style/app-assets/js/scripts/pages/auth-login.js') }}"></script>
-        <script src="{{ asset('style/app-assets/js/scripts/forms/form-validation.js') }}"></script>
-        <script src="{{ asset('style/app-assets/js/scripts/components/components-alerts.min.js') }}"></script>
+        <script src="{{ asset('style/app-assets/js/scripts/forms/pickers/form-pickers.js') }}"></script>
+        <script src="{{ asset('style/app-assets/js/scripts/extensions/ext-component-toastr.js') }}"></script>
+
+        <script data-navigate-once>
+            window.addEventListener('request-sent', function () {
+                'use strict';
+                var isRtl = $('html').attr('data-textdirection') === 'rtl';
+
+                   // On load Toast
+                setTimeout(function () {
+                    toastr['success'](
+                    '👋Request kelas berhasil dikirim',
+                    'OK!',
+                    {
+                        showMethod: 'slideDown',
+                        hideMethod: 'slideUp',
+                        closeButton: true,
+                        tapToDismiss: true,
+                        rtl: isRtl
+                    }
+                    );
+                }, 500);
+            });
+        </script>
     @endpush
 </div>

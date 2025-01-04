@@ -93,17 +93,23 @@ class Registration extends Model
         ->first();
     }
 
-    public static function allRegistrationOpen($batchId) {
+    public static function allRegistrationOpen($batchId, $searchMember = null, $transferStatus = null, $limitData = 9) {
         return Registration::join('members', 'registrations.member_code', 'members.code')
         ->join('programs', 'registrations.program_id', 'programs.id')
         ->join('levels', 'registrations.level_id', 'levels.id')
         ->join('coaches', 'registrations.coach_id', 'coaches.id')
         ->join('classes', 'registrations.class_id', 'classes.id')
         ->where('registrations.batch_id', $batchId)
+        ->when($searchMember, function($query) use($searchMember) {
+            return $query->where('members.member_name', 'like', '%'.$searchMember.'%');
+        })
+        ->when($transferStatus, function($query) use($transferStatus) {
+            return $query->where('registrations.payment_status', $transferStatus);
+        })
         ->select('registrations.*', 'members.member_name', 'members.mobile_phone', 'programs.program_name', 'levels.level_name', 'coaches.nick_name', 'coaches.coach_name',
         'classes.day', 'classes.start_time', 'classes.end_time')
         ->orderBy('registrations.id', 'desc')
-        ->get();
+        ->paginate($limitData);
     }
 
     //Find first batch registered

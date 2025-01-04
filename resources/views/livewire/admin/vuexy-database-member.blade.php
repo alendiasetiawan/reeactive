@@ -114,7 +114,7 @@
     </div>
     <!--#Filter Data-->
 
-    <div class="row @if(!$isTablet) scroller5 @endif">
+    <div class="row @if(!$isTablet) scroller6 @endif">
         <!--Loading Indicator-->
         <x-items.loading-dots class="mb-1" wire:loading wire:target='searchMember'/>
         <!--#Loading Indicator-->
@@ -156,5 +156,6 @@
                 <x-items.loading-dots wire:loading wire:target='loadMore'/>
             </div>
         @endif
+
     </div>
 </div>
