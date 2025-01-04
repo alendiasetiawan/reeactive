@@ -43,7 +43,6 @@ class ModalUpdateClaimCashback extends Component
 
         $this->dispatch('success-update-status-claim');
         $this->redirect(route('admin::registered_by_referral'), navigate:true);
-        session()->flash('save-status-claim', 'Status claim cashback sudah diupdate');
     }
 
     public function render()

@@ -87,8 +87,8 @@
             <!--REGISTRATION-->
             <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">PROGRAM LOYALTI</span><i data-feather="more-horizontal"></i>
             </li>
-            <li class="nav-item {{ Route::is('coach::class_room') ? 'active' : '' }}">
-                <a class="d-flex align-items-center" href="{{ route('coach::class_room') }}">
+            <li class="nav-item {{ Route::is('admin::registered_by_referral') ? 'active' : '' }}">
+                <a wire:navigate class="d-flex align-items-center" href="{{ route('admin::registered_by_referral') }}">
                     <i data-feather='check-square'></i>
                     <span class="menu-title text-truncate">Claim Referral</span>
                 </a>
