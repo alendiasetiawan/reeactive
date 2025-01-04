@@ -39,11 +39,11 @@
 
     <!--Navbar-->
     @if (Auth::user()->role_id == 3)
-        <livewire:partials.navbars.member-navbar/>
+        <livewire:partials.navbars.member-navbar />
     @elseif (Auth::user()->role_id == 2)
-        <livewire:partials.navbars.coach-navbar/>
+        <livewire:partials.navbars.coach-navbar />
     @else
-        @include('layouts.parts.navbar')
+        <livewire:partials.navbars.admin-navbar />
     @endif
     <!--#Navbar-->
 
@@ -53,7 +53,7 @@
     @elseif (Auth::user()->role_id == 2)
         @include('layouts.partials.sidebars.coach-sidebar')
     @else
-        @include('layouts.parts.sidebar')
+        @include('layouts.partials.sidebars.admin-sidebar')
     @endif
     <!--#Sidebar-->
 
@@ -64,7 +64,7 @@
     @elseif (Auth::user()->role_id == 2)
         @include('layouts.partials.bottom_navbar.coach-bottom-navbar')
     @else
-        @include('template.component.bottom_navbar')
+        @include('layouts.partials.bottom_navbar.admin-bottom-navbar')
     @endif
     <!--#Bottom Navbar-->
 

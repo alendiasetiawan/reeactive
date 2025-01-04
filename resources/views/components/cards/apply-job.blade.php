@@ -41,7 +41,7 @@
             {{ $headingContent }}
         </h5>
         @endisset
-        <p class="mb-2 text-justify card-text text-capitalize">{{ $slot }}</p>
+        <p class="text-justify card-text text-capitalize">{{ $slot }}</p>
 
         @isset($highlight)
             <div class="rounded apply-job-package bg-light-primary">
