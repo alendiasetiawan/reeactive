@@ -2,9 +2,10 @@
 
 namespace App\Livewire\Admin;
 
-use App\Models\ResetPassword;
 use Livewire\Component;
+use App\Models\ResetPassword;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Computed;
 
 class RequestResetPassword extends Component
@@ -15,6 +16,7 @@ class RequestResetPassword extends Component
     public $searchMember = null;
 
     #[Title('Request Reset Password')]
+    #[Layout('layouts.vuexy-app')]
 
     #[Computed]
     public function requestMembers() {
@@ -39,6 +41,7 @@ class RequestResetPassword extends Component
 
     public function render()
     {
-        return view('livewire.admin.request-reset-password')->layout('layouts.app');
+        // return view('livewire.admin.request-reset-password');
+        return view('livewire.admin.vuexy-request-reset-password');
     }
 }

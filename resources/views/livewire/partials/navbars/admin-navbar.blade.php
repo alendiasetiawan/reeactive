@@ -66,7 +66,7 @@
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user">
                         <a class="dropdown-item" href="/santri/profil"><b class="text-primary">{{ $firstName }} {{ $lastName }} ({{ $roleName }})</b> </a>
                         <div class="dropdown-divider"></div>
-                        {{-- <a class="dropdown-item" href="#"><i class="me-50" data-feather="settings"></i>Pengaturan</a> --}}
+                        <a class="dropdown-item" wire:navigate href="{{ route('ganti_password') }}"><i class="me-50" data-feather="lock"></i>Password</a>
                         <a class="dropdown-item" href="/logout"><i class="me-50" data-feather="power"></i>Keluar</a>
                     </div>
                 </li>

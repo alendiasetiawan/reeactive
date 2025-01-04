@@ -94,7 +94,7 @@
                 </a>
             </li>
             <li class="nav-item {{ Route::is('admin::merchandise_voucher_verification') ? 'active' : '' }}">
-                <a class="d-flex align-items-center" href="{{ route('admin::merchandise_voucher_verification') }}">
+                <a wire:navigate class="d-flex align-items-center" href="{{ route('admin::merchandise_voucher_verification') }}">
                     <i data-feather='grid'></i>
                     <span class="menu-title text-truncate">Voc. Merchandise</span>
                 </a>
@@ -104,8 +104,8 @@
             <!--Settings-->
             <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">PENGATURAN</span><i data-feather="more-horizontal"></i>
             </li>
-            <li class="nav-item {{ Route::is('ganti_password') ? 'active' : '' }}">
-                <a class="d-flex align-items-center" href="{{ route('ganti_password') }}">
+            <li class="nav-item {{ Route::is('admin::request_reset_password') ? 'active' : '' }}">
+                <a wire:navigate class="d-flex align-items-center" href="{{ route('admin::request_reset_password') }}">
                     <i data-feather="lock"></i>
                     <span class="menu-title text-truncate">Reset Password</span>
                 </a>
