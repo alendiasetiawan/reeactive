@@ -51,7 +51,7 @@
         <x-items.loading-dots wire:loading wire:target='filterClass'/>
         @forelse ($this->members as $member)
             <div class="col-lg-4 col-md-6 col-12">
-                <x-cards.apply-job>
+                <x-cards.apply-job wire:key='{{ $member->id }}'>
                     <x-slot:avatar>
                         <img src="{{ asset('template/src/assets/img/avatar/user_akhwat.png') }}" alt="avatar" width="40" height="40">
                     </x-slot:avatar>

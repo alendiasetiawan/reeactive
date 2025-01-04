@@ -48,7 +48,7 @@
 
         @forelse ($this->upReferralMembers as $member)
             <div class="col-lg-4 col-md-6 col-12">
-                <x-cards.apply-job color="primary">
+                <x-cards.apply-job color="primary" wire:key='{{ $member->id }}'>
                     <x-slot:avatarIcon>{{ $loop->iteration }}</x-slot:avatarIcon>
                     <x-slot:title>{{ $member->member_name }}</x-slot:title>
                     <x-slot:subTitle>
@@ -103,6 +103,13 @@
                 <x-alerts.not-found />
             </div>
         @endforelse
+
+        @if ($this->upReferralMembers->hasMorePages())
+            <div class="col-12 text-center">
+                <x-buttons.outline-primary wire:click='loadMore'>Tampilkan Lagi</x-buttons.outline-primary>
+                <x-items.loading-dots wire:loading wire:target='loadMore'/>
+            </div>
+        @endif
     </div>
     <!--#List Of Members-->
 

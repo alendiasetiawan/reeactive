@@ -16,7 +16,7 @@ class RegisteredByReferral extends Component
     //Object
     public $lastBatches;
     //Integer
-    public $limitData = 9, $selectedBatch;
+    public $limitData = 2, $selectedBatch;
     //String
     public $searchMember = null;
 

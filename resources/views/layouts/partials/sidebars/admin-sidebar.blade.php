@@ -93,8 +93,8 @@
                     <span class="menu-title text-truncate">Claim Referral</span>
                 </a>
             </li>
-            <li class="nav-item {{ Route::is('coach::class_room') ? 'active' : '' }}">
-                <a class="d-flex align-items-center" href="{{ route('coach::class_room') }}">
+            <li class="nav-item {{ Route::is('admin::merchandise_voucher_verification') ? 'active' : '' }}">
+                <a class="d-flex align-items-center" href="{{ route('admin::merchandise_voucher_verification') }}">
                     <i data-feather='grid'></i>
                     <span class="menu-title text-truncate">Voc. Merchandise</span>
                 </a>

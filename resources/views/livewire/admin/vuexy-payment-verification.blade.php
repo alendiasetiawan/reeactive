@@ -57,7 +57,7 @@
         @forelse ($this->payments as $payment)
             <div class="col-lg-4 col-md-6 col-12">
                 <a href="{{ route('admin::payment_verification.show', $payment->id) }}" class="text-dark" wire:navigate>
-                    <x-cards.role-card>
+                    <x-cards.role-card wire:key='{{ $payment->id }}'>
                         <x-slot:title>Coach {{ $payment->nick_name }} - {{ $payment->program_name }}</x-slot:title>
                         <x-slot:subTitle>
                             <x-badges.basic :color="$payment->payment_status == 'Done' ? 'success' : ($payment->payment_status == 'Process' ? 'warning' : 'danger')">
