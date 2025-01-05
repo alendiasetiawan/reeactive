@@ -1,16 +1,14 @@
 <?php
 
-namespace App\Livewire\Admin;
+namespace App\Livewire\Admin\Database;
 
-use App\Models\Batch;
 use App\Models\Coach;
-use App\Services\BatchService;
 use Livewire\Component;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Computed;
 
-class RegistrationQuota extends Component
+class LepasanClass extends Component
 {
     #[Layout('layouts.vuexy-app')]
     #[Title('Kuota Pendaftaran')]
@@ -24,26 +22,17 @@ class RegistrationQuota extends Component
     public $isResetFilter = false;
 
     //HOOK - Execute once when component is rendered
-    public function mount(BatchService $batchService) {
-        $this->selectedBatch = $batchService->batchIdActive();
-        $this->lastBatches = Batch::orderBy('id', 'desc')->limit(5)->get();
+    public function mount() {
         $this->regulerCoaches = Coach::listRegulerCoaches();
     }
 
     #[Computed]
     public function membersPerCoach() {
-        return Coach::membersClassPerCoach($this->selectedBatch, $this->selectedCoach);
-    }
-
-    public function updated($property) {
-        if ($property == 'selectedBatch') {
-            $this->isResetFilter = true;
-        }
+        return Coach::listLepasanClass($this->selectedCoach);
     }
 
     public function render()
     {
-        // return view('livewire.admin.registration-quota');
-        return view('livewire.admin.vuexy-registration-quota');
+        return view('livewire.admin.database.lepasan-class');
     }
 }

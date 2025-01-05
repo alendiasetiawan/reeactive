@@ -73,7 +73,7 @@
                     </x-slot:headingContent>
                     Jumlah Sesi : {{ $participant->classDates->count() }} <br/>
                     @foreach ($participant->classDates as $date)
-                        - {{ \Carbon\Carbon::parse($date->date)->isoFormat('dddd, D MMMM Y') }} <br/>
+                        {{ $loop->iteration }}. {{ \Carbon\Carbon::parse($date->date)->isoFormat('dddd, D MMMM Y') }} <br/>
                     @endforeach
                     <x-slot:actionButton>
                         @php

@@ -16,6 +16,8 @@ class FormClassStatus extends Component
     public $day;
     public $start;
     public $end;
+    public $programName;
+    public $modalType;
 
     #[Locked]
     public $classId;
@@ -33,7 +35,12 @@ class FormClassStatus extends Component
         ]);
 
         $this->dispatch('class-status-updated');
-        $this->redirect(route('admin::registration_quota'), navigate:true);
+
+        if ($this->modalType == 'kelasReguler') {
+            $this->redirect(route('admin::registration_quota'), navigate:true);
+        } else {
+            $this->redirect(route('admin::lepasan_class'), navigate:true);
+        }
     }
 
     public function render()

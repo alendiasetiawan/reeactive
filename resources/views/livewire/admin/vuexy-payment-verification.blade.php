@@ -84,7 +84,7 @@
 
         @if ($this->payments->hasMorePages())
             <div class="col-12 text-center">
-                <x-buttons.outline-primary wire:click='loadMore'>Tampilkan Lagi</x-buttons.outline-primary>
+                <x-buttons.outline-primary wire:click='loadMore' wire:loading.remove='loadMore'>Tampilkan Lagi</x-buttons.outline-primary>
                 <x-items.loading-dots wire:loading wire:target='loadMore'/>
             </div>
         @endif

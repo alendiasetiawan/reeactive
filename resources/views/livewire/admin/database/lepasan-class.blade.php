@@ -8,24 +8,16 @@
     @endpush
 
     <x-vuexy.links.breadcrumb>
-        <x-slot:title>Kelas Program Reguler</x-slot:title>
-        <x-slot:activePage>Kelas Program Reguler</x-slot:activePage>
+        <x-slot:title>Data Kelas Lepasan</x-slot:title>
+        <x-slot:activePage>Data Kelas Lepasan</x-slot:activePage>
     </x-vuexy.links.breadcrumb>
 
-    <!--Filter Batch-->
+    <!--Filter Data-->
     <div class="row mb-1">
-        <div class="col-lg-4 col-md-6 col-12 mb-1">
-            <x-inputs.label>Pilih Batch</x-inputs.label>
-            <x-inputs.vuexy-select wire:model.live='selectedBatch'>
-                @foreach ($lastBatches as $batch)
-                    <x-inputs.vuexy-select-option value="{{ $batch->id }}">{{ $batch->batch_name }}</x-inputs.vuexy-select-option>
-                @endforeach
-            </x-inputs.vuexy-select>
-        </div>
-        <div class="col-lg-4 col-md-6 col-12 mb-1">
+        <div class="col-lg-4 col-md-6 col-12">
             <x-inputs.label class="d-flex justify-content-between">
                 Coach
-                @if ($selectedCoach != '' || $isResetFilter)
+                @if ($selectedCoach != '')
                 <a href="#" wire:navigate>
                     <span class="text-danger">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -42,13 +34,13 @@
             </x-inputs.vuexy-select>
         </div>
     </div>
-    <!--#Filter Batch-->
+    <!--#Filter Data-->
 
     <!--List of Classes-->
     <div class="row">
         <!--Loading Indicator-->
-        <x-items.loading-dots class="mb-1" wire:loading wire:target='selectedBatch'/>
         <x-items.loading-dots class="mb-1" wire:loading wire:target='selectedCoach'/>
+        <!--#Loading Indicator-->
 
         @forelse ($this->membersPerCoach as $member)
             <div class="col-lg-4 col-md-6 col-12">
@@ -57,10 +49,12 @@
                         Coach {{ $member->nick_name }}
                         <x-badges.light-badge color="primary">{{ $member->classes->count() }} Kelas</x-badges.light-badge>
                     </x-slot:header>
-                    <div class="scroller3">
+                    <div class="scroller">
                         @foreach ($member->classes as $class)
                             <x-cards.employee-task wire:key='{{ $class->id }}'>
-                                <x-slot:title>{{ $class->day }}</x-slot:title>
+                                <x-slot:title>
+                                    {{ \App\Helpers\TanggalHelper::convertImplodeDay($class->day) }}
+                                </x-slot:title>
                                 <x-slot:subTitle>
                                     {{ \Carbon\Carbon::parse($class->start_time)->format('H:i') }}
                                     -
@@ -70,23 +64,16 @@
                                     @endif
                                     <br/>
                                     @php
-                                        $registeredMember = $class->registrations
+                                        $registeredMember = $class->specialRegistrations
                                         ->where('payment_status', 'Done')
                                         ->where('class_id', $class->id)
                                         ->count();
                                     @endphp
-                                    <a wire:navigate href="{{ route('admin::member_in_class', [$class->id, $selectedBatch, $member->nick_name]) }}">
-                                        <b
-                                        @if ($registeredMember >= 11)
-                                            class="text-success"
-                                        @elseif ($registeredMember >= 6)
-                                            class="text-warning"
-                                        @else
-                                            class="text-danger"
-                                        @endif>
-                                            {{ $registeredMember }} Member
+                                    <a wire:navigate href="{{ route('admin::participants_in_class', ['classId' => $class->id]) }}">
+                                        <small class="text-primary">
+                                            {{ $class->program_name }} - {{ $registeredMember }} Peserta
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link font-medium-1 align-self-end"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                                        </b>
+                                        </small>
                                     </a>
                                 </x-slot:subTitle>
                                 <x-slot:label>
@@ -107,15 +94,15 @@
                                 $statusRenewal = $class->class_status;
                                 $classId = $class->id;
                                 $coach = $member->nick_name;
-                                $day = $class->day;
+                                $day = \App\Helpers\TanggalHelper::convertImplodeDay($class->day);
                                 $start = $class->start_time;
                                 $end = $class->end_time;
-                                $programName = $class->program_name;
+                                $programName = $class->program_name
                             @endphp
                             <x-modals.top-center id="changeClassStatus{{ $class->id }}">
                                 <x-slot:header>Ubah Status Kelas</x-slot:header>
                                 <x-slot:content>
-                                    <livewire:admin.registrations.form-class-status :statusNewMember='$statusNewMember' :statusRenewal='$statusRenewal' :classId='$classId' :coach='$coach' :day='$day' :start='$start' :end='$end' :$programName modalType='kelasReguler'/>
+                                    <livewire:admin.registrations.form-class-status :statusNewMember='$statusNewMember' :statusRenewal='$statusRenewal' :classId='$classId' :coach='$coach' :day='$day' :start='$start' :end='$end' :$programName modalType='kelasLepasan'/>
                                 </x-slot:content>
                             </x-modals.top-center>
                         @endforeach

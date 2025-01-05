@@ -103,9 +103,6 @@
                     @else
                         Catatan Medis : -
                     @endif
-                    <x-slot:actionButton>
-                        <x-buttons.basic color="primary" class="w-100">Detail</x-buttons.basic>
-                    </x-slot:actionButton>
                 </x-cards.apply-job>
             </div>
         @empty

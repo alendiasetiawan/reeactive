@@ -125,4 +125,15 @@ class SpecialRegistration extends Model
         'classes.day', 'classes.start_time', 'classes.end_time')
         ->first();
     }
+
+    //Get participant per class
+    public static function queryParticipantPerClass($classId) {
+        return self::join('members', 'special_registrations.member_code', 'members.code')
+        ->join('classes', 'special_registrations.class_id', 'classes.id')
+        ->with([
+            'classDates'
+        ])
+        ->where('special_registrations.class_id', $classId)
+        ->select('special_registrations.*', 'members.member_name', 'members.code', 'members.mobile_phone', 'classes.day', 'classes.start_time', 'classes.end_time');
+    }
 }

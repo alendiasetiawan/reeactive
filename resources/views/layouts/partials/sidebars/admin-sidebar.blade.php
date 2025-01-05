@@ -13,24 +13,17 @@
             <!--DATABASE-->
             <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">DATABASE</span><i data-feather="more-horizontal"></i>
             </li>
-            <li class="nav-item ">
-                <a class="d-flex align-items-center" href="#"><i data-feather='users'></i>
-                    <span class="menu-title text-truncate">Member</span>
+            <li class="nav-item {{ Route::is('admin::database_member') ? 'active' : '' }}">
+                <a wire:navigate class="d-flex align-items-center" href="{{ route('admin::database_member') }}">
+                    <i data-feather="users"></i>
+                    <span class="menu-title text-truncate">Member Reguler</span>
                 </a>
-                <ul class="menu-content">
-                    <li class="{{ Route::is('admin::database_member') ? 'active' : '' }}">
-                        <a class="d-flex align-items-center" wire:navigate
-                            href="{{ route('admin::database_member') }}"><i data-feather="circle"></i>
-                            <span class="menu-item text-truncate">Kelas Reguler</span>
-                        </a>
-                    </li>
-                    <li class="{{ Route::is('coach::open_class_member') ? 'active' : '' }}">
-                        <a class="d-flex align-items-center" wire:navigate
-                            href="{{ route('coach::open_class_member') }}"><i data-feather="circle"></i>
-                            <span class="menu-item text-truncate">Kelas Lepasan</span>
-                        </a>
-                    </li>
-                </ul>
+            </li>
+            <li class="nav-item {{ Route::is('admin::request_class') ? 'active' : '' }}">
+                <a wire:navigate class="d-flex align-items-center" href="{{ route('admin::request_class') }}">
+                    <i data-feather="bookmark"></i>
+                    <span class="menu-title text-truncate">Request Kelas</span>
+                </a>
             </li>
             <li class="nav-item ">
                 <a class="d-flex align-items-center" href="#"><i data-feather='layers'></i>
@@ -43,21 +36,14 @@
                             <span class="menu-item text-truncate">Program Reguler</span>
                         </a>
                     </li>
-                    <li class="{{ Route::is('coach::open_class_member') ? 'active' : '' }}">
+                    <li class="{{ Route::is('admin::lepasan_class') || Route::is('admin::participants_in_class') ? 'active' : '' }}">
                         <a class="d-flex align-items-center" wire:navigate
-                            href="{{ route('coach::open_class_member') }}"><i data-feather="circle"></i>
+                            href="{{ route('admin::lepasan_class') }}"><i data-feather="circle"></i>
                             <span class="menu-item text-truncate">Kelas Lepasan</span>
                         </a>
                     </li>
                 </ul>
             </li>
-            <li class="nav-item {{ Route::is('admin::request_class') ? 'active' : '' }}">
-                <a wire:navigate class="d-flex align-items-center" href="{{ route('admin::request_class') }}">
-                    <i data-feather="bookmark"></i>
-                    <span class="menu-title text-truncate">Request Kelas</span>
-                </a>
-            </li>
-
             <!--#DATABASE-->
 
             <!--REGISTRATION-->

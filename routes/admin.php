@@ -9,6 +9,8 @@ use App\Livewire\Admin\RegistrationQuota;
 use App\Livewire\Admin\PaymentVerification;
 use App\Livewire\Admin\RequestResetPassword;
 use App\Http\Controllers\ExportExcelController;
+use App\Livewire\Admin\Database\LepasanClass;
+use App\Livewire\Admin\Database\ParticipantsInClass;
 use App\Livewire\Admin\ShowPaymentVerification;
 use App\Livewire\Admin\MerchandiseVoucherVerification;
 use App\Livewire\Admin\Registrations\ShowMemberInClass;
@@ -28,6 +30,10 @@ Route::group(['middleware' => ['auth', 'admin'], 'as' => 'admin::'], function() 
         //Database
         Route::get('/database-member', DatabaseMember::class)->name('database_member');
         Route::get('/request-class', RequestClass::class)->name('request_class');
+        Route::get('/kelas-program-reguler', RegistrationQuota::class)->name('registration_quota');
+        Route::get('/member-per-kelas/{classId}/{batchId}/{nickName}', ShowMemberInClass::class)->name('member_in_class');
+        Route::get('/kelas-lepasan', LepasanClass::class)->name('lepasan_class');
+        Route::get('/peserta-kelas-lepasan/{classId}', ParticipantsInClass::class)->name('participants_in_class');
 
         //Download Excel
         Route::get('/excel-all-member/{batch_id}', [ExportExcelController::class, 'allMember'])->name('excel_all_member');
@@ -37,8 +43,6 @@ Route::group(['middleware' => ['auth', 'admin'], 'as' => 'admin::'], function() 
         //Registration
         Route::get('/verifikasi-transfer', PaymentVerification::class)->name('payment_verification');
         Route::get('/verifikasi-transfer/{id}', ShowPaymentVerification::class)->name('payment_verification.show');
-        Route::get('/kuota-pendaftaran', RegistrationQuota::class)->name('registration_quota');
-        Route::get('/member-per-kelas/{classId}/{batchId}/{nickName}', ShowMemberInClass::class)->name('member_in_class');
         Route::get('/verifikasi-transfer-lepasan', LepasanPaymentVerification::class)->name('lepasan_payment_verification');
         Route::get('/detail-pembayaran-lepasan/{id}', DetailLepasanPayment::class)->name('detail_lepasan_payment');
 

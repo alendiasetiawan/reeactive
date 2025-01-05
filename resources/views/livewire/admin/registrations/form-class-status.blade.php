@@ -2,6 +2,7 @@
     <form wire:submit='save'>
         <div class="row">
             <div class="col-12 mb-2">
+                Program : {{ $programName }} <br/>
                 Coach : {{ $coach }} <br>
                 Hari : {{ $day }} <br>
                 Waktu : {{ \Carbon\Carbon::parse($start)->format('H:i') }} - {{ \Carbon\Carbon::parse($end)->format('H:i') }}

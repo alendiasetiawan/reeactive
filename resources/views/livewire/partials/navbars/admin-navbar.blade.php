@@ -28,7 +28,7 @@
             <ul class="nav navbar-nav align-items-center d-lg-none d-xl-none">
                 <!--Back Button Navigation-->
                 <li class="nav-item nav-search">
-                    @if (Route::is('admin::registration_quota') || Route::is('admin::database_member') || Route::is('admin::request_class') || Route::is('admin::registered_by_referral') || Route::is('admin::merchandise_voucher_verification') || Route::is('admin::payment_verification') || Route::is('admin::lepasan_payment_verification'))
+                    @if (Route::is('admin::registration_quota') || Route::is('admin::database_member') || Route::is('admin::request_class') || Route::is('admin::registered_by_referral') || Route::is('admin::merchandise_voucher_verification') || Route::is('admin::payment_verification') || Route::is('admin::lepasan_payment_verification') || Route::is('admin::lepasan_class'))
                         <a href="/login">
                             <i class="ficon d-md-none d-lg-none d-xl-none" data-feather="arrow-left"></i>
                         </a>
@@ -37,6 +37,12 @@
                     <!--Menu Data Kelas Reguler-->
                     @if (Route::is('admin::member_in_class'))
                         <a href="{{ route('admin::registration_quota') }}" wire:navigate>
+                            <i class="ficon d-md-none d-lg-none d-xl-none" data-feather="arrow-left"></i>
+                        </a>
+                    @endif
+
+                    @if (Route::is('admin::participants_in_class'))
+                        <a href="{{ route('admin::lepasan_class') }}" wire:navigate>
                             <i class="ficon d-md-none d-lg-none d-xl-none" data-feather="arrow-left"></i>
                         </a>
                     @endif

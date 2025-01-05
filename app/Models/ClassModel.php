@@ -131,4 +131,13 @@ class ClassModel extends Model
         ->where('coach_code', $coachCode)
         ->exists();
     }
+
+    //Get data member for selected class of coach
+    public static function memberPerClass($classId) {
+        return self::join('programs', 'classes.program_id', 'programs.id')
+        ->join('coaches', 'classes.coach_code', 'coaches.code')
+        ->select('classes.*', 'programs.program_name', 'coaches.coach_name', 'coaches.nick_name')
+        ->where('classes.id', $classId)
+        ->first();
+    }
 }
