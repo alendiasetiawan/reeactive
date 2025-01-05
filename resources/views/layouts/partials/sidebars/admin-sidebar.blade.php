@@ -37,9 +37,9 @@
                     <span class="menu-title text-truncate">Kelas</span>
                 </a>
                 <ul class="menu-content">
-                    <li class="{{ Route::is('admin::database_member') ? 'active' : '' }}">
+                    <li class="{{ Route::is('admin::registration_quota') || Route::is('admin::member_in_class') ? 'active' : '' }}">
                         <a class="d-flex align-items-center" wire:navigate
-                            href="{{ route('admin::database_member') }}"><i data-feather="circle"></i>
+                            href="{{ route('admin::registration_quota') }}"><i data-feather="circle"></i>
                             <span class="menu-item text-truncate">Program Reguler</span>
                         </a>
                     </li>

@@ -25,7 +25,7 @@
         </div>
     </div>
     <div class="d-flex align-items-center">
-        <small class="text-muted">{{ $label }}</small>
+        <small class="text-muted me-25">{{ $label }}</small>
         @isset($action)
             {{-- <div class="employee-task-chart-primary-1"></div> --}}
             <div>

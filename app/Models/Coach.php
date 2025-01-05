@@ -113,13 +113,15 @@ class Coach extends Model
     public static function membersClassPerCoach($batchId) {
         return Coach::with([
             'classes' => function($query) use($batchId) {
-                $query->where('class_status', '<>', 'Pending')
+                $query->join('programs', 'classes.program_id', 'programs.id')
+                ->select('classes.*', 'programs.program_name', 'program_type')
+                ->where('programs.program_type', 'Reguler')
+                ->where('classes.class_status', '<>', 'Pending')
                 ->with([
                     'registrations' => function($query) use($batchId) {
                         $query->where('batch_id', $batchId);
                     }
                 ]);
-
             }
         ])
         ->where('type', 'Reguler')

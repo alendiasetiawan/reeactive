@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col-12">
             <x-cards.basic-card>
-                <x-slot:cardTitle>Data Transfer <b class="text-primary">{{ $batchName }}</b></x-slot:cardTitle>
+                <x-slot:cardTitle>Program Reguler <b class="text-primary">{{ $batchName }}</b></x-slot:cardTitle>
                 <div class="row">
                     <div class="col-lg-4 col-md-6 col-12 mb-1">
                         <x-inputs.label>Cari Member</x-inputs.label>
@@ -26,7 +26,7 @@
                         <x-inputs.label>Status Transfer</x-inputs.label>
                         <x-inputs.vuexy-select wire:model.live='transferStatus'>
                             <x-inputs.vuexy-select-option value="">Semua</x-inputs.vuexy-select-option>
-                            <x-inputs.vuexy-select-option value="Process">Process</x-inputs.vuexy-select-option>
+                            <x-inputs.vuexy-select-option value="Process">Proses</x-inputs.vuexy-select-option>
                             <x-inputs.vuexy-select-option value="Done">Valid</x-inputs.vuexy-select-option>
                             <x-inputs.vuexy-select-option value="Invalid">Tidak Valid</x-inputs.vuexy-select-option>
                         </x-inputs.vuexy-select>

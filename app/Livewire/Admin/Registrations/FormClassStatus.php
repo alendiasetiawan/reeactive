@@ -32,7 +32,7 @@ class FormClassStatus extends Component
             'class_status_eksternal' => $this->setNewMember,
         ]);
 
-        session()->flash('saveClass', true);
+        $this->dispatch('class-status-updated');
         $this->redirect(route('admin::registration_quota'), navigate:true);
     }
 

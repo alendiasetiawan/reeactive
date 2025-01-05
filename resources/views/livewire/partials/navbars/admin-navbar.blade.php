@@ -26,27 +26,31 @@
 
             <!--Mobile Screen-->
             <ul class="nav navbar-nav align-items-center d-lg-none d-xl-none">
+                <!--Back Button Navigation-->
                 <li class="nav-item nav-search">
-                    {{-- @if (Route::is('finance::database_muzakki') || Route::is('finance::income_zakat'))
-                        <a href="/">
+                    @if (Route::is('admin::registration_quota') || Route::is('admin::database_member') || Route::is('admin::request_class') || Route::is('admin::registered_by_referral') || Route::is('admin::merchandise_voucher_verification') || Route::is('admin::payment_verification'))
+                        <a href="/login">
                             <i class="ficon d-md-none d-lg-none d-xl-none" data-feather="arrow-left"></i>
                         </a>
                     @endif
 
-                    <!--Menu Database Muzakki-->
-                    @if (Route::is('finance::detail_muzakki'))
-                        <a href="{{ route('finance::database_muzakki') }}" wire:navigate>
+                    <!--Menu Data Kelas Reguler-->
+                    @if (Route::is('admin::member_in_class'))
+                        <a href="{{ route('admin::registration_quota') }}" wire:navigate>
                             <i class="ficon d-md-none d-lg-none d-xl-none" data-feather="arrow-left"></i>
                         </a>
                     @endif
+                    <!--#Menu Data Kelas Reguler-->
 
-                    @if (Route::is('finance::form_edit_muzakki'))
-                        <a href="#" onclick="history.back()">
+                    <!--Menu Transfer Verification-->
+                    @if (Route::is('admin::payment_verification.show'))
+                        <a href="{{ route('admin::payment_verification') }}" wire:navigate>
                             <i class="ficon d-md-none d-lg-none d-xl-none" data-feather="arrow-left"></i>
                         </a>
-                    @endif --}}
-                    <!--#Menu Database Muzakki-->
+                    @endif
+                    <!--#Menu Transfer Verification-->
                 </li>
+                <!--#Back Button Navigation-->
             </ul>
 
             <ul class="nav navbar-nav align-items-center d-lg-none d-xl-none">

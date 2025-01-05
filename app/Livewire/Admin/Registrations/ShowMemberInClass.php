@@ -8,26 +8,29 @@ use App\Models\Member;
 use Livewire\Component;
 use Livewire\Attributes\Url;
 use App\Services\BatchService;
+use Detection\MobileDetect;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Computed;
 
 class ShowMemberInClass extends Component
 {
-    #[Layout('layouts.app')]
+    #[Layout('layouts.vuexy-app')]
     #[Title('Data Member Per Kelas')]
 
     public object $batchQuery;
-    public int $filterLevel;
+    public $filterLevel = '';
     public int $classId;
     public int $batchId;
     public string $nickName;
-    public int $limitData = 6;
+    public int $limitData = 9;
     public string $searchMember = '';
     public object $classDetail;
     public int $selectedLevel;
     public int $selectedCoach;
     public int $selectedClass;
+    //Boolean
+    public $isMobile, $isTablet;
 
     protected $batchService;
 
@@ -38,13 +41,15 @@ class ShowMemberInClass extends Component
         $this->classDetail = ClassModel::find($classId);
     }
 
-    public function boot(BatchService $batchService) {
+    public function boot(BatchService $batchService, MobileDetect $mobileDetect) {
         $this->batchQuery = $batchService->batchQuery();
+        $mobileDetect->isMobile() ? $this->isMobile = true : $this->isMobile = false;
+        $mobileDetect->isTablet() ? $this->isTablet = true : $this->isTablet = false;
     }
 
     #[Computed]
     public function membersInClass() {
-        return Member::allMemberInClassMore($this->classId, $this->batchId, $this->limitData);
+        return Member::allMemberInClassMore($this->classId, $this->batchId, $this->limitData, $this->filterData());
     }
 
     #[Computed]
@@ -52,32 +57,20 @@ class ShowMemberInClass extends Component
         return Member::allMemberInClass($this->classId, $this->batchId);
     }
 
-    public function updated($property) {
-        if ($property == 'filterLevel') {
-            $this->reset('searchMember');
-            if ($this->filterLevel == 0) {
-                $this->membersInClass = Member::allMemberInClassMore($this->classId, $this->batchId, $this->limitData);
-            } else {
-                $this->membersInClass = Member::memberPerLevel($this->classId, $this->batchId, $this->filterLevel);
-            }
-        }
-
-        if ($property == 'searchMember') {
-            $this->reset('filterLevel');
-            if ($this->searchMember == '') {
-                $this->membersInClass = Member::allMemberInClassMore($this->classId, $this->batchId, $this->limitData);
-            } else {
-                $this->membersInClass = Member::allMemberInClassSearch($this->classId, $this->batchId, $this->searchMember);
-            }
-        }
-    }
-
     public function loadMore() {
         $this->limitData += 10;
     }
 
+    public function filterData() {
+        return collect([
+            'searchMember' => $this->searchMember,
+            'filterLevel' => $this->filterLevel
+        ]);
+    }
+
     public function render()
     {
-        return view('livewire.admin.registrations.show-member-in-class');
+        // return view('livewire.admin.registrations.show-member-in-class');
+        return view('livewire.admin.registrations.vuexy-show-member-in-class');
     }
 }

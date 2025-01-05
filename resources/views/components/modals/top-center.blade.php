@@ -17,9 +17,7 @@
                     <h5>{{ $title }}</h5>
                 @endisset
                 @isset($content)
-                    <p>
-                        {{ $content }}
-                    </p>
+                    {{ $content }}
                 @endisset
             </div>
             <div class="modal-footer">
