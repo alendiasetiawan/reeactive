@@ -1,20 +1,22 @@
 <?php
 
-use App\Http\Controllers\ExportExcelController;
+use App\Livewire\Admin\RequestClass;
+use Illuminate\Support\Facades\Route;
 use App\Livewire\Admin\DashboardAdmin;
 use App\Livewire\Admin\DatabaseMember;
-use App\Livewire\Admin\MerchandiseVoucherVerification;
 use App\Livewire\Admin\MobileMainMenu;
-use App\Livewire\Admin\PaymentVerification;
 use App\Livewire\Admin\RegistrationQuota;
-use App\Livewire\Admin\Registrations\RegisteredByReferral;
-use App\Livewire\Admin\Registrations\ShowMemberInClass;
-use App\Livewire\Admin\Registrations\ShowWorkshopVerification;
-use App\Livewire\Admin\Registrations\WorkshopPaymentVerification;
-use App\Livewire\Admin\RequestClass;
+use App\Livewire\Admin\PaymentVerification;
 use App\Livewire\Admin\RequestResetPassword;
+use App\Http\Controllers\ExportExcelController;
 use App\Livewire\Admin\ShowPaymentVerification;
-use Illuminate\Support\Facades\Route;
+use App\Livewire\Admin\MerchandiseVoucherVerification;
+use App\Livewire\Admin\Registrations\ShowMemberInClass;
+use App\Livewire\Admin\Registrations\DetailLepasanPayment;
+use App\Livewire\Admin\Registrations\RegisteredByReferral;
+use App\Livewire\Admin\Registrations\ShowWorkshopVerification;
+use App\Livewire\Admin\Registrations\LepasanPaymentVerification;
+use App\Livewire\Admin\Registrations\WorkshopPaymentVerification;
 
 Route::group(['middleware' => ['auth', 'admin'], 'as' => 'admin::'], function() {
     Route::prefix('admin')->group(function() {
@@ -37,6 +39,8 @@ Route::group(['middleware' => ['auth', 'admin'], 'as' => 'admin::'], function() 
         Route::get('/verifikasi-transfer/{id}', ShowPaymentVerification::class)->name('payment_verification.show');
         Route::get('/kuota-pendaftaran', RegistrationQuota::class)->name('registration_quota');
         Route::get('/member-per-kelas/{classId}/{batchId}/{nickName}', ShowMemberInClass::class)->name('member_in_class');
+        Route::get('/verifikasi-transfer-lepasan', LepasanPaymentVerification::class)->name('lepasan_payment_verification');
+        Route::get('/detail-pembayaran-lepasan/{id}', DetailLepasanPayment::class)->name('detail_lepasan_payment');
 
         //Workshop
         Route::get('/verifikasi-transfer-workshop', WorkshopPaymentVerification::class)->name('workshop_verification');

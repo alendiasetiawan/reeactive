@@ -74,9 +74,8 @@
                             <span class="menu-item text-truncate">Program Reguler</span>
                         </a>
                     </li>
-                    <li class="">
-                        <a class="d-flex align-items-center" wire:navigate
-                            href=""><i data-feather="circle"></i>
+                    <li class="{{ Route::is('admin::lepasan_payment_verification') || Route::is('admin::detail_lepasan_payment') ? 'active' : '' }}">
+                        <a class="d-flex align-items-center" wire:navigate href="{{ route('admin::lepasan_payment_verification') }}"><i data-feather="circle"></i>
                             <span class="menu-item text-truncate">Kelas Lepasan</span>
                         </a>
                     </li>

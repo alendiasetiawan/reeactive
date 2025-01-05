@@ -23,6 +23,12 @@ class SpecialRegistration extends Model
         return $this->belongsTo(Member::class, 'member_code', 'code');
     }
 
+    public function scopeLimitPaymentStatus($query, $type, $limit) {
+        return $query->where('payment_status', $type)
+        ->orderBy('id', 'desc')
+        ->limit($limit);
+    }
+
     //Get the latest special registration data
     public static function latestRegistration($memberCode, $limitData = null) {
         return self::join('programs', 'special_registrations.program_id', '=', 'programs.id')
@@ -82,5 +88,41 @@ class SpecialRegistration extends Model
         })
         ->select('special_registrations.*', 'programs.program_name', 'classes.day', 'classes.start_time', 'classes.end_time', 'members.member_name', 'members.mobile_phone', 'members.code')
         ->paginate($limitData);
+    }
+
+    //Get latest data of kelas lepasan registrations
+    public static function latestRegistrationParticipants($searchMember = null, $transferStatus = null, $limitData = 9) {
+        return self::join('members', 'special_registrations.member_code', 'members.code')
+        ->join('programs', 'special_registrations.program_id', 'programs.id')
+        ->join('coaches', 'special_registrations.coach_id', 'coaches.id')
+        ->join('classes', 'special_registrations.class_id', 'classes.id')
+        ->with([
+            'classDates'
+        ])
+        ->when($searchMember, function($query) use($searchMember) {
+            return $query->where('members.member_name', 'like', '%'.$searchMember.'%');
+        })
+        ->when($transferStatus, function($query) use($transferStatus) {
+            return $query->where('special_registrations.payment_status', $transferStatus);
+        })
+        ->select('special_registrations.*', 'members.member_name', 'members.mobile_phone', 'programs.program_name', 'coaches.nick_name', 'coaches.coach_name',
+        'classes.day', 'classes.start_time', 'classes.end_time')
+        ->orderBy('special_registrations.id', 'desc')
+        ->paginate($limitData);
+    }
+
+    //Get registration detail
+    public static function showRegistrationDetail($id) {
+        return self::join('members', 'special_registrations.member_code', 'members.code')
+        ->join('programs', 'special_registrations.program_id', 'programs.id')
+        ->join('coaches', 'special_registrations.coach_id', 'coaches.id')
+        ->join('classes', 'special_registrations.class_id', 'classes.id')
+        ->with([
+            'classDates'
+        ])
+        ->where('special_registrations.id', $id)
+        ->select('special_registrations.*', 'members.member_name', 'members.mobile_phone', 'programs.program_name', 'coaches.nick_name', 'coaches.coach_name',
+        'classes.day', 'classes.start_time', 'classes.end_time')
+        ->first();
     }
 }

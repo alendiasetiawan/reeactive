@@ -28,7 +28,7 @@
             <ul class="nav navbar-nav align-items-center d-lg-none d-xl-none">
                 <!--Back Button Navigation-->
                 <li class="nav-item nav-search">
-                    @if (Route::is('admin::registration_quota') || Route::is('admin::database_member') || Route::is('admin::request_class') || Route::is('admin::registered_by_referral') || Route::is('admin::merchandise_voucher_verification') || Route::is('admin::payment_verification'))
+                    @if (Route::is('admin::registration_quota') || Route::is('admin::database_member') || Route::is('admin::request_class') || Route::is('admin::registered_by_referral') || Route::is('admin::merchandise_voucher_verification') || Route::is('admin::payment_verification') || Route::is('admin::lepasan_payment_verification'))
                         <a href="/login">
                             <i class="ficon d-md-none d-lg-none d-xl-none" data-feather="arrow-left"></i>
                         </a>
@@ -45,6 +45,12 @@
                     <!--Menu Transfer Verification-->
                     @if (Route::is('admin::payment_verification.show'))
                         <a href="{{ route('admin::payment_verification') }}" wire:navigate>
+                            <i class="ficon d-md-none d-lg-none d-xl-none" data-feather="arrow-left"></i>
+                        </a>
+                    @endif
+
+                    @if (Route::is('admin::detail_lepasan_payment'))
+                        <a href="{{ route('admin::lepasan_payment_verification') }}" wire:navigate>
                             <i class="ficon d-md-none d-lg-none d-xl-none" data-feather="arrow-left"></i>
                         </a>
                     @endif
