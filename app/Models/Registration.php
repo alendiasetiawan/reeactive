@@ -121,4 +121,17 @@ class Registration extends Model
         ->limit(1)
         ->first();
     }
+
+    //Get limit latest registration data for admin
+    public static function limitLatestRegistration($batchId, $limitData) {
+        return Registration::join('members', 'registrations.member_code', 'members.code')
+        ->join('programs', 'registrations.program_id', 'programs.id')
+        ->join('coaches', 'registrations.coach_id', 'coaches.id')
+        ->join('classes', 'registrations.class_id', 'classes.id')
+        ->select('registrations.*', 'members.member_name', 'programs.program_name', 'coaches.nick_name', 'coaches.coach_name', 'classes.day', 'classes.start_time', 'classes.end_time', 'classes.link_wa')
+        ->where('batch_id', $batchId)
+        ->orderBy('registrations.id', 'desc')
+        ->limit($limitData)
+        ->get();
+    }
 }

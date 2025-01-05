@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6753d0728a3a30609145e2b549e2b92c",
+    "content-hash": "7e45f6c006b832006d2ea1f448592e53",
     "packages": [
         {
             "name": "arielmejiadev/larapex-charts",
@@ -72,16 +72,16 @@
         },
         {
             "name": "asantibanez/livewire-charts",
-            "version": "3.1.0",
+            "version": "v4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/asantibanez/livewire-charts.git",
-                "reference": "343ebbaeee8cfddd4ec1cb451eebccb65e544619"
+                "reference": "35324eace3c45112935eba7ccca3087fa52deb48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asantibanez/livewire-charts/zipball/343ebbaeee8cfddd4ec1cb451eebccb65e544619",
-                "reference": "343ebbaeee8cfddd4ec1cb451eebccb65e544619",
+                "url": "https://api.github.com/repos/asantibanez/livewire-charts/zipball/35324eace3c45112935eba7ccca3087fa52deb48",
+                "reference": "35324eace3c45112935eba7ccca3087fa52deb48",
                 "shasum": ""
             },
             "require": {
@@ -128,9 +128,9 @@
             ],
             "support": {
                 "issues": "https://github.com/asantibanez/livewire-charts/issues",
-                "source": "https://github.com/asantibanez/livewire-charts/tree/3.1.0"
+                "source": "https://github.com/asantibanez/livewire-charts/tree/v4.1.0"
             },
-            "time": "2024-08-22T15:41:44+00:00"
+            "time": "2024-08-22T19:42:07+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -9844,12 +9844,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.1"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }

@@ -136,4 +136,15 @@ class SpecialRegistration extends Model
         ->where('special_registrations.class_id', $classId)
         ->select('special_registrations.*', 'members.member_name', 'members.code', 'members.mobile_phone', 'classes.day', 'classes.start_time', 'classes.end_time');
     }
+
+    public static function limitLatestRegistration($limitData) {
+        return self::join('members', 'special_registrations.member_code', 'members.code')
+        ->join('programs', 'special_registrations.program_id', 'programs.id')
+        ->join('coaches', 'special_registrations.coach_id', 'coaches.id')
+        ->join('classes', 'special_registrations.class_id', 'classes.id')
+        ->select('special_registrations.*', 'members.member_name', 'programs.program_name', 'coaches.nick_name', 'coaches.coach_name', 'classes.day', 'classes.start_time', 'classes.end_time', 'classes.link_wa')
+        ->orderBy('special_registrations.id', 'desc')
+        ->limit($limitData)
+        ->get();
+    }
 }

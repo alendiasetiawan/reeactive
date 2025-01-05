@@ -105,7 +105,7 @@ class Coach extends Model
                 $query->where('batch_id', $batchId);
             }
         ])
-        ->select('id', 'coach_name', 'nick_name')
+        ->select('id', 'coach_name', 'nick_name', 'color_hex')
         ->orderBy('coach_name', 'asc')
         ->get();
     }
