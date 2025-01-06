@@ -29,7 +29,12 @@ class Member extends Model
         return $this->hasOne(Referral::class, 'member_code', 'code');
     }
 
-    public static function memberActive($batchId) {
+    public function specialRegistrations(): HasMany
+    {
+        return $this->hasMany(SpecialRegistration::class, 'member_code', 'code');
+    }
+
+    public static function memberActive($batchId, $searchMember = null, $limitData = null) {
         return Registration::join('members', 'registrations.member_code', 'members.code')
         ->join('programs', 'registrations.program_id', 'programs.id')
         ->join('levels', 'registrations.level_id', 'levels.id')
@@ -37,10 +42,12 @@ class Member extends Model
         ->join('classes', 'registrations.class_id', 'classes.id')
         ->where('registrations.batch_id', $batchId)
         ->where('registrations.payment_status', 'Done')
-        ->select('registrations.*', 'members.member_name', 'programs.program_name', 'members.mobile_phone', 'levels.level_name', 'coaches.nick_name', 'coaches.coach_name',
-        'classes.day', 'classes.start_time', 'classes.end_time')
+        ->when($searchMember, function($query) use($searchMember) {
+            $query->where('members.member_name', 'like', '%'.$searchMember.'%');
+        })
+        ->select('registrations.*', 'members.member_name', 'programs.program_name', 'members.mobile_phone', 'levels.level_name', 'coaches.nick_name', 'coaches.coach_name', 'classes.day', 'classes.start_time', 'classes.end_time', 'members.medical_condition', 'members.code')
         ->orderBy('members.member_name', 'asc')
-        ->get();
+        ->paginate($limitData);
     }
 
     public static function activeMemberPerCoach($batchId, $coachId) {
@@ -58,7 +65,7 @@ class Member extends Model
         ->count();
     }
 
-    public static function coachActiveMembers($batchId, $coachId) {
+    public static function coachActiveMembers($batchId, $coachId, $limitData = 9) {
         return Registration::join('members', 'registrations.member_code', 'members.code')
         ->join('programs', 'registrations.program_id', 'programs.id')
         ->join('levels', 'registrations.level_id', 'levels.id')
@@ -67,9 +74,9 @@ class Member extends Model
         ->where('registrations.coach_id', $coachId)
         ->where('registrations.payment_status', 'Done')
         ->select('registrations.created_at', 'members.member_name', 'registrations.registration_category','members.mobile_phone', 'members.medical_condition', 'programs.program_name', 'programs.id', 'levels.level_name',
-        'classes.day', 'classes.start_time', 'classes.end_time')
+        'classes.day', 'classes.start_time', 'classes.end_time', 'members.body_height', 'members.body_weight')
         ->orderBy('members.member_name', 'asc')
-        ->paginate(9);
+        ->paginate($limitData);
     }
 
     public static function coachActiveMembersSearch($batchId, $coachId, $searchMember) {
@@ -102,21 +109,14 @@ class Member extends Model
         ->paginate(9);
     }
 
-    public static function allMemberInClass($classId, $batchId) {
-        return Registration::join('members', 'registrations.member_code', 'members.code')
-        ->join('programs', 'registrations.program_id', 'programs.id')
-        ->join('levels', 'registrations.level_id', 'levels.id')
-        ->join('classes', 'registrations.class_id', 'classes.id')
-        ->where('registrations.batch_id', $batchId)
+    public static function  allMemberInClass($classId, $batchId) {
+        return Registration::where('registrations.batch_id', $batchId)
         ->where('registrations.class_id', $classId)
         ->where('registrations.payment_status', 'Done')
-        ->select('registrations.id', 'registrations.created_at', 'registrations.registration_category', 'members.member_name', 'members.medical_condition', 'programs.program_name', 'levels.level_name',
-        'classes.day', 'classes.start_time', 'classes.end_time', 'members.mobile_phone')
-        ->orderBy('members.member_name', 'asc')
-        ->get();
+        ->count();
     }
 
-    public static function allMemberInClassSearch($classId, $batchId, $searchMember) {
+    public static function allMemberInClassSearch($classId, $batchId, $searchMember, $limitData = 9) {
         return Registration::join('members', 'registrations.member_code', 'members.code')
         ->join('programs', 'registrations.program_id', 'programs.id')
         ->join('levels', 'registrations.level_id', 'levels.id')
@@ -128,10 +128,10 @@ class Member extends Model
         ->select('registrations.id', 'registrations.created_at', 'registrations.registration_category', 'members.member_name', 'members.medical_condition', 'programs.program_name', 'levels.level_name',
         'classes.day', 'classes.start_time', 'classes.end_time', 'members.mobile_phone')
         ->orderBy('members.member_name', 'asc')
-        ->get();
+        ->paginate($limitData);
     }
 
-    public static function allMemberInClassMore($classId, $batchId, $limitData) {
+    public static function allMemberInClassMore($classId, $batchId, $limitData, $filterData) {
         return Registration::join('members', 'registrations.member_code', 'members.code')
         ->join('programs', 'registrations.program_id', 'programs.id')
         ->join('levels', 'registrations.level_id', 'levels.id')
@@ -139,10 +139,15 @@ class Member extends Model
         ->where('registrations.batch_id', $batchId)
         ->where('registrations.class_id', $classId)
         ->where('registrations.payment_status', 'Done')
+        ->when($filterData['searchMember'], function($query) use($filterData) {
+            $query->where('members.member_name', 'like', '%'.$filterData['searchMember'].'%');
+        })
+        ->when($filterData['filterLevel'], function($query) use($filterData) {
+            $query->where('registrations.level_id', $filterData['filterLevel']);
+        })
         ->select('registrations.id', 'registrations.created_at', 'registrations.registration_category', 'members.member_name', 'members.medical_condition', 'programs.program_name', 'levels.level_name',
         'classes.day', 'classes.start_time', 'classes.end_time', 'members.mobile_phone')
-        ->limit($limitData)
-        ->get();
+        ->paginate($limitData);
     }
 
     public static function memberPerLevel($classId, $batchId, $levelId) {

@@ -6,6 +6,8 @@ use App\Livewire\Member\Programs\ReferralMember;
 use App\Http\Controllers\Member\DownloadVoucherMerchandise;
 use App\Livewire\Member\Registrations\ContinueWorkshopForm;
 use App\Http\Controllers\Member\RenewalRegistrationController;
+use App\Livewire\Member\RegistrationPortal;
+use App\Livewire\Member\Registrations\OpenClassRegistration;
 
 Route::group(['middleware' => ['auth', 'member'], 'as' => 'member::'], function() {
     Route::prefix('member')->group(function() {
@@ -22,5 +24,9 @@ Route::group(['middleware' => ['auth', 'member'], 'as' => 'member::'], function(
 
         //Reeactive Loyalty Program
         Route::get('/download-voucher-merchandise/{id}', [DownloadVoucherMerchandise::class, 'create'])->name('download_voucher_merchandise.create');
+
+        //Registrasi kelas lepasan
+        Route::get('/form-program-lepas', OpenClassRegistration::class)->name('open_class_registration');
+        Route::get('/portal-registrasi', RegistrationPortal::class)->name('registration_portal');
     });
 });

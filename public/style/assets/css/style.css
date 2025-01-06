@@ -98,13 +98,13 @@ border-radius: 3px;
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-background: #74AF28;
+background: #e9198c;
 border-radius: 3px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-background: #74AF28;
+background: #e9198c;
 }
 
 /* Dot Animation */
@@ -132,7 +132,7 @@ background: #74AF28;
     width: 6px;
     height: 6px;
     margin: 0 2px;
-    background-color: #74AF28;
+    background-color: #e9198c;
     border-radius: 50%;
     animation: dot-elastic 1s infinite;
 }

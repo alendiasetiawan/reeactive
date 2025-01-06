@@ -3,19 +3,20 @@
 namespace App\Livewire\Admin\Registrations;
 
 use App\Models\Member;
-use App\Models\ReferralRegistration;
 use Livewire\Component;
 use App\Services\BatchService;
-use App\Services\MemberService;
 use Livewire\Attributes\Title;
+use App\Services\MemberService;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Computed;
+use App\Models\ReferralRegistration;
 
 class RegisteredByReferral extends Component
 {
     //Object
     public $lastBatches;
     //Integer
-    public $limitData = 9, $selectedBatch;
+    public $limitData = 2, $selectedBatch;
     //String
     public $searchMember = null;
 
@@ -23,6 +24,7 @@ class RegisteredByReferral extends Component
     protected BatchService $batchService;
 
     #[Title('Member Claim Referral')]
+    #[Layout('layouts.vuexy-app')]
 
     //HOOK - Execute once when component is rendered
     public function mount() {
@@ -57,6 +59,7 @@ class RegisteredByReferral extends Component
 
     public function render()
     {
-        return view('livewire.admin.registrations.registered-by-referral')->layout('layouts.app');
+        // return view('livewire.admin.registrations.registered-by-referral');
+        return view('livewire.admin.registrations.vuexy-registered-by-referral');
     }
 }

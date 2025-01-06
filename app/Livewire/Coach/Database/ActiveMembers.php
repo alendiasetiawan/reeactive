@@ -9,6 +9,7 @@ use Livewire\Component;
 use App\Models\ClassModel;
 use Livewire\WithPagination;
 use App\Services\BatchService;
+use Detection\MobileDetect;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Computed;
@@ -18,7 +19,7 @@ class ActiveMembers extends Component
 {
     use WithPagination;
 
-    #[Layout('layouts.app')]
+    #[Layout('layouts.vuexy-app')]
     #[Title('Member Aktif')]
 
     protected $batchService;
@@ -30,14 +31,16 @@ class ActiveMembers extends Component
     public int $activeMember;
     public int $activeMemberInClass;
     public object $classList;
-    public int $filterClass = 0;
+    public int $filterClass = 0, $limitData = 9;
+    //Boolean
+    public $isMobile, $isTablet;
 
     #[Computed]
     public function members() {
-        return Member::coachActiveMembers($this->batchId, $this->coachId);
+        return Member::coachActiveMembers($this->batchId, $this->coachId, $this->limitData);
     }
 
-    public function boot(BatchService $batchService) {
+    public function boot(BatchService $batchService, MobileDetect $mobileDetect) {
         $batchQuery = $batchService->batchQuery();
         $this->batchId = $batchQuery->id;
         $this->batchName = $batchQuery->batch_name;
@@ -47,6 +50,8 @@ class ActiveMembers extends Component
 
         $this->activeMember = Member::activeMemberPerCoach($this->batchId, $this->coachId);
         $this->classList = ClassModel::classList();
+        $mobileDetect->isMobile() ? $this->isMobile = true : $this->isMobile = false;
+        $mobileDetect->isTablet() ? $this->isTablet = true : $this->isTablet = false;
     }
 
     public function updated($property) {
@@ -66,8 +71,13 @@ class ActiveMembers extends Component
         }
     }
 
+    public function loadMore() {
+        $this->limitData += 9;
+    }
+
     public function render()
     {
-        return view('livewire.coach.database.active-members');
+        // return view('livewire.coach.database.active-members');
+        return view('livewire.coach.database.vuexy-reguler-member');
     }
 }

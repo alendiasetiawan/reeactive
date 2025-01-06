@@ -114,12 +114,23 @@ class Program extends Model
         ->get();
     }
 
-    public static function classList() {
+    public static function regulerClassList() {
         return Program::with([
             'classes' => function ($query) {
                 $query->where('coach_code', Auth::user()->email);
             }
         ])
+        ->where('program_type', 'Reguler')
+        ->get();
+    }
+
+    public static function lepasanClassList() {
+        return Program::with([
+            'classes' => function ($query) {
+                $query->where('coach_code', Auth::user()->email);
+            }
+        ])
+        ->where('program_type', 'Special')
         ->get();
     }
 

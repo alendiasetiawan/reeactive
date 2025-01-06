@@ -5,13 +5,17 @@
             {{ $header }}
         </p>
 
+        @isset($mainTitle)
         <p class="total-amount mb-3">
             {{ $mainTitle }}
         </p>
+        @endisset
 
+        @isset($info)
         <span href="#" class="wallet-text">
             {{ $info }}
         </span>
+        @endisset
 
     </div>
 
