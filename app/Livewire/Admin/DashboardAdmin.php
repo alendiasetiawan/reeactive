@@ -15,6 +15,7 @@ use Livewire\Attributes\Computed;
 use App\Models\WorkshopRegistration;
 use App\Charts\MemberInActiveBatchChart;
 use App\Charts\RegistrationCategoryChart;
+use App\Models\ClassModel;
 use App\Models\SpecialRegistration;
 use Asantibanez\LivewireCharts\Models\PieChartModel;
 use Asantibanez\LivewireCharts\Facades\LivewireCharts;
@@ -36,6 +37,8 @@ class DashboardAdmin extends Component
     public $percentRenewalMember;
     //Integer
     public $totalMember, $verificationRegulerProgram, $totalIncomeReguler, $totalMemberLepasan, $verificationLepasan, $totalIncomeLepasan;
+    //Boolean
+    public $isRequestClass;
 
     #[Computed]
     public function barChartMemberPerCoach() {
@@ -82,6 +85,7 @@ class DashboardAdmin extends Component
     public function mount(BatchService $batchService) {
         $this->batchQuery = $batchService->batchQuery();
         $this->batchId = $this->batchQuery->id;
+        $this->isRequestClass = ClassModel::where('class_status', 'Pending')->orWhere('class_status_eksternal', 'Pending')->exists();
 
         //Logic for workshop registration
         $workshopQuery = $batchService->workshopBatchQuery();
