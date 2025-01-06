@@ -78,7 +78,7 @@
 
                             <x-inputs.vuexy-basic value="{{ $batchId }}" name="batch_id" hidden/>
                             <div class="col-lg-6 col-12 mb-1">
-                                <x-label>Coach</x-label>
+                                <x-inputs.label>Coach</x-inputs.label>
                                 <x-inputs.vuexy-select wire:model.live='selectedCoach' name="coach_id">
                                     <x-inputs.vuexy-select-option value="" disabled selected>--Pilih--</x-inputs.vuexy-select-option>
                                     @foreach ($this->coaches as $coach)
@@ -87,7 +87,7 @@
                                 </x-inputs.vuexy-select>
                             </div>
                             <div class="col-lg-6 col-12 mb-1">
-                                <x-label>Kelas</x-label>
+                                <x-inputs.label>Kelas</x-inputs.label>
                                 <x-inputs.vuexy-select wire:model.live='selectedClass' name="class_id">
                                     <x-inputs.vuexy-select-option value="" disabled selected>--Pilih--</x-inputs.vuexy-select-option>
                                     @if ($selectedCoach)
