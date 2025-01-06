@@ -1,4 +1,6 @@
-<div class="card card-employee-task">
+<div {{ $attributes->merge([
+    'class' => 'card card-employee-task'
+]) }}>
     <div class="card-header flex-row justify-content-between">
         <h4 class="card-title">{{ $header }}</h4>
         @isset($option)

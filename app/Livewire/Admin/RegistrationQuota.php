@@ -4,8 +4,9 @@ namespace App\Livewire\Admin;
 
 use App\Models\Batch;
 use App\Models\Coach;
-use App\Services\BatchService;
 use Livewire\Component;
+use App\Models\ClassModel;
+use App\Services\BatchService;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Computed;
@@ -16,12 +17,14 @@ class RegistrationQuota extends Component
     #[Title('Kuota Pendaftaran')]
 
     public object $registeredMember;
-    public $selectedBatch, $selectedCoach = '';
+    public $selectedBatch, $selectedCoach = '', $selectedClassId;
     public string $searchMember = '';
     //Object
     public $lastBatches, $regulerCoaches;
     //Boolean
     public $isResetFilter = false;
+    //String
+    public $setRenewal, $setNewMember;
 
     //HOOK - Execute once when component is rendered
     public function mount(BatchService $batchService) {
@@ -39,6 +42,24 @@ class RegistrationQuota extends Component
         if ($property == 'selectedBatch') {
             $this->isResetFilter = true;
         }
+    }
+
+    public function save() {
+        ClassModel::where('id', $this->selectedClassId)
+        ->update([
+            'class_status' => $this->setRenewal,
+            'class_status_eksternal' => $this->setNewMember,
+        ]);
+
+        $this->dispatch('class-status-updated');
+        $this->redirect(route('admin::registration_quota'), navigate:true);
+    }
+
+    public function setClassId($id) {
+        $this->selectedClassId = $id;
+        $queryClass = ClassModel::find($id);
+        $this->setRenewal = $queryClass->class_status;
+        $this->setNewMember = $queryClass->class_status_eksternal;
     }
 
     public function render()

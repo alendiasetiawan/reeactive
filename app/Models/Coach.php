@@ -129,7 +129,7 @@ class Coach extends Model
             return $query->where('id', $coachId);
         })
         ->orderBy('coach_name', 'asc')
-        ->select('code', 'coach_name', 'nick_name')
+        ->select('id','code', 'coach_name', 'nick_name')
         ->get();
     }
 

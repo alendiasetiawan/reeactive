@@ -35,7 +35,7 @@
                 @endif
             </x-inputs.label>
             <x-inputs.vuexy-select wire:model.live='selectedCoach'>
-                <x-inputs.vuexy-select-option value="" disabled>--Pilih--</x-inputs.vuexy-select-option>
+                <x-inputs.vuexy-select-option value='' disabled>--Pilih--</x-inputs.vuexy-select-option>
                 @foreach ($regulerCoaches as $coach)
                     <x-inputs.vuexy-select-option value="{{ $coach->id }}">Coach {{ $coach->nick_name }}</x-inputs.vuexy-select-option>
                 @endforeach
@@ -52,7 +52,7 @@
 
         @forelse ($this->membersPerCoach as $member)
             <div class="col-lg-4 col-md-6 col-12">
-                <x-cards.employee>
+                <x-cards.employee wire:key='class{{ $member->id }}'>
                     <x-slot:header>
                         Coach {{ $member->nick_name }}
                         <x-badges.light-badge color="primary">{{ $member->classes->count() }} Kelas</x-badges.light-badge>
@@ -95,7 +95,7 @@
                                     <span class="{{ $class->class_status == 'Open' ? 'text-success' : 'text-danger' }}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Status Renewal">{{ $class->class_status }}</span>
                                 </x-slot:label>
                                 <x-slot:action>
-                                    <a href="#" data-bs-toggle='modal' data-bs-target='#changeClassStatus{{ $class->id }}'>
+                                    <a href="#" data-bs-toggle='modal' data-bs-target='#changeClassStatus{{ $class->id }}' wire:click='setClassId({{ $class->id }})'>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit font-medium-2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                     </a>
                                 </x-slot:action>
@@ -112,10 +112,52 @@
                                 $end = $class->end_time;
                                 $programName = $class->program_name;
                             @endphp
-                            <x-modals.top-center id="changeClassStatus{{ $class->id }}">
+                            <x-modals.top-center id="changeClassStatus{{ $class->id }}" wire:ignore.self>
                                 <x-slot:header>Ubah Status Kelas</x-slot:header>
                                 <x-slot:content>
-                                    <livewire:admin.registrations.form-class-status :statusNewMember='$statusNewMember' :statusRenewal='$statusRenewal' :classId='$classId' :coach='$coach' :day='$day' :start='$start' :end='$end' :$programName modalType='kelasReguler'/>
+                                    <form wire:submit='save'>
+                                        <div class="row">
+                                            <div class="col-12 mb-2">
+                                                Program : {{ $programName }} <br/>
+                                                Coach : {{ $coach }} <br>
+                                                Hari : {{ $day }} <br>
+                                                Waktu : {{ \Carbon\Carbon::parse($start)->format('H:i') }} - {{ \Carbon\Carbon::parse($end)->format('H:i') }}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <x-inputs.basic wire:model='selectedClassId' hidden/>
+                                            <div class="col-lg-6 col-12 mb-2">
+                                                <x-inputs.label>Untuk <b class="text-primary">New Member</b></x-inputs.label>
+                                                <x-inputs.vuexy-select wire:model.live='setNewMember'>
+                                                    <x-inputs.vuexy-select-option>{{ $statusNewMember }}</x-inputs.vuexy-select-option>
+                                                    @if ($statusNewMember != 'Open')
+                                                    <x-inputs.vuexy-select-option>Open</x-inputs.vuexy-select-option>
+                                                    @endif
+                                                    @if ($statusNewMember != 'Close')
+                                                    <x-inputs.vuexy-select-option>Close</x-inputs.vuexy-select-option>
+                                                    @endif
+                                                </x-inputs.vuexy-select>
+                                            </div>
+
+                                            <div class="col-lg-6 col-12 mb-2">
+                                                <x-inputs.label>Untuk <b class="text-secondary">Renewal Member</b></x-inputs.label>
+                                                <x-inputs.vuexy-select wire:model.live='setRenewal'>
+                                                    <x-inputs.vuexy-select-option>{{ $statusRenewal }}</x-inputs.vuexy-select-option>
+                                                    @if ($statusRenewal != 'Open')
+                                                    <x-inputs.vuexy-select-option>Open</x-inputs.vuexy-select-option>
+                                                    @endif
+                                                    @if ($statusRenewal != 'Close')
+                                                    <x-inputs.vuexy-select-option>Close</x-inputs.vuexy-select-option>
+                                                    @endif
+                                                </x-inputs.vuexy-select>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <x-buttons.basic color="primary" type="submit">Simpan</x-buttons.basic>
+                                                <x-buttons.outline-dark type="button" data-bs-dismiss="modal">Batal</x-buttons.outline-dark>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </x-slot:content>
                             </x-modals.top-center>
                         @endforeach
@@ -123,9 +165,12 @@
                 </x-cards.employee>
             </div>
         @empty
-
+            <div class="col-12">
+                <x-alerts.not-found  />
+            </div>
         @endforelse
     </div>
+
     <!--#List of Classes-->
 
     @push('vendorScripts')
