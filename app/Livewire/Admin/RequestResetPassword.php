@@ -4,6 +4,7 @@ namespace App\Livewire\Admin;
 
 use Livewire\Component;
 use App\Models\ResetPassword;
+use Detection\MobileDetect;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Computed;
@@ -14,6 +15,8 @@ class RequestResetPassword extends Component
     public $limitData = 9, $tambahData = 9;
     //String
     public $searchMember = null;
+    //Boolean
+    public $isMobile;
 
     #[Title('Request Reset Password')]
     #[Layout('layouts.vuexy-app')]
@@ -21,6 +24,10 @@ class RequestResetPassword extends Component
     #[Computed]
     public function requestMembers() {
         return ResetPassword::newestRequest($this->limitData, $this->searchMember);
+    }
+
+    public function boot(MobileDetect $mobileDetect) {
+        $mobileDetect->isMobile() ? $this->isMobile = true : $this->isMobile = false;
     }
 
     public function sendLink($id) {
