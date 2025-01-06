@@ -21,7 +21,7 @@
                                 {{ \Carbon\Carbon::parse($member->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($member->end_time)->format('H:i') }}
                             </x-slot:subTitle>
                             <x-slot:actionButton>
-                                <x-badges.light-badge color="primary">{{ $member->registrations->count() }} Member</x-badges.light-badge>
+                                <x-badges.light-badge color="primary">{{ $member->registrations->count() }}</x-badges.light-badge>
                             </x-slot:actionButton>
                         </x-cards.developer-meeting-item>
                     @endforeach
@@ -57,7 +57,7 @@
                                     {{ \Carbon\Carbon::parse($member->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($member->end_time)->format('H:i') }}
                                 </x-slot:subTitle>
                                 <x-slot:actionButton>
-                                    <x-badges.light-badge color="primary">{{ $member->specialRegistrations->count() }} Member</x-badges.light-badge>
+                                    <x-badges.light-badge color="primary">{{ $member->specialRegistrations->count() }}</x-badges.light-badge>
                                 </x-slot:actionButton>
                             </x-cards.developer-meeting-item>
                         @endforeach
