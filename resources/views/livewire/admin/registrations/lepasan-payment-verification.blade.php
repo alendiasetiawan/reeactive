@@ -72,7 +72,7 @@
                                 {{ $payment->classDates->count() }} Sesi - {{ 'Rp '.number_format($payment->amount_pay,0,',','.') }}
                             </small>
                             <br/>
-                            <small class="text-muted">Waktu Daftar : {{ \Carbon\Carbon::parse($payment->created_at)->isoFormat('D MMM Y') }}</small>
+                            <small class="text-muted">Daftar : {{ \Carbon\Carbon::parse($payment->created_at)->isoFormat('lll') }}</small>
                         </x-slot:subContent>
                         <x-items.wa-icon width="25" height="25" href="https://wa.me/{{ $payment->mobile_phone }}"/>
                     </x-cards.role-card>
