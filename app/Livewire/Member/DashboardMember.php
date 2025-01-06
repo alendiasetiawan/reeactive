@@ -7,6 +7,7 @@ use App\Models\Batch;
 use App\Models\Member;
 use Livewire\Component;
 use App\Models\Registration;
+use App\Models\SpecialRegistration;
 use App\Models\VoucherMerchandise;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
@@ -21,17 +22,17 @@ class DashboardMember extends Component
     #[Title('Dashboard Member')]
 
     public object $member;
-    public object $registrations;
-    public int $batchOpen;
+    public object $registrations, $latestSpecialRegistration;
+    public int $batchOpen, $specialRegistrationId, $registrationId;
     public object $checkBatch;
     public bool $isRegisteredInWorkshop;
     public object $activeWorkshop;
     public bool $isRegisteredInReeactive;
-    public bool $isWorkshopPaymentProcess;
+    public bool $isWorkshopPaymentProcess, $isSpecialRegistration;
     //Object
     public $personalInfo, $lastVoucherMerchandise, $batchQuery;
     //String
-    public $linkVoucher;
+    public $linkVoucher, $modalInvalidType;
     //Boolean
     public $isVoucherExist;
 
@@ -41,6 +42,7 @@ class DashboardMember extends Component
         $this->batchQuery = $batchService->batchQuery();
         $this->isRegisteredInWorkshop = WorkshopRegistration::where('member_code', Auth::user()->email)->exists();
         $this->isRegisteredInReeactive = Registration::where('member_code', Auth::user()->email)->exists();
+        $this->isSpecialRegistration = SpecialRegistration::where('member_code', Auth::user()->email)->exists();
         $this->personalInfo = Member::where('code', Auth::user()->email)->first();
 
         if ($this->isRegisteredInWorkshop) {
@@ -65,6 +67,11 @@ class DashboardMember extends Component
                 $this->linkVoucher = url('validasi-voucher-merchandise/'.$this->lastVoucherMerchandise->qr_code);
             }
         }
+
+        if ($this->isSpecialRegistration) {
+            $this->latestSpecialRegistration = SpecialRegistration::latestRegistration(Auth::user()->email, 1);
+            $this->specialRegistrationId = $this->latestSpecialRegistration[0]->id;
+        }
     }
 
     public function confirmDefaultPassword() {
@@ -74,6 +81,18 @@ class DashboardMember extends Component
         ]);
 
         $this->redirect(route('member::dashboard'), navigate:true);
+    }
+
+    //ONCLICK - Set modal invalid type
+    public function invalidRegulerProgram() {
+        $this->modalInvalidType = 'Reguler Program';
+        $this->registrationId = $this->member->id;
+    }
+
+    //ONCLICK - Set modal invalid type
+    public function invalidSpecialProgram() {
+        $this->modalInvalidType = 'Special Program';
+        $this->registrationId = $this->specialRegistrationId;
     }
 
     public function render()

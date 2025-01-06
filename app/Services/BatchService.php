@@ -48,7 +48,12 @@ class BatchService {
 
     public function renewalMemberPercent($renewalMember, $qtyLastMember) {
 
-        $percent = Round(($renewalMember/$qtyLastMember) * 100,2);
+
+        if ($qtyLastMember == 0) {
+            $percent = 0;
+        } else {
+            $percent = Round(($renewalMember/$qtyLastMember) * 100,2);
+        }
 
         return $percent;
     }

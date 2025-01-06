@@ -8,28 +8,43 @@ use App\Models\Coach;
 use App\Models\Member;
 use Livewire\Component;
 use App\Services\BatchService;
+use Detection\MobileDetect;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
 
 class DatabaseMember extends Component
 {
-    #[Layout('layouts.app')]
+    #[Layout('layouts.vuexy-app')]
     #[Title('Database Member')]
 
     protected $batchService;
 
-    public $members = [];
     public $batchName;
     public $batchId;
     public $batches = [];
+    public $selectedCoach = '';
+    public $selectedClass = '';
+    public $isDisabledButton = true;
+    public $isTablet, $isMobile;
+    public $searchMember = '';
+    public $limitData = 9;
 
     public function mount(BatchService $batchService) {
         $this->batchId = $batchService->batchIdActive();
         $batch = Batch::find($this->batchId);
         $this->batchName = $batch->batch_name;
-        $this->members = Member::memberActive($this->batchId);
-        $this->batches = Batch::all();
+        $this->batches = Batch::orderBy('id', 'desc')->limit(5)->get();
+    }
+
+    public function boot(MobileDetect $mobileDetect) {
+        $mobileDetect->isTablet() ? $this->isTablet = true : $this->isTablet = false;
+        $mobileDetect->isMobile() ? $this->isMobile = true : $this->isMobile = false;
+    }
+
+    #[Computed]
+    public function membersActive() {
+        return Member::memberActive($this->batchId, $this->searchMember, $this->limitData);
     }
 
     #[Computed]
@@ -51,8 +66,23 @@ class DatabaseMember extends Component
         return ClassModel::where('coach_code', $coachCode)->get();
     }
 
+    public function updatedSelectedCoach() {
+        $this->reset('selectedClass');
+    }
+
+    public function loadMore() {
+        $this->limitData += 18;
+    }
+
+    public function changeBatch($id) {
+        $this->batchId = $id;
+        $batch = Batch::find($this->batchId);
+        $this->batchName = $batch->batch_name;
+    }
+
     public function render()
     {
-        return view('livewire.admin.database-member');
+        // return view('livewire.admin.database-member');
+        return view('livewire.admin.vuexy-database-member');
     }
 }

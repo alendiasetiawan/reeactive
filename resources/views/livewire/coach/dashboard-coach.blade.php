@@ -43,7 +43,7 @@
                 </x-slot>
             </x-cards.wallet>
             <!--Modal Member Class-->
-            <x-modals.zoomUp id="allClass">
+            <x-modals.zoomUp id="allClass" wire:ignore.self>
                 <x-slot name="modalTitle">Info Member Per Kelas <b class="text-primary">{{ $batchName }}</b></x-slot>
                 <x-items.list-groups.label>
                     @foreach ($membersInClass as $member)

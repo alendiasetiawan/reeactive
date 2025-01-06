@@ -8,13 +8,14 @@ use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Computed;
 use App\Models\VoucherMerchandise;
+use Detection\MobileDetect;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 
 class MerchandiseVoucherVerification extends Component
 {
     #[Title('Verifikasi Voucher Merchandise')]
-    #[Layout('layouts.app')]
+    #[Layout('layouts.vuexy-app')]
 
     //Object
     public $lastBatches;
@@ -23,12 +24,18 @@ class MerchandiseVoucherVerification extends Component
     //String
     public $linkVoucher, $searchMember = null;
     //Boolean
-    public $isResetFilter = false;
+    public $isResetFilter = false, $isMobile, $isTablet;
 
     //HOOK - Execute once when component rendered
     public function mount(BatchService $batchService) {
         $this->lastBatches = $batchService->getLastBatch();
         $this->selectedBatch = $batchService->batchIdActive();
+    }
+
+    //HOOK - Execute every time component is rendered
+    public function boot(MobileDetect $mobileDetect) {
+        $mobileDetect->isMobile() ? $this->isMobile = true : $this->isMobile = false;
+        $mobileDetect->isTablet() ? $this->isTablet = true : $this->isTablet = false;
     }
 
     public function updated() {
@@ -78,6 +85,7 @@ class MerchandiseVoucherVerification extends Component
 
     public function render()
     {
-        return view('livewire.admin.merchandise-voucher-verification');
+        // return view('livewire.admin.merchandise-voucher-verification');
+        return view('livewire.admin.vuexy-merchandise-voucher-verification');
     }
 }

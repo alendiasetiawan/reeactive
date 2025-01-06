@@ -81,7 +81,10 @@
                 </x-cards.user>
             </div>
         @endforeach
-        {{ $this->members->links() }}
+
+        @if ($this->members->hasMorePages())
+            <x-buttons.outline-primary>Tampilkan Lagi</x-buttons.outline-primary>
+        @endif
     </div>
 
     @push('customScripts')

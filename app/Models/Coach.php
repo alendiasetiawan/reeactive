@@ -105,24 +105,29 @@ class Coach extends Model
                 $query->where('batch_id', $batchId);
             }
         ])
-        ->select('id', 'coach_name', 'nick_name')
+        ->select('id', 'coach_name', 'nick_name', 'color_hex')
         ->orderBy('coach_name', 'asc')
         ->get();
     }
 
-    public static function membersClassPerCoach($batchId) {
+    public static function membersClassPerCoach($batchId, $coachId = null) {
         return Coach::with([
             'classes' => function($query) use($batchId) {
-                $query->where('class_status', '<>', 'Pending')
+                $query->join('programs', 'classes.program_id', 'programs.id')
+                ->select('classes.*', 'programs.program_name', 'program_type')
+                ->where('programs.program_type', 'Reguler')
+                ->where('classes.class_status', '<>', 'Pending')
                 ->with([
                     'registrations' => function($query) use($batchId) {
                         $query->where('batch_id', $batchId);
                     }
                 ]);
-
             }
         ])
         ->where('type', 'Reguler')
+        ->when($coachId, function($query) use($coachId) {
+            return $query->where('id', $coachId);
+        })
         ->orderBy('coach_name', 'asc')
         ->select('code', 'coach_name', 'nick_name')
         ->get();
@@ -144,6 +149,40 @@ class Coach extends Model
         ->where('type', 'Workshop')
         ->orderBy('coach_name', 'asc')
         ->select('code', 'coach_name', 'nick_name')
+        ->get();
+    }
+
+    //Get all list of reguler coaches
+    public static function listRegulerCoaches() {
+        return Coach::where('type', 'Reguler')
+        ->orderBy('coach_name', 'asc')
+        ->get();
+    }
+
+    public static function listLepasanClass($coachId = null) {
+        return Coach::with([
+            'classes' => function($query) {
+                $query->join('programs', 'classes.program_id', 'programs.id')
+                ->select('classes.*', 'programs.program_name', 'program_type')
+                ->where('programs.program_type', 'Special')
+                ->where('classes.class_status', '!=', 'Pending')
+                ->with([
+                    'specialRegistrations'
+                ]);
+            }
+        ])
+        ->select('code', 'coach_name', 'nick_name', 'type')
+        ->withCount([
+            'classes as total_class' => function($query) {
+                $query->join('programs', 'classes.program_id', 'programs.id')
+                ->where('program_type', 'Special');
+            }
+        ])
+        ->where('type', 'Reguler')
+        ->when($coachId, function($query) use($coachId) {
+            return $query->where('id', $coachId);
+        })
+        ->orderByDesc('total_class')
         ->get();
     }
 }

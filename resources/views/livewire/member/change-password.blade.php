@@ -41,7 +41,7 @@
                                         Simpan
                                     </x-buttons.solid-primary>
                                 @endif
-                                <a wire:navigate href="{{ route('member::dashboard') }}">
+                                <a href="{{ route('member::dashboard') }}">
                                     <x-buttons.outline-dark>Kembali</x-buttons.outline-dark>
                                 </a>
                             </div>

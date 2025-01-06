@@ -89,7 +89,9 @@ class ReferralRegistration extends Model
                 ->select('registrations.id', 'registrations.member_code', 'registrations.coach_id', 'coaches.nick_name', 'programs.program_name', 'members.member_name');
             }
         ])
-        ->where('id', $id)
+        ->join('members', 'referral_registrations.member_code', 'members.code')
+        ->select('referral_registrations.*', 'members.member_name')
+        ->where('referral_registrations.id', $id)
         ->first();
     }
 }
