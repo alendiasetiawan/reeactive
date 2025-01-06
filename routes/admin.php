@@ -5,13 +5,15 @@ use Illuminate\Support\Facades\Route;
 use App\Livewire\Admin\DashboardAdmin;
 use App\Livewire\Admin\DatabaseMember;
 use App\Livewire\Admin\MobileMainMenu;
+use App\Livewire\Admin\LandingClassRoom;
 use App\Livewire\Admin\RegistrationQuota;
 use App\Livewire\Admin\PaymentVerification;
 use App\Livewire\Admin\RequestResetPassword;
-use App\Http\Controllers\ExportExcelController;
 use App\Livewire\Admin\Database\LepasanClass;
-use App\Livewire\Admin\Database\ParticipantsInClass;
+use App\Http\Controllers\ExportExcelController;
 use App\Livewire\Admin\ShowPaymentVerification;
+use App\Livewire\Admin\LandingPaymentVerification;
+use App\Livewire\Admin\Database\ParticipantsInClass;
 use App\Livewire\Admin\MerchandiseVoucherVerification;
 use App\Livewire\Admin\Registrations\ShowMemberInClass;
 use App\Livewire\Admin\Registrations\DetailLepasanPayment;
@@ -26,6 +28,8 @@ Route::group(['middleware' => ['auth', 'admin'], 'as' => 'admin::'], function() 
         Route::get('/mobile-main-menu', MobileMainMenu::class)->name('mobile_main_menu');
         //Dashboard
         Route::get('/dashboard', DashboardAdmin::class)->name('dashboard');
+        Route::get('/landing-verifikasi-transfer', LandingPaymentVerification::class)->name('landing_payment_verification');
+        Route::get('/landing-kelas', LandingClassRoom::class)->name('landing_class_room');
 
         //Database
         Route::get('/database-member', DatabaseMember::class)->name('database_member');

@@ -134,4 +134,14 @@ class Registration extends Model
         ->limit($limitData)
         ->get();
     }
+
+    //How many member who is waiting for payment verification
+    public static function waitingVerification($batchId) {
+        return self::where('batch_id', $batchId)
+        ->where (function ($query) {
+            $query->where('payment_status', 'Invalid')
+            ->orWhere('payment_status', 'Process');
+        })
+        ->count();
+    }
 }

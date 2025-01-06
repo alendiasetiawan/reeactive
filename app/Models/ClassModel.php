@@ -140,4 +140,18 @@ class ClassModel extends Model
         ->where('classes.id', $classId)
         ->first();
     }
+
+    //Total reguler class
+    public static function totalRegulerClass() {
+        return self::join('programs', 'classes.program_id', 'programs.id')
+        ->where('programs.program_type', 'Reguler')
+        ->count();
+    }
+
+    //Total lepasan class
+    public static function totalLepasanClass() {
+        return self::join('programs', 'classes.program_id', 'programs.id')
+        ->where('programs.program_type', 'Special')
+        ->count();
+    }
 }

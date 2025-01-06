@@ -98,21 +98,12 @@ class DashboardAdmin extends Component
 
         //Logic for payment status board reguler Program
         $this->totalMember = Registration::where('batch_id', $this->batchId)->where('payment_status', 'Done')->count();
-        $this->verificationRegulerProgram = Registration::where('batch_id', $this->batchId)
-        ->where (function ($query) {
-            $query->where('payment_status', 'Invalid')
-            ->orWhere('payment_status', 'Process');
-        })
-        ->count();
+        $this->verificationRegulerProgram = Registration::waitingVerification($this->batchId);
         $this->totalIncomeReguler = Registration::where('batch_id', $this->batchId)->where('payment_status', 'Done')->sum('amount_pay');
 
         //Logic for payment status board kelas lepasan
         $this->totalMemberLepasan = SpecialRegistration::where('payment_status', 'Done')->count();
-        $this->verificationLepasan = SpecialRegistration::where (function ($query) {
-            $query->where('payment_status', 'Invalid')
-            ->orWhere('payment_status', 'Process');
-        })
-        ->count();
+        $this->verificationLepasan = SpecialRegistration::waitingVerification();
         $this->totalIncomeLepasan = SpecialRegistration::where('payment_status', 'Done')->sum('amount_pay');
 
         //Logic for latest registration

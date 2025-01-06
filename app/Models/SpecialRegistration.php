@@ -147,4 +147,12 @@ class SpecialRegistration extends Model
         ->limit($limitData)
         ->get();
     }
+
+    public static function waitingVerification() {
+        return self::where (function ($query) {
+            $query->where('payment_status', 'Invalid')
+            ->orWhere('payment_status', 'Process');
+        })
+        ->count();
+    }
 }
