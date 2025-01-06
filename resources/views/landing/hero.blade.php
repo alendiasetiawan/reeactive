@@ -17,7 +17,7 @@
             </p>
             <br>
             @if (\Carbon\Carbon::now() >= $openDate)
-            <a class="btn btn-dark wow fadeInUp" data-wow-duration="3s" data-wow-delay="0.5s" href="/member-baru" data-text="Daftar">
+            <a class="btn btn-dark wow fadeInUp" data-wow-duration="3s" data-wow-delay="0.5s" href="/program" data-text="Daftar">
                 <span>N</span><span>e</span><span>w</span>
                 <span>M</span><span>e</span><span>m</span><span>b</span><span>e</span><span>r</span>
             </a>
