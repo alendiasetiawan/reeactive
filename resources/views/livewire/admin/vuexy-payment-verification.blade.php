@@ -66,11 +66,13 @@
                         </x-slot:subTitle>
                         <x-slot:content>{{ $payment->member_name }}</x-slot:content>
                         <x-slot:subContent>
-                            <span class="text-muted">
+                            <small class="text-muted">
                                 {{ $payment->day }} ({{ \Carbon\Carbon::parse($payment->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($payment->end_time)->format('H:i') }})
                                 <br/>
                                 {{ 'Rp '.number_format($payment->amount_pay,0,',','.') }}
-                            </span>
+                            </small>
+                            <br/>
+                            <small class="text-muted">Waktu Daftar : {{ \Carbon\Carbon::parse($payment->created_at)->isoFormat('D MMM Y') }}</small>
                         </x-slot:subContent>
                         <x-items.wa-icon width="25" height="25" href="https://wa.me/{{ $payment->mobile_phone }}"/>
                     </x-cards.role-card>
