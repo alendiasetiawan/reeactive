@@ -23,7 +23,7 @@ class ShowPaymentVerification extends Component
     public $discEarlyBird, $amountDisc;
     public $firstBatchName, $discountType;
     //String
-    public $registrationType;
+    public $registrationType, $note;
     //Boolean
     public $isDiscountApply, $isRegisteredViaReferral;
     //Object
@@ -50,6 +50,7 @@ class ShowPaymentVerification extends Component
         $batchId = $this->batch->id;
         $this->paymentStatus = $this->paymentDetail->payment_status;
         $this->invalidReason = $this->paymentDetail->invalid_reason;
+        $this->note = $this->paymentDetail->note;
 
         $referralMembers = ReferralRegistration::discountReferrals($memberCode, $batchId);
 
@@ -104,6 +105,7 @@ class ShowPaymentVerification extends Component
         ->update([
             'payment_status' => $this->paymentStatus,
             'invalid_reason' => $this->invalidReason,
+            'note' => $this->note
         ]);
 
         $this->dispatch('payment-verification-success');

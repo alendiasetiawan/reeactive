@@ -28,7 +28,8 @@
                             <x-inputs.vuexy-select-option value="">Semua</x-inputs.vuexy-select-option>
                             <x-inputs.vuexy-select-option value="Process">Proses</x-inputs.vuexy-select-option>
                             <x-inputs.vuexy-select-option value="Done">Valid</x-inputs.vuexy-select-option>
-                            <x-inputs.vuexy-select-option value="Invalid">Tidak Valid</x-inputs.vuexy-select-option>
+                            <x-inputs.vuexy-select-option value="Invalid">Invalid</x-inputs.vuexy-select-option>
+                            <x-inputs.vuexy-select-option value="Follow Up">Follow Up</x-inputs.vuexy-select-option>
                         </x-inputs.vuexy-select>
                     </div>
                 </div>
@@ -38,6 +39,7 @@
                         <x-badges.basic color="warning" class="me-25">Proses : {{ $totalPaymentProcess }}</x-badges.basic>
                         <x-badges.basic color="success" class="me-25">Valid : {{ $totalPaymentDone }}</x-badges.basic>
                         <x-badges.basic color="danger" class="me-25">Invalid : {{ $totalPaymentInvalid }}</x-badges.basic>
+                        <x-badges.basic color="info" class="me-25">Follow Up : {{ $totalPaymentFollowUp }}</x-badges.basic>
                     </div>
                 </div>
             </x-cards.basic-card>
@@ -60,9 +62,15 @@
                     <x-cards.role-card wire:key='{{ $payment->id }}'>
                         <x-slot:title>Coach {{ $payment->nick_name }} - {{ $payment->program_name }}</x-slot:title>
                         <x-slot:subTitle>
-                            <x-badges.basic :color="$payment->payment_status == 'Done' ? 'success' : ($payment->payment_status == 'Process' ? 'warning' : 'danger')">
-                                {{ $payment->payment_status }}
-                            </x-badges.basic>
+                            @if ($payment->payment_status == 'Done')
+                                <x-badges.basic color="success">Valid</x-badges.basic>
+                            @elseif ($payment->payment_status == 'Process')
+                                <x-badges.basic color="warning">Proses</x-badges.basic>
+                            @elseif ($payment->payment_status == 'Follow Up')
+                                <x-badges.basic color="info">Follow Up</x-badges.basic>
+                            @else
+                                <x-badges.basic color="danger">Invalid</x-badges.basic>
+                            @endif
                         </x-slot:subTitle>
                         <x-slot:content>{{ $payment->member_name }}</x-slot:content>
                         <x-slot:subContent>
@@ -73,6 +81,10 @@
                             </small>
                             <br/>
                             <small class="text-muted">Daftar : {{ \Carbon\Carbon::parse($payment->created_at)->isoFormat('lll') }}</small>
+                            @if ($payment->payment_status == 'Follow Up')
+                                <br/>
+                            <small class="text-muted">Catatan : {{ $payment->note }}</small>
+                            @endif
                         </x-slot:subContent>
                         <x-items.wa-icon width="25" height="25" href="https://wa.me/{{ $payment->mobile_phone }}"/>
                     </x-cards.role-card>

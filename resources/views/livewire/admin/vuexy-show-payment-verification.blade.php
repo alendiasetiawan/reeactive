@@ -45,17 +45,6 @@
         <div class="col-lg-5 col-md-6 col-12">
             <x-cards.basic-card>
                 <x-slot:cardTitle>Data Transfer</x-slot:cardTitle>
-                <div class="row mb-1">
-                    <div class="col-4">
-                        @if ($paymentStatus == 'Done')
-                            <x-badges.basic color="success">Status : Valid</x-badges.basic>
-                        @elseif ($paymentStatus == 'Process')
-                            <x-badges.basic color="warning">Status : Proses</x-badges.basic>
-                        @else
-                            <x-badges.basic color="danger">Status : Invalid</x-badges.basic>
-                        @endif
-                    </div>
-                </div>
                 <form wire:submit.prevent="saveData">
                     <div class="row">
                         <div class="col-lg-6 col-12 mb-1">
@@ -78,7 +67,18 @@
                             <x-inputs.vuexy-basic value="{{ $paymentDetail->created_at->isoFormat('lll') }}" disabled/>
                         </div>
                         <div class="col-12 mb-1">
-                            <x-inputs.label>Bukti Transfer</x-inputs.label>
+                            <x-inputs.label>
+                                Bukti Transfer
+                                @if ($paymentStatus == 'Done')
+                                    <x-badges.basic color="success">Valid</x-badges.basic>
+                                @elseif ($paymentStatus == 'Process')
+                                    <x-badges.basic color="warning">Proses</x-badges.basic>
+                                @elseif ($paymentStatus == 'Follow Up')
+                                    <x-badges.basic color="info">Follow Up</x-badges.basic>
+                                @else
+                                    <x-badges.basic color="danger">Invalid</x-badges.basic>
+                                @endif
+                            </x-inputs.label>
                             <img src="{{ asset('storage/'.$paymentDetail->file_upload) }}" width="100%" height="auto">
                         </div>
                         <div class="col-12 mb-1">
@@ -87,7 +87,12 @@
                                 <x-inputs.vuexy-select-option value="Process">Proses</x-inputs.vuexy-select-option>
                                 <x-inputs.vuexy-select-option value="Done">Valid</x-inputs.vuexy-select-option>
                                 <x-inputs.vuexy-select-option value="Invalid">Invalid</x-inputs.vuexy-select-option>
+                                <x-inputs.vuexy-select-option value="Follow Up">Follow Up</x-inputs.vuexy-select-option>
                             </x-inputs.vuexy-select>
+                        </div>
+                        <div class="col-12 mb-1">
+                            <x-inputs.label>Catatan (Opsional)</x-inputs.label>
+                            <textarea wire:model='note' class="form-control" rows="3" placeholder="Tulis catatan khusus untuk pembayaran ini"></textarea>
                         </div>
                         @if ($showReasonInvalid)
                             <div class="col-12 mb-1">
