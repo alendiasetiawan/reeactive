@@ -106,7 +106,8 @@ class Coach extends Model
             }
         ])
         ->select('id', 'coach_name', 'nick_name', 'color_hex')
-        ->orderBy('coach_name', 'asc')
+        ->where('type', 'Reguler')
+        ->orderBy('nick_name', 'asc')
         ->get();
     }
 
