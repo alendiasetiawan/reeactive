@@ -36,9 +36,9 @@
 
                 <div class="row">
                     <div class="col-12">
-                        <x-badges.basic color="warning" class="me-25">Proses : {{ $totalPaymentProcess }}</x-badges.basic>
-                        <x-badges.basic color="success" class="me-25">Valid : {{ $totalPaymentDone }}</x-badges.basic>
-                        <x-badges.basic color="danger" class="me-25">Invalid : {{ $totalPaymentInvalid }}</x-badges.basic>
+                        <x-badges.basic color="warning" class="me-25 mb-1">Proses : {{ $totalPaymentProcess }}</x-badges.basic>
+                        <x-badges.basic color="success" class="me-25 mb-1">Valid : {{ $totalPaymentDone }}</x-badges.basic>
+                        <x-badges.basic color="danger" class="me-25 mb-1">Invalid : {{ $totalPaymentInvalid }}</x-badges.basic>
                         <x-badges.basic color="info" class="me-25">Follow Up : {{ $totalPaymentFollowUp }}</x-badges.basic>
                     </div>
                 </div>
