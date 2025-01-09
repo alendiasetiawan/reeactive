@@ -93,18 +93,18 @@ class DashboardAdmin extends Component
         $batches = Batch::orderBy('id', 'desc')->limit(2)->get();
         $this->lastBatchId = $batches[1]->id;
         $this->renewalMember = Registration::where('batch_id', $this->batchId)->where('registration_category', 'Renewal Member')->count();
-        $this->qtyLastMember = Registration::where('batch_id', $this->lastBatchId)->where('payment_status', 'Done')->count();
+        $this->qtyLastMember = Registration::where('batch_id', $this->lastBatchId)->count();
         $this->percentRenewalMember = $batchService->renewalMemberPercent($this->renewalMember, $this->qtyLastMember);
 
         //Logic for payment status board reguler Program
-        $this->totalMember = Registration::where('batch_id', $this->batchId)->where('payment_status', 'Done')->count();
+        $this->totalMember = Registration::totalReguler($this->batchId)->count();
         $this->verificationRegulerProgram = Registration::waitingVerification($this->batchId);
-        $this->totalIncomeReguler = Registration::where('batch_id', $this->batchId)->where('payment_status', 'Done')->sum('amount_pay');
+        $this->totalIncomeReguler = Registration::totalReguler($this->batchId)->sum('amount_pay');
 
         //Logic for payment status board kelas lepasan
-        $this->totalMemberLepasan = SpecialRegistration::where('payment_status', 'Done')->count();
+        $this->totalMemberLepasan = SpecialRegistration::totalLepasan()->count();
         $this->verificationLepasan = SpecialRegistration::waitingVerification();
-        $this->totalIncomeLepasan = SpecialRegistration::where('payment_status', 'Done')->sum('amount_pay');
+        $this->totalIncomeLepasan = SpecialRegistration::totalLepasan()->sum('amount_pay');
 
         //Logic for latest registration
         $this->latestRegistrationsReguler = Registration::limitLatestRegistration($this->batchId, 4);
