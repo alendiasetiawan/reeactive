@@ -144,4 +144,13 @@ class Registration extends Model
         })
         ->count();
     }
+
+    //Sum total income reguler program
+    public static function totalReguler($batchId) {
+        return self::where('batch_id', $batchId)
+        ->where (function ($query) {
+            $query->where('payment_status', 'Done')
+            ->orWhere('payment_status', 'Follow Up');
+        });
+    }
 }

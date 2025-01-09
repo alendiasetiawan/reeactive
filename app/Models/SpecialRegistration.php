@@ -155,4 +155,12 @@ class SpecialRegistration extends Model
         })
         ->count();
     }
+
+    //Sum total income lepasan program
+    public static function totalLepasan() {
+        return self::where (function ($query) {
+            $query->where('payment_status', 'Done')
+            ->orWhere('payment_status', 'Follow Up');
+        });
+    }
 }

@@ -28,7 +28,10 @@ class AllMembersExport extends \PhpOffice\PhpSpreadsheet\Cell\StringValueBinder 
             ->join('coaches', 'registrations.coach_id', 'coaches.id')
             ->join('classes', 'registrations.class_id', 'classes.id')
             ->where('batch_id', $this->batchId)
-            ->where('payment_status', 'Done')
+            ->where (function ($query) {
+                $query->where('payment_status', 'Done')
+                ->orWhere('payment_status', 'Follow Up');
+            })
             ->select('registrations.*', 'members.*', 'programs.program_name', 'levels.level_name', 'coaches.nick_name', 'classes.day', 'classes.start_time', 'classes.end_time')
             ->orderBy('members.member_name', 'asc')
             ->get()

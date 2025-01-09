@@ -41,7 +41,10 @@ class Member extends Model
         ->join('coaches', 'registrations.coach_id', 'coaches.id')
         ->join('classes', 'registrations.class_id', 'classes.id')
         ->where('registrations.batch_id', $batchId)
-        ->where('registrations.payment_status', 'Done')
+        ->where (function ($query) {
+            $query->where('registrations.payment_status', 'Done')
+            ->orWhere('registrations.payment_status', 'Follow Up');
+        })
         ->when($searchMember, function($query) use($searchMember) {
             $query->where('members.member_name', 'like', '%'.$searchMember.'%');
         })
