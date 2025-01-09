@@ -128,6 +128,13 @@
             Form Request Kelas {{ $isFormReguler ? 'Reguler' : 'Lepasan' }}
         </x-slot:modal_title>
         <x-slot:modal_form>
+            @if (session('request-failed'))
+                <div class="row">
+                    <div class="col-12">
+                        <x-alerts.main-alert color="danger">{{ session('request-failed') }}</x-alerts.main-alert>
+                    </div>
+                </div>
+            @endif
             <form wire:submit='sendRequest'>
                 <div class="row">
                     <div class="col-12 mb-1">
