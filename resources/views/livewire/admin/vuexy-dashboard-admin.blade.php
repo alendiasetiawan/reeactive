@@ -21,10 +21,8 @@
                 <x-slot:title>Registrasi <b class="text-primary">{{ $batchQuery->batch_name }}</b></x-slot:title>
                 <x-slot:subTitle>
                     Total : {{ $totalMember }} Member
-                    @if ($verificationRegulerProgram >= 1)
-                        <br/>
-                        <x-badges.light-badge color="danger">Menunggu Verifikasi : {{ $verificationRegulerProgram }}</x-badges.light-badge>
-                    @endif
+                    <br/>
+                    <x-badges.light-badge :color="$verificationRegulerProgram > 0 ? 'danger' : 'success'">Menunggu Verifikasi : {{ $verificationRegulerProgram }}</x-badges.light-badge>
                 </x-slot:subTitle>
                 <x-slot:content>{{ \App\Helpers\CurrencyHelper::formatRupiah($totalIncomeReguler) }}</x-slot:content>
                 <x-slot:actionButton>
@@ -46,7 +44,7 @@
                 <x-slot:subTitle>
                     Total : {{ $totalMemberLepasan }} Peserta
                     <br/>
-                    <x-badges.light-badge color="danger">Menunggu Verifikasi : {{ $verificationLepasan }}</x-badges.light-badge>
+                    <x-badges.light-badge :color="$verificationLepasan > 0 ? 'danger' : 'success'">Menunggu Verifikasi : {{ $verificationLepasan }}</x-badges.light-badge>
                 </x-slot:subTitle>
                 <x-slot:content>{{ \App\Helpers\CurrencyHelper::formatRupiah($totalIncomeLepasan) }}</x-slot:content>
                 <x-slot:actionButton>
