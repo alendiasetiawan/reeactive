@@ -22,7 +22,7 @@ class PaymentVerification extends Component
     public $transferStatus = '';
     public $isTablet;
     public $limitData = 9;
-    public $totalPaymentDone, $totalPaymentProcess, $totalPaymentInvalid;
+    public $totalPaymentDone, $totalPaymentProcess, $totalPaymentInvalid, $totalPaymentFollowUp;
 
     protected $batchService;
 
@@ -39,6 +39,7 @@ class PaymentVerification extends Component
         $this->totalPaymentDone = Registration::where('batch_id', $this->batchId)->where('payment_status', 'Done')->count();
         $this->totalPaymentProcess = Registration::where('batch_id', $this->batchId)->where('payment_status', 'Process')->count();
         $this->totalPaymentInvalid = Registration::where('batch_id', $this->batchId)->where('payment_status', 'Invalid')->count();
+        $this->totalPaymentFollowUp = Registration::where('batch_id', $this->batchId)->where('payment_status', 'Follow Up')->count();
     }
 
     public function loadMore() {
