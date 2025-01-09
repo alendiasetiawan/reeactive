@@ -36,7 +36,7 @@ class DashboardAdmin extends Component
     //Double
     public $percentRenewalMember;
     //Integer
-    public $totalMember, $verificationRegulerProgram, $totalIncomeReguler, $totalMemberLepasan, $verificationLepasan, $totalIncomeLepasan;
+    public $totalMember, $verificationRegulerProgram, $totalIncomeReguler, $totalMemberLepasan, $verificationLepasan, $totalIncomeLepasan, $totalNewMember, $totalRenewalMember, $totalComeBack;
     //Boolean
     public $isRequestClass;
 
@@ -65,19 +65,15 @@ class DashboardAdmin extends Component
 
     #[Computed]
     public function pieChartRegistrationType() {
-        $totalNewMember = Registration::where('batch_id', $this->batchId)->where('registration_category', 'New Member')->count();
-        $totalRenewalMember = Registration::where('batch_id', $this->batchId)->where('registration_category', 'Renewal Member')->count();
-        $totalComeBack = Registration::where('batch_id', $this->batchId)->where('registration_category', 'Come Back')->count();
 
         $pieChartModel =
             (new PieChartModel())
             ->asPie()
             ->setAnimated(true)
-            ->withLegend()
-            ->setDataLabelsEnabled(true)
-            ->addSlice('New Member', $totalNewMember, '#06ba21')
-            ->addSlice('Renewal Member', $totalRenewalMember, '#1568b0')
-            ->addSlice('Come Back', $totalComeBack, '#eb430c');
+            ->withDataLabels()
+            ->addSlice('New Member', $this->totalNewMember, '#06ba21')
+            ->addSlice('Renewal Member', $this->totalRenewalMember, '#1568b0')
+            ->addSlice('Come Back', $this->totalComeBack, '#eb430c');
 
         return $pieChartModel;
     }
@@ -113,6 +109,10 @@ class DashboardAdmin extends Component
         //Logic for latest registration
         $this->latestRegistrationsReguler = Registration::limitLatestRegistration($this->batchId, 4);
         $this->latestRegistrationsLepasan = SpecialRegistration::limitLatestRegistration(4);
+
+        $this->totalNewMember = Registration::where('batch_id', $this->batchId)->where('registration_category', 'New Member')->count();
+        $this->totalRenewalMember = Registration::where('batch_id', $this->batchId)->where('registration_category', 'Renewal Member')->count();
+        $this->totalComeBack = Registration::where('batch_id', $this->batchId)->where('registration_category', 'Come Back')->count();
     }
 
     public function render()

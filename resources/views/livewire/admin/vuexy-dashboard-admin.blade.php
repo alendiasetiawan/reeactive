@@ -108,6 +108,12 @@
                         <div style="height: 300px;">
                             <livewire:livewire-pie-chart key="{{ $this->pieChartRegistrationType->reactiveKey() }}" :pie-chart-model="$this->pieChartRegistrationType"/>
                         </div>
+                        <div class="col-12 d-flex justify-content-between">
+                            <small style="color:#06ba21">New Member : {{ $totalNewMember }}</small>
+                            <small style="color:#1568b0">Renewal : {{ $totalRenewalMember }}</small>
+                            <small style="color:#eb430c">Combe Back : {{ $totalComeBack }}</small>
+                        </div>
+
                     </div>
                 </div>
             </x-cards.basic-card>

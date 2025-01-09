@@ -4,10 +4,14 @@ namespace App\Livewire\Coach\Database;
 
 use App\Models\Program;
 use Livewire\Component;
+use App\Models\Pricelist;
 use App\Models\ClassModel;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
+use App\Helpers\EnumValueHelper;
+use Exception;
 use Livewire\Attributes\Computed;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 
@@ -117,19 +121,34 @@ class ClassRoom extends Component
             $days = implode(', ', $this->selectedDays);
         }
 
-        ClassModel::create([
-            'coach_code' => Auth::user()->email,
-            'program_id' => $this->selectedProgram,
-            'start_time' => $this->startTime,
-            'end_time' => $this->endTime,
-            'day' => $days,
-            'link_wa' => $this->linkWa,
-            'class_status' => 'Pending',
-            'class_status_eksternal' => 'Pending'
-        ]);
+        DB::beginTransaction();
+        try {
+            ClassModel::create([
+                'coach_code' => Auth::user()->email,
+                'program_id' => $this->selectedProgram,
+                'start_time' => $this->startTime,
+                'end_time' => $this->endTime,
+                'day' => $days,
+                'link_wa' => $this->linkWa,
+                'class_status' => 'Pending',
+                'class_status_eksternal' => 'Pending'
+            ]);
 
-        $this->dispatch('request-sent');
-        $this->redirect(route('coach::class_room'), navigate:true);
+            Pricelist::updateOrCreate([
+                'program_id' => $this->selectedProgram,
+                'coach_code' => Auth::user()->email
+            ], [
+                'price' => EnumValueHelper::FOUR_SESSION_LEPASAN_PRICE,
+                'price_per_person' => EnumValueHelper::ONE_SESSION_LEPASAN_PRICE,
+            ]);
+
+            DB::commit();
+            $this->dispatch('request-sent');
+            $this->redirect(route('coach::class_room'), navigate:true);
+        } catch (Exception) {
+            DB::rollBack();
+            session()->flash('request-failed', 'Gagal menambahkan kelas, Cek Koneksi dan Kolom Isian Anda');
+        }
     }
 
     //ACTION - Set form type to reguler
