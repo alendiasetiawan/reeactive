@@ -164,7 +164,7 @@
                 <x-slot name="subTitle">{{ $member->program_name ?? '' }}</x-slot>
                 @if ($isRegisteredInReeactive)
                     <x-slot name="badgeLabel">
-                        @if ($member->payment_status == 'Done')
+                        @if ($member->payment_status == 'Done' || $member->payment_status == 'Follow Up')
                         <x-items.badges.light-success>{{ $member->batch_name }} - Coach
                             {{ $member->nick_name }}</x-items.badges.light-success>
                         @elseif ($member->payment_status == 'Invalid')
@@ -181,7 +181,7 @@
 
                 @if ($isRegisteredInReeactive)
                     <x-slot name="info">
-                        @if ($member->payment_status == 'Done')
+                        @if ($member->payment_status == 'Done' || $member->payment_status == 'Follow Up')
                         <a href="{{ $member->link_wa }}" target="_blank">
                             <button class="btn btn-success btn-sm">
                                 Join WA Group
@@ -259,7 +259,7 @@
                 <x-slot:subTitle>{{ $latestSpecialRegistration[0]->program_name ?? '' }}</x-slot:subTitle>
                 @if ($isSpecialRegistration)
                     <x-slot name="info">
-                        @if ($latestSpecialRegistration[0]->payment_status == 'Done')
+                        @if ($latestSpecialRegistration[0]->payment_status == 'Done' || $latestSpecialRegistration[0]->payment_status == 'Follow Up')
                         <a href="{{ $latestSpecialRegistration[0]->link_wa }}" target="_blank">
                             <button class="btn btn-success btn-sm">
                                 Join WA Group
@@ -273,7 +273,7 @@
                 @endif
                 @if ($isSpecialRegistration)
                     <x-slot name="badgeLabel">
-                        @if ($latestSpecialRegistration[0]->payment_status == 'Done')
+                        @if ($latestSpecialRegistration[0]->payment_status == 'Done' || $latestSpecialRegistration[0]->payment_status == 'Follow Up')
                             <x-items.badges.light-success>Coach {{ $latestSpecialRegistration[0]->nick_name }}</x-items.badges.light-success>
                         @elseif ($latestSpecialRegistration[0]->payment_status == 'Invalid')
                             <x-items.badges.light-danger>Pembayaran : Invalid</x-items.badges.light-danger>
