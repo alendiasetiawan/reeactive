@@ -31,7 +31,7 @@
         <x-slot:cardHeader>Formulir</x-slot:cardHeader>
         <small>Silahkan isi form di bawah ini dengan <strong>lengkap dan benar!</strong></small>
         <br/>
-        <small>Pastiken anda menggunakan browser terbaru yang disarankan : <strong>Chrome/Edge/Firefox</strong></small>
+        <small>Pastikan anda menggunakan browser terbaru yang disarankan : <strong>Chrome/Edge/Firefox</strong></small>
         <form wire:submit='register'>
             <!--Program-->
             <div class="row">
@@ -241,7 +241,7 @@
                     <x-inputs.date-max-today wire:model.live='birthDate'/>
                 </div>
                 <div class="col-lg-4 col-md-6 col-12 mb-1">
-                    <x-inputs.label>Usia</x-inputs.label>
+                    <x-inputs.label>Usia (Tahun)</x-inputs.label>
                     <x-inputs.vuexy-basic wire:model='ageStart' placeholder="...tahun" disabled/>
                 </div>
                 <div class="col-lg-4 col-12 mb-1">
