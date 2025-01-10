@@ -5,7 +5,7 @@
     </x-vuexy.links.breadcrumb>
 
     <div class="row mb-1">
-        <div class="col-lg-6 col-md-6 col-12">
+        <div class="col-lg-4 col-md-6 col-12">
             <x-inputs.label>Cari Member</x-inputs.label>
             <x-inputs.vuexy-basic placeholder="Ketik nama member..." wire:model.live.debounce.250ms='searchMember'/>
         </div>
@@ -20,7 +20,7 @@
             <div class="col-lg-4 col-md-6 col-12">
                 <x-cards.apply-job color="primary" wire:key='{{ $member->id }}'>
                     <x-slot:avatarIcon>{{ $loop->iteration }}</x-slot:avatarIcon>
-                    <x-slot:title>{{ Str::excerpt($member->name, '', ['radius' => $isMobile ? 20 : 25]) }}</x-slot:title>
+                    <x-slot:title>{{ Str::excerpt($member->member_name, '', ['radius' => $isMobile ? 20 : 25]) }}</x-slot:title>
                     <x-slot:subTitle>{{ \Carbon\Carbon::parse($member->created)->isoFormat('lll') }}</x-slot:subTitle>
                     <x-slot:label>
                         @if ($member->notif == 1)
