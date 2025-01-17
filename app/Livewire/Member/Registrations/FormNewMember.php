@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Member\Registrations;
 
+use Exception;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Coach;
 use App\Models\Member;
@@ -11,23 +13,22 @@ use App\Models\Regency;
 use Livewire\Component;
 use App\Models\District;
 use App\Models\Province;
+use App\Models\Referral;
 use App\Models\PhoneCode;
 use App\Models\Pricelist;
 use App\Models\ClassModel;
-use App\Models\Referral;
-use App\Models\ReferralRegistration;
+use Illuminate\Support\Str;
 use App\Models\Registration;
-use App\Models\VoucherMerchandise;
 use Livewire\WithFileUploads;
 use App\Services\BatchService;
 use Livewire\Attributes\Title;
-use App\Services\RegistrationService;
-use Carbon\Carbon;
-use Exception;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Computed;
+use App\Models\VoucherMerchandise;
 use Illuminate\Support\Facades\DB;
+use App\Models\ReferralRegistration;
 use Illuminate\Support\Facades\Hash;
+use App\Services\RegistrationService;
 
 class FormNewMember extends Component
 {
@@ -410,8 +411,15 @@ class FormNewMember extends Component
                 'districtId.required' => 'Tolong isi kecamatan dulu ya!'
             ]);
         }
-        $mobilePhone = $this->countryPhoneCode.$this->phone;
         $batchId = $this->batch->id;
+        $isDigitZero = strpos($this->phone, 0);
+        if ($isDigitZero === 0) {
+            $realPhone = Str::of($this->phone)->substr(1);
+        } else {
+            $realPhone = $this->phone;
+        }
+
+        $mobilePhone = $this->countryPhoneCode.$realPhone;
 
 
         //check medical file
@@ -460,7 +468,7 @@ class FormNewMember extends Component
             try {
                 //Add data member
                 Member::updateOrCreate([
-                    'code' => $this->phone,
+                    'code' => $realPhone,
                 ], [
                     'member_name' => $this->memberName,
                     'gender' => 'Perempuan',
@@ -479,7 +487,7 @@ class FormNewMember extends Component
 
                 //Insert data registration
                 $registration = Registration::updateOrCreate([
-                    'member_code' => $this->phone,
+                    'member_code' => $realPhone,
                 ], [
                     'batch_id' => $batchId,
                     'amount_pay' => $this->totalPrice,
@@ -497,7 +505,7 @@ class FormNewMember extends Component
 
                 //Create data user login
                 User::updateOrCreate([
-                    'email' => $this->phone,
+                    'email' => $realPhone,
                 ], [
                     'password' => Hash::make($this->password),
                     'role_id' => 3,
