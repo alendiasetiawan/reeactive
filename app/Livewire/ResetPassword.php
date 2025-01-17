@@ -47,14 +47,14 @@ class ResetPassword extends Component
     //Action to check if member exists
     public function checkMember() {
         $this->showResult = true;
-        $isDigitZero = strpos($this->phone, 0);
-        if ($isDigitZero === 0) {
-            $this->phoneNumber = Str::of($this->phone)->substr(1);
-        } else {
-            $this->phoneNumber = $this->phone;
-        }
+        // $isDigitZero = strpos($this->phone, 0);
+        // if ($isDigitZero === 0) {
+        //     $this->phoneNumber = Str::of($this->phone)->substr(1);
+        // } else {
+        //     $this->phoneNumber = $this->phone;
+        // }
 
-        $this->mobilePhone = $this->countryPhoneCode . $this->phoneNumber;
+        $this->mobilePhone = $this->countryPhoneCode . $this->phone;
 
         $this->findMember = Member::where('mobile_phone', $this->mobilePhone)->count();
         if ($this->findMember >= 1) {
