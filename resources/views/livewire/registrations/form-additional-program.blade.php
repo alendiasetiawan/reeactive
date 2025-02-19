@@ -300,6 +300,7 @@
                             <x-inputs.select-option value="{{ $id }}">{{ $country }}</x-inputs.select-option>
                         @endforeach
                     </x-inputs.vuexy-select>
+                    {{ $countryId }}
                 </div>
 
                 @if ($countryId == 1)
@@ -354,15 +355,16 @@
                 <div class="col-lg-6 col-12 mb-1 mt-1" wire:ignore>
                     <x-inputs.label>Password</x-inputs.label>
                     <div class="input-group input-group-merge form-password-toggle">
-                        <input class="form-control form-control-merge" id="password" type="password" wire:model.live.debounce.250ms='password' placeholder="············"/>
+                        <input class="form-control form-control-merge" id="password" type="password" wire:model.live.debounce.250ms='password'/>
                         <span class="input-group-text cursor-pointer">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                         </span>
                     </div>
+                    <small class="text-muted">Silahkan buat password anda!</small>
                 </div>
             </div>
             <!--Account Detail-->
-
+            {{ $errors }}
             <div class="row">
                 <div class="col-12" wire:loading.remove wire:target='register'>
                     <x-buttons.basic color="primary" type="submit" :disabled="$isSubmitActive && !$errors->any() && !$isUserRegistered && $isAllowedToJoin ? false : true">
