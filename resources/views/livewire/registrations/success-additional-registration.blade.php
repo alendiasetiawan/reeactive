@@ -4,7 +4,7 @@
     </div>
 
     <div class="d-flex align-items-center justify-content-center">
-        <div class="col-6">
+        <div class="col-lg-6 col-12">
             <x-vuexy.cards.basic-card>
                 <p style="text-align: justify">
                     Selamat, <strong>{{ $memberName }}</strong> anda telah resmi menjadi member Reeactive, berikut detail pendaftaran anda :
