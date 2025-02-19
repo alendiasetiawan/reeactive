@@ -42,7 +42,7 @@ class FormAdditionalProgram extends Component
     //Object
     public $programs, $phoneCodes, $programPrice, $countries, $provinces;
     //Boolean
-    public $invalidDay, $isBodyHeightInvalid, $isBodyWeightInvalid, $showProgressBar, $isSubmitActive = false, $isPregnantFriendly, $isAllowedToJoin, $isUserRegistered;
+    public $invalidDay, $isBodyHeightInvalid, $isBodyWeightInvalid, $showProgressBar, $isSubmitActive = false, $isPregnantFriendly, $isAllowedToJoin = true, $isUserRegistered = false;
 
     protected $rules = [
         'phone' => 'min_digits:8|max_digits:12|integer',
