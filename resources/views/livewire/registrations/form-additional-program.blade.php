@@ -300,7 +300,6 @@
                             <x-inputs.select-option value="{{ $id }}">{{ $country }}</x-inputs.select-option>
                         @endforeach
                     </x-inputs.vuexy-select>
-                    {{ $countryId }}
                 </div>
 
                 @if ($countryId == 1)
@@ -364,7 +363,6 @@
                 </div>
             </div>
             <!--Account Detail-->
-            {{ $errors }}
             <div class="row">
                 <div class="col-12" wire:loading.remove wire:target='register'>
                     <x-buttons.basic color="primary" type="submit" :disabled="$isSubmitActive && !$errors->any() && !$isUserRegistered && $isAllowedToJoin ? false : true">
