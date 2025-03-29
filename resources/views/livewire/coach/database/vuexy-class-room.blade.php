@@ -44,33 +44,42 @@
                 </div>
             </div>
         </div>
-        @foreach ($this->programs as $program)
-            @if ($program->classes->count() != 0)
-                <div class="col-lg-4 col-md-6 col-12">
-                    <x-cards.employee>
-                        <x-slot:header>{{ $program->program_name }}</x-slot:header>
-                        @foreach ($program->classes as $class)
-                            <x-cards.employee-task wire:key='{{ $class->id }}'>
-                                <x-slot:title>{{ $class->day }}</x-slot:title>
-                                <x-slot:subTitle>
-                                    {{ \Carbon\Carbon::parse($class->start_time)->format('H:i') }}
-                                    -
-                                    {{ \Carbon\Carbon::parse($class->end_time)->format('H:i') }}
-                                    @if ($class->link_wa != null)
-                                        <x-items.wa-icon href="{{ $class->link_wa }}" />
-                                    @endif
-                                </x-slot:subTitle>
-                                <x-slot:label>
-                                    <span class="{{ $class->class_status_eksternal == 'Open' ? 'text-success' : ($class->class_status_eksternal == 'Pending' ? 'text-warning' : 'text-danger') }}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Status New Member">{{ $class->class_status_eksternal }}</span>
-                                    |
-                                    <span class="{{ $class->class_status_eksternal == 'Open' ? 'text-success' : ($class->class_status_eksternal == 'Pending' ? 'text-warning' : 'text-danger') }}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Status Renewal">{{ $class->class_status }}</span>
-                                </x-slot:label>
-                            </x-cards.employee-task>
-                        @endforeach
-                    </x-cards.employee>
-                </div>
-            @endif
-        @endforeach
+
+        @if ($isHaveRegulerProgram)
+            @foreach ($this->programs as $program)
+                @if ($program->classes->count() != 0)
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <x-cards.employee>
+                            <x-slot:header>{{ $program->program_name }}</x-slot:header>
+                            @foreach ($program->classes as $class)
+                                <x-cards.employee-task wire:key='{{ $class->id }}'>
+                                    <x-slot:title>{{ $class->day }}</x-slot:title>
+                                    <x-slot:subTitle>
+                                        {{ \Carbon\Carbon::parse($class->start_time)->format('H:i') }}
+                                        -
+                                        {{ \Carbon\Carbon::parse($class->end_time)->format('H:i') }}
+                                        @if ($class->link_wa != null)
+                                            <x-items.wa-icon href="{{ $class->link_wa }}" />
+                                        @endif
+                                    </x-slot:subTitle>
+                                    <x-slot:label>
+                                        <span class="{{ $class->class_status_eksternal == 'Open' ? 'text-success' : ($class->class_status_eksternal == 'Pending' ? 'text-warning' : 'text-danger') }}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Status New Member">{{ $class->class_status_eksternal }}</span>
+                                        |
+                                        <span class="{{ $class->class_status_eksternal == 'Open' ? 'text-success' : ($class->class_status_eksternal == 'Pending' ? 'text-warning' : 'text-danger') }}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Status Renewal">{{ $class->class_status }}</span>
+                                    </x-slot:label>
+                                </x-cards.employee-task>
+                            @endforeach
+                        </x-cards.employee>
+                    </div>
+                @endif
+            @endforeach
+        @else
+            <div class="col-12">
+                <x-alerts.main-alert color="danger">
+                    Anda belum memiliki jadwal di Program Reguler
+                </x-alerts.main-alert>
+            </div>
+        @endif
     </div>
     <!--#List Reguler Class-->
 
