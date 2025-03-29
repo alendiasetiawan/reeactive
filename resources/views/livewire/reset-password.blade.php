@@ -93,7 +93,7 @@
             var url = event.detail.url;
 
             setTimeout( () => {
-                window.open(url,"_blank");
+                window.location.href=url;
             }, 3000);
         });
     </script>
