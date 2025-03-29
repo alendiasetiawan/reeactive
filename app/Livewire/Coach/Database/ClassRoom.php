@@ -24,7 +24,7 @@ class ClassRoom extends Component
     //String
     public $day, $startTime, $endTime, $linkWa, $decryptId, $programName;
     //Boolean
-    public $isSubmitActive = false, $isClassFound = false, $isFormReguler = false, $isFormLepasan = false, $isHaveKelasLepasan = false;
+    public $isSubmitActive = false, $isClassFound = false, $isFormReguler = false, $isFormLepasan = false, $isHaveKelasLepasan = false, $isHaveRegulerProgram = false;
     //Array
     public $listOfDays, $selectedDays = [];
 
@@ -55,6 +55,7 @@ class ClassRoom extends Component
         ];
 
         $this->isHaveKelasLepasan = ClassModel::checkCoachLepasan(Auth::user()->email);
+        $this->isHaveRegulerProgram = ClassModel::checkCoachRegulerProgram(Auth()->user()->email);
     }
 
     //Check if all fields reguler form are filled

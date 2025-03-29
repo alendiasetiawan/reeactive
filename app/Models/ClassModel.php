@@ -154,4 +154,12 @@ class ClassModel extends Model
         ->where('programs.program_type', 'Special')
         ->count();
     }
+
+    //Check if the coach have kelas reguler
+    public static function checkCoachRegulerProgram($coachCode) {
+        return self::join('programs', 'classes.program_id', 'programs.id')
+        ->where('programs.program_type', 'Reguler')
+        ->where('coach_code', $coachCode)
+        ->exists();
+    }
 }
