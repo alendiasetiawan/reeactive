@@ -279,7 +279,7 @@
                                                     <input class="form-check-input" type="checkbox" id="poin-satu" wire:model='poinSatu'>
                                                     <label class="form-check-label" for="poin-satu">
                                                         <b>Program Large Group</b> : Pembelian paket (30 sesi) berlaku selama <b>2,5 bulan</b> masa training |
-                                                        <b>Program Small Group</b> : Pembelian paket (10 Sesi) | Khusus <b class="text-primary">batch 14</b>, paket Large Group adalah <b class="text-primary">18 sesi</b>
+                                                        <b>Program Small Group</b> : Pembelian paket (10 Sesi)
                                                     </label>
                                                     <small class="text-danger"><b>@error('poinSatu') {{ $message }} @enderror</b></small>
                                                 </div>
