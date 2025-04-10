@@ -34,7 +34,7 @@ class DatabaseMember extends Component
         $this->batchId = $batchService->batchIdActive();
         $batch = Batch::find($this->batchId);
         $this->batchName = $batch->batch_name;
-        $this->batches = Batch::orderBy('id', 'desc')->limit(5)->get();
+        $this->batches = Batch::orderBy('id', 'desc')->limit(10)->get();
     }
 
     public function boot(MobileDetect $mobileDetect) {
