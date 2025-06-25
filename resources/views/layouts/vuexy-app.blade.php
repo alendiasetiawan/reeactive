@@ -32,6 +32,7 @@
 
     {{-- Custom CSS --}}
     <link rel="stylesheet" type="text/css" href="{{ asset('style/assets/css/style.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 </head>
 <!-- END: Head-->
 

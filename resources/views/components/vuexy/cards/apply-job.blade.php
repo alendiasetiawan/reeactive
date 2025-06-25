@@ -1,4 +1,8 @@
-@props(['color'])
+@props([
+    'color',
+    'title' => 'Nama Anda' ?? '',
+    'subTitle'
+])
 
 <div {{ $attributes->class(['card card-apply-job']) }}>
     <div class="card-body">
@@ -7,6 +11,7 @@
                 @isset($avatar)
                     <div {{ $attributes->merge(['class' => 'avatar me-1']) }}>
                         {{ $avatar }}
+                        {{-- <img src="../../../app-assets/images/portrait/small/avatar-s-20.jpg" alt="Avatar" width="42" height="42"> --}}
                     </div>
                 @endisset
 
@@ -41,7 +46,7 @@
             {{ $headingContent }}
         </h5>
         @endisset
-        <p class="mb-2 text-justify card-text text-capitalize">{{ $slot }}</p>
+        <p class="text-justify card-text text-capitalize">{{ $slot }}</p>
 
         @isset($highlight)
             <div class="rounded apply-job-package bg-light-primary">
@@ -57,6 +62,5 @@
         @isset($actionButton)
             {{ $actionButton }}
         @endisset
-
     </div>
 </div>

@@ -69,7 +69,7 @@
             </li>
             <!---REGISTRATION-->
 
-            <!--REGISTRATION-->
+            <!--LOYALTI PROGRAM-->
             <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">PROGRAM LOYALTI</span><i data-feather="more-horizontal"></i>
             </li>
             <li class="nav-item {{ Route::is('admin::registered_by_referral') ? 'active' : '' }}">
@@ -84,7 +84,25 @@
                     <span class="menu-title text-truncate">Voc. Merchandise</span>
                 </a>
             </li>
-            <!---REGISTRATION-->
+            <li class="nav-item ">
+                <a class="d-flex align-items-center" href="#"><i data-feather='star'></i>
+                    <span class="menu-title text-truncate">Endorse</span>
+                </a>
+                <ul class="menu-content">
+                    <li class="{{ Route::is('admin::influencer') ? 'active' : '' }}">
+                        <a class="d-flex align-items-center" wire:navigate
+                            href="{{ route('admin::influencer') }}"><i data-feather="circle"></i>
+                            <span class="menu-item text-truncate">Influencer</span>
+                        </a>
+                    </li>
+                    <li class="{{ Route::is('admin::lepasan_payment_verification') || Route::is('admin::detail_lepasan_payment') ? 'active' : '' }}">
+                        <a class="d-flex align-items-center" wire:navigate href="{{ route('admin::lepasan_payment_verification') }}"><i data-feather="circle"></i>
+                            <span class="menu-item text-truncate">Kode Referral</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <!---LOYALTI PROGRAM-->
 
             <!--Settings-->
             <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">PENGATURAN</span><i data-feather="more-horizontal"></i>

@@ -21,6 +21,7 @@ use App\Livewire\Admin\Registrations\RegisteredByReferral;
 use App\Livewire\Admin\Registrations\ShowWorkshopVerification;
 use App\Livewire\Admin\Registrations\LepasanPaymentVerification;
 use App\Livewire\Admin\Registrations\WorkshopPaymentVerification;
+use App\Livewire\Loyalties\Influencer;
 
 Route::group(['middleware' => ['auth', 'admin'], 'as' => 'admin::'], function() {
     Route::prefix('admin')->group(function() {
@@ -60,5 +61,6 @@ Route::group(['middleware' => ['auth', 'admin'], 'as' => 'admin::'], function() 
         //Loyalty Program
         Route::get('/verifikasi-voucher-merchandise', MerchandiseVoucherVerification::class)->name('merchandise_voucher_verification');
         Route::get('/pendaftar-referral', RegisteredByReferral::class)->name('registered_by_referral');
+        Route::get('/influencer', Influencer::class)->name('influencer');
     });
 });

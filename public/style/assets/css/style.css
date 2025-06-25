@@ -63,20 +63,20 @@ height: 400px;
 
 .scroller4 {
 overflow: auto;
-padding-right: 4px;
+padding-right: 3px;
 height: 300px;
 }
 
 .scroller5 {
 overflow: auto;
-padding-right: 4px;
-height: 450px;
+padding-right: 3px;
+height: 500px;
 }
 
 .scroller6 {
 overflow: auto;
 padding-right: 3px;
-height: 400px;
+height: 550px;
 }
 
 .scroller7 {
@@ -147,4 +147,10 @@ background: #e9198c;
 
 .dot:nth-child(3) {
     animation-delay: 0.4s;
+}
+
+.mini-scroller {
+    overflow: auto;
+    padding-right: 3px;
+    height: 50px;
 }
