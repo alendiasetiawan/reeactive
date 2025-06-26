@@ -4,6 +4,7 @@ namespace App\Livewire\Loyalties;
 
 use Livewire\Component;
 use Detection\MobileDetect;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use App\Queries\InfluencerQuery;
 use Livewire\Attributes\Computed;
@@ -18,30 +19,45 @@ class Influencer extends Component
     //Boolean
     public $isMobile;
     //Integer
-    public $totalInfluencer, $limitData = 6, $selectedIdInfluencer;
+    public $limitData = 6, $selectedIdInfluencer;
     //Object
     public $fetchInfluencer;
 
-    #[Computed]
+    #[Computed(cache: true)]
     public function listInfluencers() {
         return InfluencerQuery::paginateListInfluencers($this->limitData);
     }
 
-    #[Computed]
+    #[Computed(cache: true)]
     public function totalInfluencer() {
         return InfluencerModel::count();
     }
 
+    //HOOK - Execute every time component is rendered
     public function boot(MobileDetect $mobileDetect) {
         $this->isMobile = $mobileDetect->isMobile();
+        // $this->unsetCachedProperty();
     }
 
+    //LISTENER - Refresh data after add new influencer
+    #[On('add-influencer-success')]
+    public function refreshData() {
+        $this->unsetCachedProperty();
+    }
+
+    //ACTION - Load more data
     public function loadMore() {
         $this->limitData += 9;
     }
 
+    //ACTION - Unset cached property
+    public function unsetCachedProperty() {
+        unset($this->listInfluencers);
+        unset($this->totalInfluencer);
+    }
+
     //ACTION - Confirmation delete data influencer
-    public function setIdDeleteInfluencer($id) {
+    public function setIdInfluencer($id) {
         try {
             $this->selectedIdInfluencer = Crypt::decrypt($id);
             $this->fetchInfluencer = InfluencerModel::find($this->selectedIdInfluencer);
@@ -50,10 +66,17 @@ class Influencer extends Component
         }
     }
 
+    //ACTION - Confirmation edit data influencer
+    public function setIdEditInfluencer($id) {
+        $this->setIdInfluencer($id);
+        $this->dispatch('event-edit-influencer');
+    }
+
     //ACTION - Delete data influencer
     public function deleteInfluencer() {
         try {
             InfluencerModel::find($this->selectedIdInfluencer)->delete();
+            $this->unsetCachedProperty();
             $this->dispatch('delete-influencer-success');
             $this->redirect(route('admin::influencer'), navigate:true);
         } catch (\Throwable $th) {

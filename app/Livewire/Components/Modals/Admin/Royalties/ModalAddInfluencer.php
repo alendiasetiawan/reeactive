@@ -4,14 +4,21 @@ namespace App\Livewire\Components\Modals\Admin\Royalties;
 
 use Livewire\Component;
 use App\Models\Influencer;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Reactive;
 use Illuminate\Support\Facades\Log;
 
 class ModalAddInfluencer extends Component
 {
     //String
-    public $modalId, $influencerName, $phoneNumber, $countryCode = '62', $instagramLink, $facebookLink, $note;
+    public $modalType, $modalId, $influencerName = null, $phoneNumber, $countryCode = '62', $instagramLink, $facebookLink, $note;
     //Boolean
     public $isSubmitActivated = false;
+    //Object
+    public $queryInfluencer;
+    //Integer
+    #[Reactive]
+    public $selectedIdInfluencer;
 
     protected $rules = [
         'phoneNumber' => 'max:12|min:7'
@@ -22,9 +29,18 @@ class ModalAddInfluencer extends Component
         'phoneNumber.min' => 'Nomor HP minimal 7 digit'
     ];
 
-    //HOOK - Execute once when component is rendered
-    public function mount($modalId) {
-        $this->modalId = $modalId;
+    //HOOK - Execute every time component is rendered
+    #[On('event-edit-influencer')]
+    public function setValue() {
+        if ($this->modalType == 'editInfluencer') {
+            $this->queryInfluencer = Influencer::find($this->selectedIdInfluencer);
+            $this->isSubmitActivated = true;
+            $this->influencerName = $this->queryInfluencer?->name;
+            $this->phoneNumber = $this->queryInfluencer?->phone;
+            $this->instagramLink = $this->queryInfluencer?->link_instagram;
+            $this->facebookLink = $this->queryInfluencer?->link_facebook;
+            $this->note = $this->queryInfluencer?->note;
+        }
     }
 
     //HOOK - Execute when property is changed
@@ -39,23 +55,26 @@ class ModalAddInfluencer extends Component
     //ACTION - Check if all field has been filled
     public function isFormFilled() {
         if (!empty($this->influencerName)) {
-            $this->isSubmitActivated = true;
+            return $this->isSubmitActivated = true;
         } else {
-            $this->isSubmitActivated = false;
+            return $this->isSubmitActivated = false;
         }
     }
 
     //ACTION - Submit form
     public function saveInfluencer() {
         try {
-            Influencer::create([
+            Influencer::updateOrCreate([
+                'id' => $this->queryInfluencer?->id
+            ], [
                 'name' => $this->influencerName,
                 'country_code' => $this->countryCode,
                 'phone' => $this->phoneNumber,
                 'link_instagram' => $this->instagramLink,
                 'link_facebook' => $this->facebookLink,
                 'note' => $this->note
-            ]);
+            ]
+            );
 
             $this->dispatch('add-influencer-success');
             $this->redirect(route('admin::influencer'), navigate:true);

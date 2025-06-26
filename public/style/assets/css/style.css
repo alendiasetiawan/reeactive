@@ -39,50 +39,43 @@ animation: blinker 1.5s linear infinite;
 
 .scroller {
     overflow: auto;
-    padding-right: 3px;
-    height: 280px;
+    max-height: 280px;
 }
 
 .small-scroller {
 overflow: auto;
-padding-right: 3px;
-height: 150px;
+max-height: 150px;
 }
 
 .scroller2 {
 overflow: auto;
-padding-right: 3px;
-height: 190px;
+max-height: 190px;
 }
 
 .scroller3 {
 overflow: auto;
-padding-right: 3px;
-height: 400px;
+max-height: 400px;
 }
 
 .scroller4 {
 overflow: auto;
-padding-right: 3px;
-height: 300px;
+max-height: 300px;
 }
 
 .scroller5 {
 overflow: auto;
-padding-right: 3px;
-height: 500px;
+max-height: 500px;
 }
 
 .scroller6 {
 overflow: auto;
-padding-right: 3px;
-height: 550px;
+max-height: 550px;
 }
 
 .scroller7 {
 overflow: auto;
 padding-right: 3px;
-height: 700px;
+max-height: 700px;
 }
 
 /* width */

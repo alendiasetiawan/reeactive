@@ -73,14 +73,18 @@
                                 <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-dots-vertical font-medium-3"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
                             </a>
                             <x-vuexy.buttons.dropdown-menu>
-                                <x-vuexy.buttons.dropdown-item wire:click='editInfluencer()'>Edit</x-vuexy.buttons.dropdown-item>
+                                <x-vuexy.buttons.dropdown-item
+                                wire:click="setIdEditInfluencer('{{ Crypt::encrypt($influencer->id) }}')"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalEditInfluencer">Edit</x-vuexy.buttons.dropdown-item>
+
                                 @if ($influencer->total_member_registered >= 1)
                                     <x-vuexy.buttons.dropdown-item href="#" class="text-muted">
                                         Hapus
                                     </x-vuexy.buttons.dropdown-item>
                                 @else
                                     <x-vuexy.buttons.dropdown-item
-                                    wire:click="setIdDeleteInfluencer('{{ Crypt::encrypt($influencer->id) }}')"
+                                    wire:click="setIdInfluencer('{{ Crypt::encrypt($influencer->id) }}')"
                                     data-bs-toggle="modal"
                                     data-bs-target="#modalDeleteInfluencer">
                                         Hapus
@@ -135,8 +139,8 @@
                 </x-vuexy.cards.apply-job>
             </div>
         @empty
-            <div class="col-12">
-                <x-alerts.main-alert color="danger">Belum ada data influencer yang bisa ditampilkan, silahkan tambah</x-alerts.main-alert>
+            <div class="col-12 text-center">
+                <x-alerts.not-found />
             </div>
         @endforelse
 
@@ -153,8 +157,12 @@
     <!--#List Influencer-->
 
     <!---Modal Add Influencer-->
-    <livewire:components.modals.admin.royalties.modal-add-influencer modalId="modalAddInfluencer"/>
+    <livewire:components.modals.admin.royalties.modal-add-influencer modalId="modalAddInfluencer" modalType="addInfluencer"/>
     <!---#Modal Add Influencer-->
+
+    <!--Modal Edit Influencer-->
+    <livewire:components.modals.admin.royalties.modal-add-influencer modalId="modalEditInfluencer" :selectedIdInfluencer="$selectedIdInfluencer" modalType="editInfluencer"/>
+    <!--#Modal Edit Influencer-->
 
     <!--Modal Delete Influencer-->
     <x-modals.top-center id="modalDeleteInfluencer" wire:ignore.self>
