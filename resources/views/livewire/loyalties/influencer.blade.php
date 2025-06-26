@@ -177,40 +177,16 @@
     <!---#Modal Add Influencer-->
 
     <!--Modal Edit Influencer-->
-    <livewire:components.modals.admin.royalties.modal-add-influencer modalId="modalEditInfluencer" modalType="editInfluencer" :selectedIdInfluencer="$selectedIdInfluencer"/>
+    <livewire:components.modals.admin.royalties.modal-add-influencer modalId="modalEditInfluencer" modalType="editInfluencer" :selectedIdInfluencer="$selectedIdInfluencer" />
     <!--#Modal Edit Influencer-->
 
     <!--Modal Add Referral-->
-    <livewire:components.modals.admin.royalties.modal-add-referral-per-influencer modalId="modalAddReferral" :selectedIdInfluencer="$selectedIdInfluencer"/>
+    <livewire:components.modals.admin.royalties.modal-add-referral-per-influencer modalId="modalAddReferral" :selectedIdInfluencer="$selectedIdInfluencer" />
     <!--#Modal Add Referral-->
 
     <!--Modal Delete Influencer-->
-    <x-modals.top-center id="modalDeleteInfluencer" wire:ignore.self>
-        <x-slot:header>Perhatian!</x-slot:header>
+    <livewire:components.modals.admin.royalties.modal-delete-influencer modalId="modalDeleteInfluencer" :selectedIdInfluencer="$selectedIdInfluencer" />
 
-        <x-slot:title>Hapus Data Influencer</x-slot:title>
-
-        <x-slot:content>
-            @if (session('error-delete-influencer'))
-                <x-alerts.main-alert color="danger">
-                    {{ session('error-delete-influencer') }}
-                </x-alerts.main-alert>
-            @endif
-
-            @if (session('error-selected-id'))
-                <x-alerts.main-alert color="danger">
-                    {{ session('error-selected-id') }}
-                </x-alerts.main-alert>
-            @else
-                Anda akan menghapus data a/n <strong>"{{ $fetchInfluencer?->name }}"</strong>, apakah yakin?
-            @endif
-        </x-slot:content>
-
-        <x-slot:modalFooter>
-            <x-buttons.basic color="danger" class="btn-sm" wire:click="deleteInfluencer">Hapus</x-buttons.basic>
-            <x-buttons.outline-secondary type="reset" class="btn-sm" data-bs-dismiss="modal">Batal</x-buttons.outline-secondary>
-        </x-slot:modalFooter>
-    </x-modals.top-center>
     <!--#Modal Delete Influencer-->
 
     @push('vendorScripts')
