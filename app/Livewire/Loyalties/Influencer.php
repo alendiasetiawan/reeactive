@@ -23,12 +23,18 @@ class Influencer extends Component
     //Object
     public $fetchInfluencer;
 
-    #[Computed(cache: true)]
+    //LISTENER - Refresh data after add new influencer
+    #[On('add-influencer-success', 'add-referral-code-success')]
+    public function refreshData() {
+        $this->unsetCachedProperty();
+    }
+
+    #[Computed(persist: true, seconds:1800)]
     public function listInfluencers() {
         return InfluencerQuery::paginateListInfluencers($this->limitData);
     }
 
-    #[Computed(cache: true)]
+    #[Computed(persist: true, seconds:1800)]
     public function totalInfluencer() {
         return InfluencerModel::count();
     }
@@ -36,13 +42,6 @@ class Influencer extends Component
     //HOOK - Execute every time component is rendered
     public function boot(MobileDetect $mobileDetect) {
         $this->isMobile = $mobileDetect->isMobile();
-        // $this->unsetCachedProperty();
-    }
-
-    //LISTENER - Refresh data after add new influencer
-    #[On('add-influencer-success')]
-    public function refreshData() {
-        $this->unsetCachedProperty();
     }
 
     //ACTION - Load more data
@@ -66,7 +65,7 @@ class Influencer extends Component
         }
     }
 
-    //ACTION - Confirmation edit data influencer
+    //ACTION - Set id and event for edit influencer
     public function setIdEditInfluencer($id) {
         $this->setIdInfluencer($id);
         $this->dispatch('event-edit-influencer');

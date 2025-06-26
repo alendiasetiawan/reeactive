@@ -10,7 +10,7 @@
 <input
 {{ $attributes->merge([
     'type' => 'text',
-    'class' => 'form-control max-date-today',
+    'class' => 'form-control min-date-today',
     'placeholder' => 'YYYY-MM-DD',
     'id' => 'fp-default'
 ]) }}/>

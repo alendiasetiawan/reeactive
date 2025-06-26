@@ -48,10 +48,10 @@
         @forelse ($this->listInfluencers as $influencer)
             <div class="col-lg-4 col-md-6 col-12" wire:key='inf-{{ $influencer->id }}' wire:loading.remove wire:target='loadMore'>
                 <x-vuexy.cards.apply-job
-                color="primary"
-                title="{{ $influencer->name }}">
+                color="primary">
+                    <x-slot:title>{{ $influencer->name }}</x-slot:title>
                     <x-slot:subTitle>
-                        @if (!is_null($influencer->phone))
+                        @if ($influencer->phone)
                             +{{ $influencer->country_code }}{{ $influencer->phone }}
                             <a href="https://wa.me/{{ $influencer->country_code }}{{ $influencer->phone }}" target="_blank">
                                 <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-whatsapp text-success font-medium-3"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9" /><path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1" /></svg>
@@ -98,16 +98,16 @@
                     <x-slot:headingContent>
                         <!--Social Media-->
                         <div class="d-flex justify-content-between">
-                            <a href="{{ !is_null($influencer->link_instagram) ? $influencer->link_instagram : '#' }}" target="_blank">
+                            <a href="{{ $influencer->link_instagram ? $influencer->link_instagram : '#' }}" target="_blank">
                                 <div class="d-flex align-items-center">
-                                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-instagram {{ !is_null($influencer->link_instagram) ? 'text-primary' : 'text-muted' }}"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z" /><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /><path d="M16.5 7.5v.01" /></svg>
-                                    <span class="{{ !is_null($influencer->link_instagram) ? 'text-primary' : 'text-muted' }}">Instagram</span>
+                                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-instagram {{ $influencer->link_instagram ? 'text-primary' : 'text-muted' }}"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z" /><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /><path d="M16.5 7.5v.01" /></svg>
+                                    <span class="{{ $influencer->link_instagram ? 'text-primary' : 'text-muted' }}">Instagram</span>
                                 </div>
                             </a>
-                            <a href="{{ !is_null($influencer->link_facebook) ? $influencer->link_facebook : '#' }}" target="_blank">
+                            <a href="{{ $influencer->link_facebook ? $influencer->link_facebook : '#' }}" target="_blank">
                                 <div class="d-flex align-items-center">
-                                    <span class="{{ !is_null($influencer->link_facebook) ? 'text-primary' : 'text-muted' }}">Facebook</span>
-                                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-facebook {{ !is_null($influencer->link_facebook) ? 'text-primary' : 'text-muted' }}"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3" /></svg>
+                                    <span class="{{ $influencer->link_facebook ? 'text-primary' : 'text-muted' }}">Facebook</span>
+                                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-facebook {{ $influencer->link_facebook ? 'text-primary' : 'text-muted' }}"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3" /></svg>
                                 </div>
                             </a>
                         </div>
@@ -123,7 +123,9 @@
                     <!--List Referral Code-->
                     <div>
                         <span>Kode Referral</span>
-                        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-square-plus font-medium-2 text-primary"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 12h6" /><path d="M12 9v6" /><path d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14z" /></svg>
+                        <a href="#" wire:click="setIdInfluencer('{{ Crypt::encrypt($influencer->id) }}')" data-bs-toggle="modal" data-bs-target="#modalAddReferral">
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-square-plus font-medium-2 text-primary"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 12h6" /><path d="M12 9v6" /><path d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14z" /></svg>
+                        </a>
                     </div>
                     <div class="@if($influencer->total_referral_code > 3) mini-scroller @endif">
                         @forelse ($influencer->influencerReferrals as $referral)
@@ -161,8 +163,12 @@
     <!---#Modal Add Influencer-->
 
     <!--Modal Edit Influencer-->
-    <livewire:components.modals.admin.royalties.modal-add-influencer modalId="modalEditInfluencer" :selectedIdInfluencer="$selectedIdInfluencer" modalType="editInfluencer"/>
+    <livewire:components.modals.admin.royalties.modal-add-influencer modalId="modalEditInfluencer" modalType="editInfluencer" :selectedIdInfluencer="$selectedIdInfluencer"/>
     <!--#Modal Edit Influencer-->
+
+    <!--Modal Add Referral-->
+    <livewire:components.modals.admin.royalties.modal-add-referral-per-influencer modalId="modalAddReferral" :selectedIdInfluencer="$selectedIdInfluencer"/>
+    <!--#Modal Add Referral-->
 
     <!--Modal Delete Influencer-->
     <x-modals.top-center id="modalDeleteInfluencer" wire:ignore.self>
@@ -259,5 +265,29 @@
             });
         </script>
         <!--#Toast Success Add Influencer-->
+
+        <!--Toast Success Delete Influencer-->
+        <script data-navigate-once>
+            window.addEventListener('add-referral-code-success', function () {
+                'use strict';
+                var isRtl = $('html').attr('data-textdirection') === 'rtl';
+
+                // On load Toast
+                setTimeout(function () {
+                    toastr['success'](
+                    'Tambah kode referral berhasil',
+                    'OK!',
+                    {
+                        showMethod: 'slideDown',
+                        hideMethod: 'slideUp',
+                        closeButton: true,
+                        tapToDismiss: true,
+                        rtl: isRtl
+                    }
+                    );
+                }, 500);
+            });
+        </script>
+        <!--#Toast Success Delete Influencer-->
     @endpush
 </div>

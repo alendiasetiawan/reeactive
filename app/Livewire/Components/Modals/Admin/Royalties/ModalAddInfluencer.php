@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Components\Modals\Admin\Royalties;
 
+use App\Livewire\Loyalties\Influencer as LoyaltiesInfluencer;
 use Livewire\Component;
 use App\Models\Influencer;
 use Livewire\Attributes\On;
@@ -16,7 +17,7 @@ class ModalAddInfluencer extends Component
     public $isSubmitActivated = false;
     //Object
     public $queryInfluencer;
-    //Integer
+    //Object
     #[Reactive]
     public $selectedIdInfluencer;
 
@@ -35,11 +36,11 @@ class ModalAddInfluencer extends Component
         if ($this->modalType == 'editInfluencer') {
             $this->queryInfluencer = Influencer::find($this->selectedIdInfluencer);
             $this->isSubmitActivated = true;
-            $this->influencerName = $this->queryInfluencer?->name;
-            $this->phoneNumber = $this->queryInfluencer?->phone;
-            $this->instagramLink = $this->queryInfluencer?->link_instagram;
-            $this->facebookLink = $this->queryInfluencer?->link_facebook;
-            $this->note = $this->queryInfluencer?->note;
+            $this->influencerName = $this->queryInfluencer->name;
+            $this->phoneNumber = $this->queryInfluencer->phone;
+            $this->instagramLink = $this->queryInfluencer->link_instagram;
+            $this->facebookLink = $this->queryInfluencer->link_facebook;
+            $this->note = $this->queryInfluencer->note;
         }
     }
 
@@ -75,7 +76,6 @@ class ModalAddInfluencer extends Component
                 'note' => $this->note
             ]
             );
-
             $this->dispatch('add-influencer-success');
             $this->redirect(route('admin::influencer'), navigate:true);
         } catch (\Throwable $th) {

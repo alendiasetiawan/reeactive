@@ -1,5 +1,8 @@
 <div>
-    <x-modals.basic-modal modalTitle="Tambah Influencer" id="{{ $modalId }}" wire:ignore.self>
+    <x-modals.basic-modal id="{{ $modalId }}" wire:ignore.self>
+        <x-slot:modalTitle>
+            {{ $modalType == 'editInfluencer' ? 'Edit Influencer' : 'Tambah Influencer' }}
+        </x-slot:modalTitle>
         <form wire:submit='saveInfluencer'>
             <div class="row mb-1">
                 <div class="col-lg-6 col-12">
