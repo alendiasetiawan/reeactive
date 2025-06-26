@@ -17,6 +17,7 @@ use App\Models\Referral;
 use App\Models\PhoneCode;
 use App\Models\Pricelist;
 use App\Models\ClassModel;
+use App\Models\FromInfluencerRegistration;
 use Illuminate\Support\Str;
 use App\Models\Registration;
 use Livewire\WithFileUploads;
@@ -24,10 +25,12 @@ use App\Services\BatchService;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Computed;
+use App\Models\InfluencerReferral;
 use App\Models\VoucherMerchandise;
 use Illuminate\Support\Facades\DB;
 use App\Models\ReferralRegistration;
 use Illuminate\Support\Facades\Hash;
+use App\Services\ReferralCodeService;
 use App\Services\RegistrationService;
 
 class FormNewMember extends Component
@@ -37,70 +40,22 @@ class FormNewMember extends Component
     #[Layout('layouts.blank')]
     #[Title('Pendaftaran Member Baru')]
 
-    public $batch;
-    public $specialProgram;
-    public $selectedProgram;
-    public $selectedCoach;
-    public $selectedClass;
-    public $poinSatu;
-    public $poinDua;
-    public $poinTiga;
-    public $poinEmpat;
-    public $poinLima;
-    public $poinEnam;
-    public $questionOne;
-    public $questionTwo;
-    public $questionThree;
-    public $questionFour;
-    public $questionFive;
-    public $questionSix;
-    public $questionSeven;
-    public $questionEight;
-    public $questionNine;
-    public $price, $amountDisc, $priceAfterDisc, $adminFee, $totalPrice, $discountReferral, $referralId, $countReferralUsed, $referralLimit, $discountReferralAmount;
-    public $healthScreenings;
-    public $phoneCodes;
-    public $countries;
-    public $provinces;
-    public $questionSpecialCase = false;
-    public $nextStep = false;
-    public $specialCase = false;
-    public $provinceId;
-    public $countryId;
-    public $regencyId;
-    public $districtId;
-    public $fileUpload;
-    public $showProgressBar = false;
-    public $uploadedFileName;
-    public $memberName;
-    public $ageStart;
-    public $bodyHeight;
-    public $bodyWeight;
-    public $address;
-    public $countryPhoneCode;
-    public $phone;
-    public $medicalFile;
-    public $password;
-    public $quotaLeft;
-    public $selectedLevel = 1;
-    public $registered;
-    public $medicalFileName;
-    public $medical_condition;
-    public $discount;
-    public bool $alertUserExist = false, $alertQuota = false, $alertAddress = false;
-    public ?string $registrationType;
-    public $openDate, $voucherValidDate;
-    public $referralCode, $memberCode;
-    public $isReferralFound, $isRegisteredEarly, $isCashBack, $isRegistered, $isReferralCodeError = false;
-
-    public $totalSteps = 4;
-    public $currentStep = 1;
+    //Object
+    public $healthScreenings, $phoneCodes, $countries, $provinces, $batch, $specialProgram, $selectedProgram, $selectedCoach, $selectedClass;
+    //String
+    public $poinSatu, $poinDua, $poinTiga, $poinEmpat, $poinLima, $poinEnam, $questionOne, $questionTwo, $questionThree, $questionFour, $questionFive, $questionSix, $questionSeven, $questionEight, $questionNine, $fileUpload, $uploadedFileName, $memberName, $address, $countryPhoneCode, $phone, $medicalFile, $medicalFileName, $medical_condition, $discount, $password, $registrationType, $openDate, $voucherValidDate, $referralCode, $memberCode;
+    //Integer
+    public $price, $amountDisc, $priceAfterDisc, $adminFee, $totalPrice, $discountReferral, $referralId, $countReferralUsed, $referralLimit, $discountReferralAmount, $provinceId, $countryId, $regencyId, $districtId, $ageStart, $bodyHeight, $bodyWeight, $quotaLeft, $selectedLevel = 1, $registered, $totalSteps = 4, $currentStep = 1, $countReferralInfluencerUsed, $influencerReferralLimit, $influencerReferralId, $influencerId;
+    //Boolean
+    public $questionSpecialCase = false, $nextStep = false, $specialCase = false, $showProgressBar = false, $alertUserExist = false, $alertQuota = false, $alertAddress = false, $isReferralFound, $isRegisteredEarly, $isCashBack, $isRegistered, $isReferralCodeError = false, $regulerReferralFound, $influencerReferralFound, $isReferralInfluencerExpired, $referralCodeFound;
 
     protected $batchService;
     protected $registrationService;
+    protected ReferralCodeService $referralCodeService;
 
-    public function boot(RegistrationService $registrationService) {
+    public function boot(RegistrationService $registrationService, ReferralCodeService $referralCodeService) {
         $this->registrationService = $registrationService;
+        $this->referralCodeService = $referralCodeService;
 
         //check the medical condition
         if ($this->questionEight == 'Cardiovascular') {
@@ -354,13 +309,19 @@ class FormNewMember extends Component
 
         if ($property == 'referralCode') {
             //Check if code exists
-            $this->isReferralFound = Referral::where('code', $this->referralCode)->exists();
+            $this->regulerReferralFound = Referral::where('code', $this->referralCode)->exists();
+            $this->influencerReferralFound = InfluencerReferral::where('code', $this->referralCode)->exists();
+
+            if ($this->regulerReferralFound || $this->influencerReferralFound) {
+                $this->referralCodeFound = true;
+            } else {
+                $this->referralCodeFound = false;
+            }
 
             //Check if code's owner is registered by early bird
-            if ($this->isReferralFound) {
+            if ($this->regulerReferralFound) {
                 $queryReferral = Referral::where('code', $this->referralCode)->first();
                 $this->memberCode = $queryReferral->member_code;
-                $this->discountReferral = $this->batch->discount_referral;
                 $this->referralId = $queryReferral->id;
 
                 $this->isRegisteredEarly = Registration::where('member_code', $this->memberCode)
@@ -375,12 +336,42 @@ class FormNewMember extends Component
                 $this->countReferralUsed = ReferralRegistration::where('member_code', $this->memberCode)
                 ->where('batch_id', $this->batch->id)
                 ->count();
+
+                if (!$this->regulerReferralFound || ($this->countReferralUsed >= $this->referralLimit) || $this->isRegisteredEarly) {
+                    $this->isReferralCodeError = true;
+                } else {
+                    $this->isReferralCodeError = false;
+                }
             }
 
-            if (!$this->isReferralFound || ($this->countReferralUsed >= $this->referralLimit) || $this->isRegisteredEarly) {
-                $this->isReferralCodeError = true;
+            //Check if referral code is influencer
+            if ($this->influencerReferralFound) {
+                $queryReferralInfluencer = InfluencerReferral::where('code', $this->referralCode)->first();
+                $this->discountReferral = $queryReferralInfluencer->discount;
+                $this->influencerReferralLimit = $queryReferralInfluencer->used_limit;
+                $this->influencerReferralId = $queryReferralInfluencer->id;
+                $this->influencerId = $queryReferralInfluencer->influencer_id;
+
+                //Check if referral code is valid
+                if ($queryReferralInfluencer->is_active == 0 || date('Y-m-d') > $queryReferralInfluencer->expired_date) {
+                    $this->isReferralInfluencerExpired = true;
+                }
+                else {
+                    $this->isReferralInfluencerExpired = false;
+                }
+
+                //Check how many times referral code has been used
+                $this->countReferralInfluencerUsed = FromInfluencerRegistration::where('influencer_referral_id', $this->influencerReferralId)
+                ->where('batch_id', $this->batch->id)
+                ->count();
+
+                if (!$this->influencerReferralFound || ($this->countReferralInfluencerUsed >= $this->influencerReferralLimit) || $this->isReferralInfluencerExpired) {
+                    $this->isReferralCodeError = true;
+                } else {
+                    $this->isReferralCodeError = false;
+                }
             } else {
-                $this->isReferralCodeError = false;
+                $this->discountReferral = $this->batch->discount_referral;
             }
 
             if ($this->referralCode == null) {
@@ -515,7 +506,7 @@ class FormNewMember extends Component
                 ]);
 
                 //Insert data user who registered using referral code
-                if ($this->isReferralFound && !$this->isRegisteredEarly && ($this->countReferralUsed < $this->referralLimit)) {
+                if ($this->regulerReferralFound && !$this->isRegisteredEarly && ($this->countReferralUsed < $this->referralLimit)) {
                     if ($this->isRegistered) {
                         $isCashBack = 1;
                         $isUsed = 0;
@@ -533,6 +524,16 @@ class FormNewMember extends Component
                         'is_cashback' => $isCashBack,
                         'is_used' => $isUsed,
                         'discount' => $this->discountReferral
+                    ]);
+                }
+
+                //Insert data user who registered using influncer referral
+                if ($this->influencerReferralFound && ($this->countReferralInfluencerUsed < $this->influencerReferralLimit) && !$this->isReferralInfluencerExpired){
+                    FromInfluencerRegistration::create([
+                        'registration_id' => $registration->id,
+                        'influencer_referral_id' => $this->influencerReferralId,
+                        'influencer_id' => $this->influencerId,
+                        'batch_id' => $this->batch->id
                     ]);
                 }
 

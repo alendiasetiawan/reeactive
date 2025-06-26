@@ -43,7 +43,7 @@
 
             <div class="row mb-2">
                 <div class="col-lg-6 col-12">
-                    <x-inputs.label>Limit Penggunaan <span class="text-danger">*</span></x-inputs.label>
+                    <x-inputs.label>Limit Penggunaan Per Batch <span class="text-danger">*</span></x-inputs.label>
                     <x-vuexy.inputs.number placeholder="Berapa kali voucher bisa digunakan?" wire:model.live.debounce.350ms='usedLimit'/>
                 </div>
                 <div class="col-lg-6 col-12">
