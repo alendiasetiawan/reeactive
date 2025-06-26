@@ -20,14 +20,21 @@
       humanFriendlyPickr = $('.flatpickr-human-friendly'),
       disabledRangePickr = $('.flatpickr-disabled-range'),
       inlineRangePickr = $('.flatpickr-inline'),
-      limitDatePickr = $('.limit-date');
+      maxDateTodayPickr = $('.max-date-today'),
+      minDateTodayPickr = $(".min-date-today");
 
       //limit date
-      if (limitDatePickr.length) {
-          limitDatePickr.flatpickr({
+      if (maxDateTodayPickr.length) {
+          maxDateTodayPickr.flatpickr({
               maxDate: 'today'
           });
       }
+
+      if (minDateTodayPickr.length) {
+        minDateTodayPickr.flatpickr({
+            minDate: "today",
+        });
+    }
 
     // Default
     if (basicPickr.length) {

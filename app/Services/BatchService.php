@@ -28,7 +28,7 @@ class BatchService {
         return $batchId;
     }
 
-    public function batchQuery() {
+    public static function batchQuery() {
         $activeBatch = Batch::where('batch_status', 'Active')->exists();
         $openBatch = Batch::where('batch_status', 'Open')->exists();
 

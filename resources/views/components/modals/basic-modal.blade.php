@@ -1,3 +1,7 @@
+@props(([
+    'modalTitle' => 'Judul Modal' ?? ''
+]))
+
 <div
 {{ $attributes->merge([
     'class' => 'modal fade',
