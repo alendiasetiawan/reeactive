@@ -4,12 +4,12 @@
             {{ $modalType == 'editInfluencer' ? 'Edit Influencer' : 'Tambah Influencer' }}
         </x-slot:modalTitle>
         <form wire:submit='saveInfluencer'>
-            <div class="row mb-1">
-                <div class="col-lg-6 col-12">
+            <div class="row">
+                <div class="col-lg-6 col-12 mb-1">
                     <x-vuexy.inputs.label>Nama Influencer <span class="text-danger">*</span></x-vuexy.inputs.label>
                     <x-vuexy.inputs.text placeholder="Tulis nama lengkap" wire:model.live.debounce.350ms='influencerName'/>
                 </div>
-                <div class="col-lg-6 col-12">
+                <div class="col-lg-6 col-12 mb-1">
                     <x-vuexy.inputs.label>Nomor Whatsapp</x-vuexy.inputs.label>
                     <x-vuexy.inputs.basic-merge>
                         <x-slot:icon>+62</x-slot:icon>
@@ -22,19 +22,19 @@
                 </div>
             </div>
 
-            <div class="row mb-1">
-                <div class="col-lg-6 col-12">
+            <div class="row">
+                <div class="col-lg-6 col-12 mb-1">
                     <x-vuexy.inputs.label>Link Instagram</x-vuexy.inputs.label>
                     <x-vuexy.inputs.text placeholder="https://www.instagram.com/" wire:model='instagramLink'/>
                 </div>
-                <div class="col-lg-6 col-12">
+                <div class="col-lg-6 col-12 mb-1">
                     <x-vuexy.inputs.label>Link Facebook</x-vuexy.inputs.label>
                     <x-vuexy.inputs.text placeholder="https://www.facebook.com/" wire:model='facebookLink'/>
                 </div>
             </div>
 
-            <div class="row mb-2">
-                <div class="col-12">
+            <div class="row">
+                <div class="col-12 mb-1">
                     <x-vuexy.inputs.label>Catatan</x-vuexy.inputs.label>
                     <x-vuexy.inputs.textarea rows="3" wire:model='note'/>
                 </div>

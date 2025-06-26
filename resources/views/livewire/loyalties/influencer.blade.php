@@ -121,7 +121,7 @@
                     <!--#Catatan-->
 
                     <!--List Referral Code-->
-                    <div>
+                    <div class="">
                         <span>Kode Referral</span>
                         <a href="#" wire:click="setIdInfluencer('{{ Crypt::encrypt($influencer->id) }}')" data-bs-toggle="modal" data-bs-target="#modalAddReferral">
                             <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-square-plus font-medium-2 text-primary"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 12h6" /><path d="M12 9v6" /><path d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14z" /></svg>
@@ -130,8 +130,22 @@
                     <div class="@if($influencer->total_referral_code > 3) mini-scroller @endif">
                         @forelse ($influencer->influencerReferrals as $referral)
                             <div class="d-flex justify-content-between @if($referral->is_active != 1 || \Carbon\Carbon::now() > $referral->expired_date) text-muted @endif">
-                                <span>{{ $referral->code }}</span>
-                                <span>{{ $referral->total_referral_registered }} Member</span>
+                                <div class="progress-stats" x-data="{ showMsg: false }">
+                                    <div x-data="{ input: '{{ $referral->code }}', showMsg: false }" >
+                                        <span>{{ $referral->code }}</span>
+                                        <a href="javascript:void(0)" @click="navigator.clipboard.writeText(input), showMsg = true, setTimeout(() => showMsg = false, 1000)" class="text-dark">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy font-medium-2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                        </a>
+                                        <div x-show="showMsg" @click.away="showMsg = false" style="display: none;">
+                                            Kode Disalin!
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span>{{ $referral->total_referral_registered }} Member</span>
+                                </div>
+                                {{-- <span>{{ $referral->code }}</span>
+                                <span>{{ $referral->total_referral_registered }} Member</span> --}}
                             </div>
                         @empty
                             <em>Belum memiliki kode referral</em>
