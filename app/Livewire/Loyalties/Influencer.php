@@ -8,7 +8,6 @@ use Livewire\Attributes\Title;
 
 class Influencer extends Component
 {
-    public $nama;
     public $isMobile;
 
     #[Title('Database Influencer')]

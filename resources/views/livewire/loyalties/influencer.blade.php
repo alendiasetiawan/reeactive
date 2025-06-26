@@ -9,11 +9,11 @@
         <div class="col-12 d-flex justify-content-between align-items-center">
             <div>
                 @if ($isMobile)
-                    <x-buttons.basic color="primary" class="btn-icon btn-sm">
+                    <x-buttons.basic color="primary" class="btn-icon btn-sm" data-bs-toggle="modal" data-bs-target="#modalAddInfluencer">
                         <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-users-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M3 21v-2a4 4 0 0 1 4 -4h4c.96 0 1.84 .338 2.53 .901" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /><path d="M16 19h6" /><path d="M19 16v6" /></svg>
                     </x-buttons.basic>
                 @else
-                    <x-buttons.basic color="primary" class="btn-sm">
+                    <x-buttons.basic color="primary" class="btn-sm" data-bs-toggle="modal" data-bs-target="#modalAddInfluencer">
                         <x-slot:icon>
                             <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-circle-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /><path d="M9 12h6" /><path d="M12 9v6" /></svg>
                         </x-slot:icon>
@@ -23,7 +23,7 @@
             </div>
             <div>
                 <x-badges.basic color="primary">
-                    Jumlah Influencer : 4
+                    Jumlah Influencer : 1
                 </x-badges.basic>
             </div>
         </div>
@@ -70,6 +70,7 @@
                 </x-slot:headingContent>
 
                 <!--List Referral Code-->
+                <p>Tulis catatan anda disini</p>
                 <div>
                     <span>Kode Referral</span>
                     <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-square-plus font-medium-2 text-primary"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 12h6" /><path d="M12 9v6" /><path d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14z" /></svg>
@@ -85,16 +86,22 @@
         </div>
 
         <!--Button Load More-->
-        <div class="col-12 text-center">
+        {{-- <div class="col-12 text-center">
             <x-buttons.outline-secondary>Tampilkan Lagi</x-buttons.outline-secondary>
-        </div>
+        </div> --}}
         <!--#Button Load More-->
     </div>
 
 
     <!---Modal Add Influencer-->
-    <x-modals.center-modal>
-
-    </x-modals.center-modal>
+    <livewire:components.modals.admin.royalties.modal-add-influencer modalId="modalAddInfluencer"/>
     <!---#Modal Add Influencer-->
+
+    @push('pageScripts')
+        <script data-navigate-once>
+            window.addEventListener('add-influencer-success', event => {
+                $('#modalAddInfluencer').modal('hide');
+            });
+        </script>
+    @endpush
 </div>
