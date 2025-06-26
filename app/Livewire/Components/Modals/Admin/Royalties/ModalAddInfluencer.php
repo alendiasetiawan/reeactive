@@ -38,7 +38,7 @@ class ModalAddInfluencer extends Component
 
     //ACTION - Check if all field has been filled
     public function isFormFilled() {
-        if (!empty($this->influencerName) && !empty($this->phoneNumber)) {
+        if (!empty($this->influencerName)) {
             $this->isSubmitActivated = true;
         } else {
             $this->isSubmitActivated = false;

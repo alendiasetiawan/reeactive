@@ -7,9 +7,16 @@ use Illuminate\Support\Facades\Auth;
 
 trait NavbarActionTrait
 {
+    private $fetchUserRole;
+
+    public function __construct() {
+        $this->fetchUserRole = User::join('roles', 'users.role_id','roles.id')
+        ->where('users.email', Auth::user()->email)
+        ->first();
+    }
+
     public function getAccountName() {
-        $user = User::where('email', Auth::user()->email)->first();
-        $fullname = $user->full_name;
+        $fullname = $this->fetchUserRole->full_name;
         $name = explode(' ', $fullname);
         $firstName = $name[0];
 
@@ -20,16 +27,17 @@ trait NavbarActionTrait
             $lastname = "";
         }
 
-        $gender = $user->gender;
+        $gender = $this->fetchUserRole->gender;
 
-        return [$firstName, $lastname, $gender];
+        return [
+            'firstName' => $firstName,
+            'lastName' => $lastname,
+            'gender' => $gender
+        ];
     }
 
     public function getRoleName() {
-        $role = User::join('roles', 'users.role_id','roles.id')
-        ->where('users.email', Auth::user()->email)
-        ->first();
-        $level = $role->role_name;
+        $level = $this->fetchUserRole->role_name;
 
         return $level;
     }

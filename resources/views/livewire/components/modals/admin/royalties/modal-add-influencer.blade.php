@@ -7,7 +7,7 @@
                     <x-vuexy.inputs.text placeholder="Tulis nama lengkap" wire:model.live.debounce.350ms='influencerName'/>
                 </div>
                 <div class="col-lg-6 col-12">
-                    <x-vuexy.inputs.label>Nomor Whatsapp <span class="text-danger">*</span></x-vuexy.inputs.label>
+                    <x-vuexy.inputs.label>Nomor Whatsapp</x-vuexy.inputs.label>
                     <x-vuexy.inputs.basic-merge>
                         <x-slot:icon>+62</x-slot:icon>
                         <x-vuexy.inputs.number placeholder="8572836492" wire:model.live.debounce.350ms='phoneNumber' inputmode="numeric"

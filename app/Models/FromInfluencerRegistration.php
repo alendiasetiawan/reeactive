@@ -3,11 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class InfluencerReferral extends Model
+class FromInfluencerRegistration extends Model
 {
     use HasFactory;
 
@@ -18,8 +17,13 @@ class InfluencerReferral extends Model
         return $this->belongsTo(Influencer::class);
     }
 
-    public function fromInfluencerRegistrations(): HasMany
+    public function influencerReferral(): BelongsTo
     {
-        return $this->hasMany(FromInfluencerRegistration::class);
+        return $this->belongsTo(InfluencerReferral::class);
+    }
+
+    public function registration(): BelongsTo
+    {
+        return $this->belongsTo(Registration::class);
     }
 }
