@@ -9,7 +9,8 @@
     <meta name="author" content="Lira">
     <title>{{ $title ?? 'Home' }} - Reeactive | Fit For Deen</title>
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('style/app-assets/images/ico/faviconlaz.ico') }}">
-    <link href="https://fonts.googleapis.com/css?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600"
+        rel="stylesheet">
 
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('style/app-assets/vendors/css/vendors.main.css') }}">
@@ -23,7 +24,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('style/app-assets/css/components.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('style/app-assets/css/themes/dark-layout.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('style/app-assets/css/themes/semi-dark-layout.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('style/app-assets/css/core/menu/menu-types/vertical-menu.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('style/app-assets/css/core/menu/menu-types/vertical-menu.css') }}">
     <!-- END: Theme CSS-->
 
     <!-- BEGIN: Page CSS-->
@@ -32,10 +34,12 @@
 
     {{-- Custom CSS --}}
     <link rel="stylesheet" type="text/css" href="{{ asset('style/assets/css/style.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 </head>
 <!-- END: Head-->
 
-<body class="vertical-layout vertical-menu-modern navbar-floating footer-static menu-collapsed" data-open="click" data-menu="vertical-menu-modern" data-col="">
+<body class="vertical-layout vertical-menu-modern navbar-floating footer-static menu-collapsed" data-open="click"
+    data-menu="vertical-menu-modern" data-col="">
 
     <!--Navbar-->
     @if (Auth::user()->role_id == 3)

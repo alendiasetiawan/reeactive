@@ -70,7 +70,8 @@
                                             </x-inputs.label>
                                             <x-inputs.basic wire:model.live.debounce.350ms='referralCode' placeholder="Tulis jika anda memiliki kode"/>
                                             @if ($referralCode != null)
-                                                @if ($isReferralFound)
+                                                <!--Logic for Reguler Referral Code-->
+                                                @if ($regulerReferralFound)
                                                     @if (!$isRegisteredEarly && ($countReferralUsed < $referralLimit))
                                                         <small class="text-success">Selamat! Anda Mendapatkan Diskon Pendaftaran Sebesar {{ CurrencyHelper::formatRupiah($discountReferral) }}</small>
                                                     @elseif ($isRegisteredEarly)
@@ -78,7 +79,22 @@
                                                     @else
                                                         <small class="text-danger">Maaf, Kode Tidak Bisa Digunakan Lebih Dari {{ $referralLimit }}x</small>
                                                     @endif
-                                                @else
+                                                @endif
+                                                <!--#Logic for Reguler Referral Code-->
+
+                                                <!--Logic for Influencer Referral Code-->
+                                                @if ($influencerReferralFound)
+                                                    @if ($isReferralInfluencerExpired)
+                                                        <small class="text-danger">Maaf, Kode Referral Sudah Tidak Berlaku</small>
+                                                    @elseif ($countReferralInfluencerUsed >= $influencerReferralLimit)
+                                                        <small class="text-danger">Maaf, Kode Tidak Bisa Digunakan Lebih Dari {{ $influencerReferralLimit }}x</small>
+                                                    @else
+                                                        <small class="text-success">Selamat! Anda Mendapatkan Diskon Pendaftaran Sebesar {{ CurrencyHelper::formatRupiah($discountReferral) }}</small>
+                                                    @endif
+                                                @endif
+                                                <!--#Logic for Influencer Referral Code-->
+
+                                                @if (!$regulerReferralFound && !$influencerReferralFound)
                                                     <small class="text-danger">Maaf! Kode Referral Tidak Valid</small>
                                                 @endif
                                             @endif
@@ -431,7 +447,7 @@
                                                         <br>
                                                         Biaya Admin : <b>{{ CurrencyHelper::formatRupiah($adminFee) }}</b>
                                                         <br>
-                                                        @if (!$isReferralCodeError && $isReferralFound)
+                                                        @if (!$isReferralCodeError && $referralCodeFound)
                                                             Diskon : (-{{ CurrencyHelper::formatRupiah($discountReferral) }})
                                                             <br/>
                                                         @endif

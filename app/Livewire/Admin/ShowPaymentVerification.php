@@ -2,10 +2,12 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\FromInfluencerRegistration;
 use App\Models\Member;
 use App\Models\ReferralRegistration;
 use Livewire\Component;
 use App\Models\Registration;
+use App\Queries\FromInfluencerRegistrationQuery;
 use App\Services\BatchService;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
@@ -57,6 +59,10 @@ class ShowPaymentVerification extends Component
         //Check if member registered using referral code
         $this->isRegisteredViaReferral = ReferralRegistration::where('registration_id', $id)->count() > 0 ? true : false;
 
+        //Check if member registered using referral influencer
+        $isRegisteredViaInfluencer = FromInfluencerRegistration::where('registration_id', $id)->count() > 0 ? true : false;
+
+
         if ($registrationType == 'Early Bird') {
             $this->discountType = 'Early Bird';
             $this->isDiscountApply = true;
@@ -71,7 +77,15 @@ class ShowPaymentVerification extends Component
                 } else {
                     $this->amountDisc = $this->batch->discount_referral;
                 }
-            } else {
+            }
+            elseif ($isRegisteredViaInfluencer) {
+                $this->discountType = 'Referral Influencer';
+                $this->isDiscountApply = true;
+
+                $queryRegistration = FromInfluencerRegistrationQuery::fetchDetailRegistration($id);
+                $this->amountDisc = $queryRegistration->discount;
+            }
+            else {
                 $this->isDiscountApply = false;
             }
         }

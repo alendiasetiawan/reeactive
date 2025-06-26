@@ -21,6 +21,9 @@
                 @endisset
             </div>
             <div class="modal-footer">
+                @isset($modalFooter)
+                    {{ $modalFooter }}
+                @endisset
                 @isset($confirmButton)
                     <button {{ $confirmButton->attributes->merge([
                         'type' => 'button' ?? '',
