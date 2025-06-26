@@ -24,7 +24,7 @@ class Influencer extends Component
     public $fetchInfluencer;
 
     //LISTENER - Refresh data after add new influencer
-    #[On('add-influencer-success', 'add-referral-code-success')]
+    #[On('add-influencer-success', 'add-referral-code-success', 'delete-influencer-success')]
     public function refreshData() {
         $this->unsetCachedProperty();
     }
@@ -71,18 +71,7 @@ class Influencer extends Component
         $this->dispatch('event-edit-influencer');
     }
 
-    //ACTION - Delete data influencer
-    public function deleteInfluencer() {
-        try {
-            InfluencerModel::find($this->selectedIdInfluencer)->delete();
-            $this->unsetCachedProperty();
-            $this->dispatch('delete-influencer-success');
-            $this->redirect(route('admin::influencer'), navigate:true);
-        } catch (\Throwable $th) {
-            Log::error('Gagal menghapus data influencer:'. $th->getMessage());
-            session()->flash('error-delete-influencer', 'Terjadi kesalahan saat menghapus, silahkan coba kembali!');
-        }
-    }
+
 
     public function render()
     {
