@@ -14,15 +14,15 @@
         <x-slot:modalSubTitle>{{ $queryInfluencer?->name }}</x-slot:modalSubTitle>
 
         <form wire:submit='saveReferralCode'>
-            <div class="row mb-1">
-                <div class="col-12">
+            <div class="row">
+                <div class="col-12 mb-1">
                     <x-inputs.label>Kode Referral <span class="text-danger">*</span></x-inputs.label>
                     <x-vuexy.inputs.text wire:model.live.debounce.350ms='referralCode'/>
                 </div>
             </div>
 
-            <div class="row mb-1">
-                <div class="col-lg-6 col-12">
+            <div class="row">
+                <div class="col-lg-6 col-12 mb-1">
                     <x-inputs.label>Status</x-inputs.label>
                     <br/>
                     <x-vuexy.inputs.radio>
@@ -34,19 +34,19 @@
                         <x-slot:label for="status-inactive">Tidak Aktif</x-slot:label>
                     </x-vuexy.inputs.radio>
                 </div>
-                <div class="col-lg-6 col-12" wire:ignore>
+                <div class="col-lg-6 col-12 mb-1" wire:ignore>
                     <x-inputs.label>Tanggal Expired</x-inputs.label>
                     <x-vuexy.inputs.date-min-today placeholder="Pilih Tanggal" wire:model.live='expiredDate'/>
                     <small class="text-muted">Default System : +14 Dari Hari Ini</small>
                 </div>
             </div>
 
-            <div class="row mb-2">
-                <div class="col-lg-6 col-12">
+            <div class="row">
+                <div class="col-lg-6 col-12 mb-1">
                     <x-inputs.label>Limit Penggunaan Per Batch <span class="text-danger">*</span></x-inputs.label>
-                    <x-vuexy.inputs.number placeholder="Berapa kali voucher bisa digunakan?" wire:model.live.debounce.350ms='usedLimit'/>
+                    <x-vuexy.inputs.number placeholder="Berapa x bisa digunakan?" wire:model.live.debounce.350ms='usedLimit'/>
                 </div>
-                <div class="col-lg-6 col-12">
+                <div class="col-lg-6 col-12 mb-1">
                     <x-inputs.label>Nominal Diskon <span class="text-danger">*</span></x-inputs.label>
                     <x-vuexy.inputs.text type-currency="IDR" placeholder="Rp" wire:model.live.debounce.350ms='discount'/>
                 </div>
