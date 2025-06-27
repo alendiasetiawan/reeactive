@@ -11,30 +11,24 @@ use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\Influencer as InfluencerModel;
+use Livewire\WithComputed;
 
 class Influencer extends Component
 {
+    // use WithComputed;
     #[Title('Database Influencer')]
 
     //Boolean
     public $isMobile;
     //Integer
-    public $limitData = 6, $selectedIdInfluencer;
-    //Object
-    public $fetchInfluencer;
+    public $limitData = 6, $selectedIdInfluencer, $refreshKey = 0;
 
-    //LISTENER - Refresh data after add new influencer
-    #[On('add-influencer-success', 'add-referral-code-success', 'delete-influencer-success')]
-    public function refreshData() {
-        $this->unsetCachedProperty();
-    }
-
-    #[Computed(persist: true, seconds:1800)]
+    #[Computed(persist: true)]
     public function listInfluencers() {
         return InfluencerQuery::paginateListInfluencers($this->limitData);
     }
 
-    #[Computed(persist: true, seconds:1800)]
+    #[Computed(persist: true)]
     public function totalInfluencer() {
         return InfluencerModel::count();
     }
@@ -42,6 +36,7 @@ class Influencer extends Component
     //HOOK - Execute every time component is rendered
     public function boot(MobileDetect $mobileDetect) {
         $this->isMobile = $mobileDetect->isMobile();
+        $this->unsetCachedProperty();
     }
 
     //ACTION - Load more data
@@ -51,15 +46,13 @@ class Influencer extends Component
 
     //ACTION - Unset cached property
     public function unsetCachedProperty() {
-        unset($this->listInfluencers);
-        unset($this->totalInfluencer);
+        unset($this->listInfluencers, $this->totalInfluencer);
     }
 
     //ACTION - Confirmation delete data influencer
     public function setIdInfluencer($id) {
         try {
             $this->selectedIdInfluencer = Crypt::decrypt($id);
-            $this->fetchInfluencer = InfluencerModel::find($this->selectedIdInfluencer);
         } catch (\Throwable $th) {
             session()->flash('error-selected-id', 'Stop! Dilarang melakukan modifikasi ID Paramater');
         }
@@ -71,7 +64,17 @@ class Influencer extends Component
         $this->dispatch('event-edit-influencer');
     }
 
+    //ACTION - Set id and event for add referral code
+    public function setIdInfluencerReferral($id) {
+        $this->setIdInfluencer($id);
+        $this->dispatch('event-add-referral-code');
+    }
 
+    //ACTION - Set id and event for delete influencer
+    public function setIdDeleteInfluencer($id) {
+        $this->setIdInfluencer($id);
+        $this->dispatch('event-delete-influencer');
+    }
 
     public function render()
     {

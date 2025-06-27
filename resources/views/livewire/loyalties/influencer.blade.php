@@ -84,7 +84,7 @@
                                     </x-vuexy.buttons.dropdown-item>
                                 @else
                                     <x-vuexy.buttons.dropdown-item
-                                    wire:click="setIdInfluencer('{{ Crypt::encrypt($influencer->id) }}')"
+                                    wire:click="setIdDeleteInfluencer('{{ Crypt::encrypt($influencer->id) }}')"
                                     data-bs-toggle="modal"
                                     data-bs-target="#modalDeleteInfluencer">
                                         Hapus
@@ -123,7 +123,7 @@
                     <!--List Referral Code-->
                     <div class="">
                         <span>Kode Referral</span>
-                        <a href="#" wire:click="setIdInfluencer('{{ Crypt::encrypt($influencer->id) }}')" data-bs-toggle="modal" data-bs-target="#modalAddReferral">
+                        <a href="#" wire:click="setIdInfluencerReferral('{{ Crypt::encrypt($influencer->id) }}')" data-bs-toggle="modal" data-bs-target="#modalAddReferral">
                             <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-square-plus font-medium-2 text-primary"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 12h6" /><path d="M12 9v6" /><path d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14z" /></svg>
                         </a>
                     </div>
@@ -185,8 +185,7 @@
     <!--#Modal Add Referral-->
 
     <!--Modal Delete Influencer-->
-    <livewire:components.modals.admin.royalties.modal-delete-influencer modalId="modalDeleteInfluencer" :selectedIdInfluencer="$selectedIdInfluencer" />
-
+    <livewire:components.modals.admin.royalties.modal-delete-influencer modalId="modalDeleteInfluencer" :selectedIdInfluencer="$selectedIdInfluencer"/>
     <!--#Modal Delete Influencer-->
 
     @push('vendorScripts')
@@ -195,18 +194,6 @@
 
     @push('pageScripts')
         <script src="{{ asset('style/app-assets/js/scripts/extensions/ext-component-toastr.js') }}"></script>
-
-        <script data-navigate-once>
-            window.addEventListener('delete-influencer-success', event => {
-                $('#modalDeleteInfluencer').modal('hide');
-            });
-        </script>
-
-        <script data-navigate-once>
-            window.addEventListener('add-influencer-success', event => {
-                $('#modalAddInfluencer').modal('hide');
-            });
-        </script>
 
         <!--Toast Success Delete Influencer-->
         <script data-navigate-once>

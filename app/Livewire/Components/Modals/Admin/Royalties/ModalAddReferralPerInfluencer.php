@@ -5,6 +5,8 @@ namespace App\Livewire\Components\Modals\Admin\Royalties;
 use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\Influencer;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Reactive;
 use App\Models\InfluencerReferral;
 use Illuminate\Support\Facades\Log;
@@ -16,17 +18,20 @@ class ModalAddReferralPerInfluencer extends Component
     //Integer
     public $usedLimit;
     //Object
-    public $queryInfluencer;
+    public ?Influencer $queryAddReferral;
     //Boolean
     public $isSubmitActivated = false, $status = 1;
     //Integer
     #[Reactive]
     public $selectedIdInfluencer;
 
+    #[On('event-add-referral-code')]
+    public function fetchData() {
+        $this->queryAddReferral = Influencer::find($this->selectedIdInfluencer);
+    }
 
     //HOOK - Execute every time component is rendered
-    public function boot() {
-        $this->queryInfluencer = Influencer::find($this->selectedIdInfluencer);
+    public function hydrate() {
         $this->expiredDate = Carbon::now()->addDays(14)->format('Y-m-d');
     }
 
