@@ -22,4 +22,10 @@ class InfluencerReferral extends Model
     {
         return $this->hasMany(FromInfluencerRegistration::class);
     }
+
+    public static function baseQuery($influencerId = null) {
+        return self::when(!is_null($influencerId), function ($query) use ($influencerId) {
+            $query->where('influencer_id', $influencerId);
+        });
+    }
 }

@@ -72,14 +72,14 @@
             <!--LOYALTI PROGRAM-->
             <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">PROGRAM LOYALTI</span><i data-feather="more-horizontal"></i>
             </li>
-            <li class="nav-item {{ Route::is('admin::registered_by_referral') ? 'active' : '' }}">
-                <a wire:navigate class="d-flex align-items-center" href="{{ route('admin::registered_by_referral') }}">
+            <li class="nav-item {{ Route::is('admin::loyalty.membership.registered_by_referral') ? 'active' : '' }}">
+                <a wire:navigate class="d-flex align-items-center" href="{{ route('admin::loyalty.membership.registered_by_referral') }}">
                     <i data-feather='check-square'></i>
                     <span class="menu-title text-truncate">Claim Referral</span>
                 </a>
             </li>
-            <li class="nav-item {{ Route::is('admin::merchandise_voucher_verification') ? 'active' : '' }}">
-                <a wire:navigate class="d-flex align-items-center" href="{{ route('admin::merchandise_voucher_verification') }}">
+            <li class="nav-item {{ Route::is('admin::loyalty.membership.merchandise_voucher_verification') ? 'active' : '' }}">
+                <a wire:navigate class="d-flex align-items-center" href="{{ route('admin::loyalty.membership.merchandise_voucher_verification') }}">
                     <i data-feather='grid'></i>
                     <span class="menu-title text-truncate">Voc. Merchandise</span>
                 </a>
@@ -89,14 +89,14 @@
                     <span class="menu-title text-truncate">Endorse</span>
                 </a>
                 <ul class="menu-content">
-                    <li class="{{ Route::is('admin::influencer') ? 'active' : '' }}">
+                    <li class="{{ Route::is('admin::loyalty.endorse.influencer') ? 'active' : '' }}">
                         <a class="d-flex align-items-center" wire:navigate
-                            href="{{ route('admin::influencer') }}"><i data-feather="circle"></i>
+                            href="{{ route('admin::loyalty.endorse.influencer') }}"><i data-feather="circle"></i>
                             <span class="menu-item text-truncate">Influencer</span>
                         </a>
                     </li>
-                    <li class="">
-                        <a class="d-flex align-items-center" wire:navigate href="#"><i data-feather="circle"></i>
+                    <li class="{{ Route::is('admin::loyalty.endorse.influencer_referral_code') ? 'active' : ''}}">
+                        <a class="d-flex align-items-center" wire:navigate href="{{ route('admin::loyalty.endorse.influencer_referral_code') }}"><i data-feather="circle"></i>
                             <span class="menu-item text-truncate">Kode Referral</span>
                         </a>
                     </li>

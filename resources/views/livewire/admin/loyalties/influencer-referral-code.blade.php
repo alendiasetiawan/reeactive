@@ -1,0 +1,133 @@
+<div>
+    @push('vendorCss')
+        <link rel="stylesheet" type="text/css" href="{{ asset('style/app-assets/vendors/css/extensions/toastr.min.css') }}">
+    @endpush
+
+    @push('pageCss')
+        <link rel="stylesheet" type="text/css" href="{{ asset('style/app-assets/css/plugins/extensions/ext-component-toastr.css') }}">
+    @endpush
+
+    <x-vuexy.links.breadcrumb>
+        <x-slot:title>Kode Referral Influencer</x-slot:title>
+        <x-slot:activePage>Manajemen Kode Referral</x-slot:activePage>
+    </x-vuexy.links.breadcrumb>
+
+    <div class="row mb-1">
+        <!--Action Badge-->
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <div>
+                @if ($isMobile)
+                    <x-buttons.basic color="primary" class="btn-icon btn-sm" data-bs-toggle="modal" data-bs-target="#modalAddEditReferralInfluencer">
+                        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-users-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M3 21v-2a4 4 0 0 1 4 -4h4c.96 0 1.84 .338 2.53 .901" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /><path d="M16 19h6" /><path d="M19 16v6" /></svg>
+                    </x-buttons.basic>
+                @else
+                    <x-buttons.basic color="primary" class="btn-sm" data-bs-toggle="modal" data-bs-target="#modalAddEditReferralInfluencer" wire:click="$dispatchTo('components.modals.admin.royalties.modal-add-referral-influencer', 'event-add-edit-referral-code', {modalType: 'add'})">
+                        <x-slot:icon>
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-circle-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /><path d="M9 12h6" /><path d="M12 9v6" /></svg>
+                        </x-slot:icon>
+                        Kode Referral
+                    </x-buttons.basic>
+                @endif
+            </div>
+            <div>
+                <x-badges.basic color="primary">
+                    Jumlah Kode : 20
+                </x-badges.basic>
+            </div>
+        </div>
+        <!--#Action Badge-->
+    </div>
+
+    <!--List Referral Code-->
+    <div class="row">
+        @forelse ($this->paginateReferralCodes as $referral)
+            <div class="col-lg-4 col-md-6 col-12" wire:key="code-{{ $referral->id }}">
+                <x-vuexy.cards.role-card>
+                    <x-slot:judul>{{ $referral->influencer_name }}</x-slot:judul>
+
+                    <x-slot:sub_judul>
+                        <div>
+                            <a href="#" data-bs-toggle="dropdown" class="text-dark">
+                                <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-dots-vertical font-medium-3"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
+                            </a>
+                            <x-vuexy.buttons.dropdown-menu>
+                                <x-vuexy.buttons.dropdown-item
+                                wire:click="setIdEditInfluencer()"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalEditInfluencer">Edit</x-vuexy.buttons.dropdown-item>
+
+                                @if ($referral->total_referral_registered >= 1)
+                                    <x-vuexy.buttons.dropdown-item href="#" class="text-muted">
+                                        Hapus
+                                    </x-vuexy.buttons.dropdown-item>
+                                @else
+                                    <x-vuexy.buttons.dropdown-item
+                                    wire:click="setIdDeleteInfluencer()"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalDeleteInfluencer">
+                                        Hapus
+                                    </x-vuexy.buttons.dropdown-item>
+                                @endif
+                            </x-vuexy.buttons.dropdown-menu>
+                        </div>
+                    </x-slot:sub_judul>
+
+                    <x-slot:konten>{{ $referral->code }}</x-slot:konten>
+
+                    <x-slot:sub_konten>
+                        <a @if($referral->total_referral_registered >= 1) href="" @endif>
+                            {{ $referral->total_referral_registered }} Member
+                        </a>
+                        <br/>
+                        Valid Sampai : {{ \App\Helpers\TanggalHelper::konversiTanggal($referral->expired_date) }}
+                    </x-slot:sub_konten>
+
+                    @if ($referral->is_active == 0)
+                        <x-items.badges.light-danger>Active</x-items.badges.light-danger>
+                    @else
+                        <x-items.badges.light-success>Active</x-items.badges.light-success>
+                    @endif
+                </x-vuexy.cards.role-card>
+            </div>
+        @empty
+
+        @endforelse
+    </div>
+    <!--#List Referral Code-->
+
+    <!--Modal Add/Edit Referral Code-->
+    <livewire:components.modals.admin.royalties.modal-add-referral-influencer modalId="modalAddEditReferralInfluencer"/>
+    <!--#Modal Add/Edit Referral Code-->
+
+    @push('vendorScripts')
+        <script src="{{ asset('style/app-assets/vendors/js/extensions/toastr.min.js') }}"></script>
+    @endpush
+
+    @push('pageScripts')
+        <script src="{{ asset('style/app-assets/js/scripts/extensions/ext-component-toastr.js') }}"></script>
+
+        <!--Toast Success Delete Influencer-->
+        <script data-navigate-once>
+            window.addEventListener('add-referral-code-success', function () {
+                'use strict';
+                var isRtl = $('html').attr('data-textdirection') === 'rtl';
+
+                // On load Toast
+                setTimeout(function () {
+                    toastr['success'](
+                    'Tambah kode referral berhasil',
+                    'OK!',
+                    {
+                        showMethod: 'slideDown',
+                        hideMethod: 'slideUp',
+                        closeButton: true,
+                        tapToDismiss: true,
+                        rtl: isRtl
+                    }
+                    );
+                }, 500);
+            });
+        </script>
+        <!--#Toast Success Delete Influencer-->
+    @endpush
+</div>

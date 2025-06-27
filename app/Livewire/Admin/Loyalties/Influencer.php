@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Loyalties;
+namespace App\Livewire\Admin\Loyalties;
 
 use Livewire\Component;
 use Detection\MobileDetect;
@@ -78,6 +78,6 @@ class Influencer extends Component
 
     public function render()
     {
-        return view('livewire.loyalties.influencer')->layout('layouts.vuexy-app');
+        return view('livewire.admin.loyalties.influencer')->layout('layouts.vuexy-app');
     }
 }

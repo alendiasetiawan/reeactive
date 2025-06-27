@@ -7,32 +7,30 @@ use Livewire\Component;
 use App\Models\Influencer;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\Reactive;
 use App\Models\InfluencerReferral;
+use App\Queries\InfluencerQuery;
 use Illuminate\Support\Facades\Log;
 
-class ModalAddReferralPerInfluencer extends Component
+class ModalAddReferralInfluencer extends Component
 {
     //String
-    public $modalId, $referralCode, $expiredDate, $discount;
+    public $modalType, $modalId, $referralCode, $expiredDate, $discount;
     //Integer
-    public $usedLimit;
-    //Object
-    public $queryAddReferral;
+    public $influencerId = '', $usedLimit;
     //Boolean
-    public $isSubmitActivated = false, $status = 1;
-    //Integer
-    #[Reactive]
-    public $selectedIdInfluencer;
+    public $status, $isSubmitActivated = false;
+    //Collection
+    public $listInfluencers = [];
+    //Object
+    public $queryReferral;
 
-    #[On('event-add-referral-code')]
-    public function fetchData() {
-        $this->queryAddReferral = Influencer::find($this->selectedIdInfluencer);
-    }
-
-    //HOOK - Execute every time component is rendered
-    public function hydrate() {
+    //LISTENER - Listeting to event add referral code
+    #[On('event-add-edit-referral-code')]
+    public function setModalType($modalType) {
+        $this->modalType = $modalType;
+        $this->listInfluencers = InfluencerQuery::listActiveInfluencers();
         $this->expiredDate = Carbon::now()->addDays(14)->format('Y-m-d');
+        $this->status = 1;
     }
 
     //HOOK - Execute when property is changed
@@ -42,7 +40,7 @@ class ModalAddReferralPerInfluencer extends Component
 
     //ACTION - Check if all field has been filled
     public function isFormFilled() {
-        if (!empty($this->referralCode) && !empty($this->usedLimit) && !empty($this->discount)) {
+        if (!empty($this->influencerId) && !empty($this->referralCode) && !empty($this->usedLimit) && !empty($this->discount)) {
             $this->isSubmitActivated = true;
         } else {
             $this->isSubmitActivated = false;
@@ -52,8 +50,10 @@ class ModalAddReferralPerInfluencer extends Component
     //ACTION - Save referral code
     public function saveReferralCode() {
         try {
-            InfluencerReferral::create([
-                'influencer_id' => $this->selectedIdInfluencer,
+            InfluencerReferral::updateOrCreate([
+                'id' => $this->queryReferral?->id
+            ], [
+                'influencer_id' => $this->influencerId,
                 'code' => $this->referralCode,
                 'is_active' => $this->status,
                 'expired_date' => $this->expiredDate,
@@ -62,16 +62,15 @@ class ModalAddReferralPerInfluencer extends Component
             ]);
 
             $this->dispatch('add-referral-code-success');
-            $this->redirect(route('admin::influencer'), navigate:true);
+            $this->redirect(route('admin::loyalty.endorse.influencer_referral_code'), navigate:true);
         } catch (\Throwable $th) {
             Log::error('Gagal menyimpan data referral code:'. $th->getMessage());
             session()->flash('error-add-referral-code', 'Terjadi kesalahan saat menyimpan, silahkan coba kembali!');
         }
     }
 
-
     public function render()
     {
-        return view('livewire.components.modals.admin.royalties.modal-add-referral-per-influencer');
+        return view('livewire.components.modals.admin.royalties.modal-add-referral-influencer');
     }
 }

@@ -19,4 +19,11 @@ class InfluencerQuery {
         ->paginate($limitData);
     }
 
+    public static function listActiveInfluencers() {
+        return Influencer::activeInfluencer()
+        ->select('id', 'name')
+        ->orderBy('name', 'asc')
+        ->get();
+    }
+
 }

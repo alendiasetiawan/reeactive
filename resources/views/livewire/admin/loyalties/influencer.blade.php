@@ -50,6 +50,7 @@
                 <x-vuexy.cards.apply-job
                 color="primary">
                     <x-slot:title>{{ $influencer->name }}</x-slot:title>
+
                     <x-slot:subTitle>
                         @if ($influencer->phone)
                             +{{ $influencer->country_code }}{{ $influencer->phone }}

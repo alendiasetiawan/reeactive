@@ -21,7 +21,8 @@ use App\Livewire\Admin\Registrations\RegisteredByReferral;
 use App\Livewire\Admin\Registrations\ShowWorkshopVerification;
 use App\Livewire\Admin\Registrations\LepasanPaymentVerification;
 use App\Livewire\Admin\Registrations\WorkshopPaymentVerification;
-use App\Livewire\Loyalties\Influencer;
+use App\Livewire\Admin\Loyalties\Influencer;
+use App\Livewire\Admin\Loyalties\InfluencerReferralCode;
 
 Route::group(['middleware' => ['auth', 'admin'], 'as' => 'admin::'], function() {
     Route::prefix('admin')->group(function() {
@@ -59,8 +60,23 @@ Route::group(['middleware' => ['auth', 'admin'], 'as' => 'admin::'], function() 
         Route::get('/request-reset-password', RequestResetPassword::class)->name('request_reset_password');
 
         //Loyalty Program
-        Route::get('/verifikasi-voucher-merchandise', MerchandiseVoucherVerification::class)->name('merchandise_voucher_verification');
-        Route::get('/pendaftar-referral', RegisteredByReferral::class)->name('registered_by_referral');
-        Route::get('/influencer', Influencer::class)->name('influencer');
+        Route::group(['prefix' => 'loyalty', 'as' => 'loyalty.'], function() {
+            //Referral Member
+            Route::group(['prefix' => 'memb ership', 'as' => 'membership.'], function() {
+                Route::get('/pendaftar-referral', RegisteredByReferral::class)->name('registered_by_referral');
+                Route::get('/verifikasi-voucher-merchandise', MerchandiseVoucherVerification::class)->name('merchandise_voucher_verification');
+            });
+
+            //Endorsement
+            Route::group(['prefix' => 'endorse', 'as' => 'endorse.'], function() {
+                Route::get('/influencer', Influencer::class)->name('influencer');
+                Route::get('/referral-code', InfluencerReferralCode::class)->name('influencer_referral_code');
+            });
+        });
+
+
+
+
+
     });
 });
