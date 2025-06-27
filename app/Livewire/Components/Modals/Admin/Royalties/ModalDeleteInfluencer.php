@@ -4,6 +4,8 @@ namespace App\Livewire\Components\Modals\Admin\Royalties;
 
 use Livewire\Component;
 use App\Models\Influencer;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Reactive;
 use Illuminate\Support\Facades\Log;
 
@@ -17,14 +19,15 @@ class ModalDeleteInfluencer extends Component
     #[Reactive]
     public $selectedIdInfluencer;
 
-    public function boot() {
+    #[On('event-delete-influencer')]
+    public function fetchData() {
         $this->queryInfluencerDelete = Influencer::find($this->selectedIdInfluencer);
     }
 
     //ACTION - Delete data influencer
     public function deleteInfluencer() {
         try {
-            Influencer::find($this->selectedIdInfluencer)->delete();
+            Influencer::find($this->queryInfluencerDelete->id)?->delete();
             $this->dispatch('delete-influencer-success');
             $this->redirect(route('admin::influencer'), navigate:true);
         } catch (\Throwable $th) {

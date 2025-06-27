@@ -11,7 +11,9 @@
 
     <x-modals.basic-modal id="{{ $modalId }}" wire:ignore.self>
         <x-slot:modalTitle>Tambah Kode Referral</x-slot:modalTitle>
-        <x-slot:modalSubTitle>{{ $queryInfluencer?->name }}</x-slot:modalSubTitle>
+        <x-slot:modalSubTitle>
+            {{ $queryAddReferral?->name }}
+        </x-slot:modalSubTitle>
 
         <form wire:submit='saveReferralCode'>
             <div class="row">
@@ -65,7 +67,7 @@
             <div class="row">
                 <div class="col-12">
                     <x-buttons.basic color="primary" type="submit" :disabled="$isSubmitActivated && !$errors->any() ? false : true">Simpan</x-buttons.basic>
-                    <x-buttons.outline-secondary data-bs-dismiss="modal" type="reset">Batal</x-buttons.outline-secondary>
+                    <x-buttons.outline-secondary data-bs-dismiss="modal" type="button">Batal</x-buttons.outline-secondary>
                 </div>
             </div>
         </form>
