@@ -53,7 +53,7 @@
             <div class="row">
                 <div class="col-12">
                     <x-buttons.basic color="primary" type="submit" :disabled="$isSubmitActivated && !$errors->any() ? false : true">Simpan</x-buttons.basic>
-                    <x-buttons.outline-secondary data-bs-dismiss="modal" type="reset">Batal</x-buttons.outline-secondary>
+                    <x-buttons.outline-secondary data-bs-dismiss="modal" type="button">Batal</x-buttons.outline-secondary>
                 </div>
             </div>
         </form>
