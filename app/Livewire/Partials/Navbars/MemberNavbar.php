@@ -14,10 +14,11 @@ class MemberNavbar extends Component
 
 
     public function mount() {
+        $accountQuery = $this->getAccountName();
         $this->roleName = $this->getRoleName();
-        $this->firstName = $this->getAccountName()[0];
-        $this->lastName = $this->getAccountName()[1];
-        $this->gender = $this->getAccountName()[2];
+        $this->firstName = $accountQuery['firstName'];
+        $this->lastName = $accountQuery['lastName'];
+        $this->gender = $accountQuery['gender'];
     }
 
     public function render()
