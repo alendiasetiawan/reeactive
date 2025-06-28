@@ -14,7 +14,7 @@
 
     <div class="row mb-1">
         <!--Action Badge-->
-        <div class="col-12 d-flex justify-content-between align-items-center">
+        <div class="col-12 mb-1 d-flex justify-content-between align-items-center">
             <div>
                 @if ($isMobile)
                     <x-buttons.basic color="primary" class="btn-icon btn-sm" data-bs-toggle="modal" data-bs-target="#modalAddEditReferralInfluencer">
@@ -31,15 +31,25 @@
             </div>
             <div>
                 <x-badges.basic color="primary">
-                    Jumlah Kode : 20
+                    Jumlah Kode : {{ $this->totalReferralCode }}
                 </x-badges.basic>
             </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-12">
+            <x-vuexy.inputs.vuexy-select wire:model.live='selectedInfluencerId'>
+                <x-vuexy.inputs.vuexy-select-option value="">Semua Influencer</x-vuexy.inputs.vuexy-select-option>
+                @foreach ($listInfluencers as $influencer)
+                    <x-vuexy.inputs.vuexy-select-option value="{{ $influencer->id }}">{{ $influencer->name }}</x-vuexy.inputs.vuexy-select-option>
+                @endforeach
+            </x-vuexy.inputs.vuexy-select>
         </div>
         <!--#Action Badge-->
     </div>
 
     <!--List Referral Code-->
-    <div class="row">
+    <div class="row @if($isMobile) scroller5 @else scroller6 @endif">
+
         @forelse ($this->paginateReferralCodes as $referral)
             <div class="col-lg-4 col-md-6 col-12" wire:key="code-{{ $referral->id }}">
                 <x-vuexy.cards.role-card>
@@ -79,24 +89,44 @@
                             {{ $referral->total_referral_registered }} Member
                         </a>
                         <br/>
-                        Valid Sampai : {{ \App\Helpers\TanggalHelper::konversiTanggal($referral->expired_date) }}
+                        Valid Sampai :
+                        @if (\Carbon\Carbon::now() > $referral->expired_date)
+                            <span class="text-danger">Expired</span>
+                        @else
+                            {{ \App\Helpers\TanggalHelper::konversiTanggal($referral->expired_date) }}
+                        @endif
                     </x-slot:sub_konten>
 
                     @if ($referral->is_active == 0)
-                        <x-items.badges.light-danger>Active</x-items.badges.light-danger>
+                        <x-items.badges.light-danger>Inactive</x-items.badges.light-danger>
                     @else
                         <x-items.badges.light-success>Active</x-items.badges.light-success>
                     @endif
                 </x-vuexy.cards.role-card>
             </div>
         @empty
-
+            <div class="col-12 text-center">
+                <x-alerts.not-found />
+            </div>
         @endforelse
+
+        <!--Button Load More-->
+        @if ($this->paginateReferralCodes->hasMorePages())
+            <div wire:loading wire:target='loadMore'>
+                <x-vuexy.items.loading-dots/>
+            </div>
+            <div class="col-12 text-center" wire:loading.remove wire:target='loadMore'>
+                <x-buttons.outline-secondary wire:click='loadMore'>
+                    Tampilkan Lagi
+                </x-buttons.outline-secondary>
+            </div>
+        @endif
+        <!--#Button Load More-->
     </div>
     <!--#List Referral Code-->
 
     <!--Modal Add/Edit Referral Code-->
-    <livewire:components.modals.admin.royalties.modal-add-referral-influencer modalId="modalAddEditReferralInfluencer"/>
+    <livewire:components.modals.admin.royalties.modal-add-referral-influencer modalId="modalAddEditReferralInfluencer" :listInfluencers="$listInfluencers"/>
     <!--#Modal Add/Edit Referral Code-->
 
     @push('vendorScripts')

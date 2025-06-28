@@ -20,7 +20,7 @@ class ModalAddReferralInfluencer extends Component
     //Boolean
     public $status, $isSubmitActivated = false;
     //Collection
-    public $listInfluencers = [];
+    public $listInfluencers;
     //Object
     public $queryReferral;
 
@@ -28,7 +28,6 @@ class ModalAddReferralInfluencer extends Component
     #[On('event-add-edit-referral-code')]
     public function setModalType($modalType) {
         $this->modalType = $modalType;
-        $this->listInfluencers = InfluencerQuery::listActiveInfluencers();
         $this->expiredDate = Carbon::now()->addDays(14)->format('Y-m-d');
         $this->status = 1;
     }

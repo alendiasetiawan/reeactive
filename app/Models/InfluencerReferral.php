@@ -24,7 +24,7 @@ class InfluencerReferral extends Model
     }
 
     public static function baseQuery($influencerId = null) {
-        return self::when(!is_null($influencerId), function ($query) use ($influencerId) {
+        return self::when(($influencerId), function ($query) use ($influencerId) {
             $query->where('influencer_id', $influencerId);
         });
     }

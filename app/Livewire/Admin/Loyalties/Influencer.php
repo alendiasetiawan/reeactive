@@ -23,12 +23,12 @@ class Influencer extends Component
     //Integer
     public $limitData = 6, $selectedIdInfluencer, $refreshKey = 0;
 
-    #[Computed(persist: true)]
+    #[Computed]
     public function listInfluencers() {
         return InfluencerQuery::paginateListInfluencers($this->limitData);
     }
 
-    #[Computed(persist: true)]
+    #[Computed]
     public function totalInfluencer() {
         return InfluencerModel::count();
     }
