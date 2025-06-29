@@ -29,7 +29,7 @@ class ModalDeleteInfluencer extends Component
         try {
             Influencer::find($this->queryInfluencerDelete->id)?->delete();
             $this->dispatch('delete-influencer-success');
-            $this->redirect(route('admin::influencer'), navigate:true);
+            $this->redirect(route('admin::loyalty.endorse.influencer'), navigate:true);
         } catch (\Throwable $th) {
             Log::error('Gagal menghapus data influencer:'. $th->getMessage());
             session()->flash('error-delete-influencer', 'Terjadi kesalahan saat menghapus, silahkan coba kembali!');

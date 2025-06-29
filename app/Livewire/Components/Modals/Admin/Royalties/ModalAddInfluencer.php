@@ -30,6 +30,12 @@ class ModalAddInfluencer extends Component
         'phoneNumber.min' => 'Nomor HP minimal 7 digit'
     ];
 
+    //LISTENER - Set valu country code
+    #[On('set-country-code')]
+    public function setCountryCode($phoneCode) {
+        $this->countryCode = $phoneCode;
+    }
+
     //HOOK - Execute every time component is rendered
     #[On('event-edit-influencer')]
     public function setValue() {
@@ -41,6 +47,7 @@ class ModalAddInfluencer extends Component
             $this->instagramLink = $this->queryInfluencer->link_instagram;
             $this->facebookLink = $this->queryInfluencer->link_facebook;
             $this->note = $this->queryInfluencer->note;
+            $this->countryCode = $this->queryInfluencer->country_code;
         }
     }
 
@@ -77,7 +84,7 @@ class ModalAddInfluencer extends Component
             ]
             );
             $this->dispatch('add-influencer-success');
-            $this->redirect(route('admin::influencer'), navigate:true);
+            $this->redirect(route('admin::loyalty.endorse.influencer'), navigate:true);
         } catch (\Throwable $th) {
             Log::error('Gagal menyimpan data influencer:'. $th->getMessage());
             session()->flash('error-add-influencer', 'Terjadi kesalahan saat menyimpan, silahkan coba kembali!');

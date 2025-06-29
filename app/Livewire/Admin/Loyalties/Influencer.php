@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Loyalties;
+namespace App\Livewire\Admin\Loyalties;
 
 use Livewire\Component;
 use Detection\MobileDetect;
@@ -23,12 +23,12 @@ class Influencer extends Component
     //Integer
     public $limitData = 6, $selectedIdInfluencer, $refreshKey = 0;
 
-    #[Computed(persist: true)]
+    #[Computed]
     public function listInfluencers() {
         return InfluencerQuery::paginateListInfluencers($this->limitData);
     }
 
-    #[Computed(persist: true)]
+    #[Computed]
     public function totalInfluencer() {
         return InfluencerModel::count();
     }
@@ -78,6 +78,6 @@ class Influencer extends Component
 
     public function render()
     {
-        return view('livewire.loyalties.influencer')->layout('layouts.vuexy-app');
+        return view('livewire.admin.loyalties.influencer')->layout('layouts.vuexy-app');
     }
 }

@@ -18,7 +18,7 @@ class ModalAddReferralPerInfluencer extends Component
     //Integer
     public $usedLimit;
     //Object
-    public ?Influencer $queryAddReferral;
+    public $queryAddReferral;
     //Boolean
     public $isSubmitActivated = false, $status = 1;
     //Integer
