@@ -7,7 +7,7 @@
                     <x-vuexy.inputs.text placeholder="Cari kode/nama negara" wire:model.live.debounce.450ms='search'/>
                 </div>
                 <div class="col-12">
-                    <ul class="list-group scroller2">
+                    <ul class="list-group scroller7">
                         @foreach ($countryCodeLists as $code)
                             <button
                             type="button"
