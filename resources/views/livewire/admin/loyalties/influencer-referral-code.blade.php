@@ -94,9 +94,9 @@
                     <x-slot:konten>{{ $referral->code }}</x-slot:konten>
 
                     <x-slot:sub_konten>
-                        <a @if($referral->total_referral_registered >= 1) href="" @endif>
+                        <span @if($referral->total_referral_registered >= 1) class="text-primary" @endif>
                             {{ $referral->total_referral_registered }} Member
-                        </a>
+                        </span>
                         <br/>
                         Valid :
                         @if (\Carbon\Carbon::now() > $referral->expired_date)
