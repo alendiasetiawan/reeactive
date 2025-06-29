@@ -36,7 +36,7 @@
                         <x-slot:label for="status-inactive">Tidak Aktif</x-slot:label>
                     </x-vuexy.inputs.radio>
                 </div>
-                <div class="col-lg-6 col-12 mb-1">
+                <div class="col-lg-6 col-12 mb-1" wire:ignore>
                     <x-inputs.label>Tanggal Expired</x-inputs.label>
                     <x-vuexy.inputs.date-min-today placeholder="Pilih Tanggal" wire:model.live='expiredDate'/>
                     <small class="text-muted">Default System : +14 Dari Hari Ini</small>
