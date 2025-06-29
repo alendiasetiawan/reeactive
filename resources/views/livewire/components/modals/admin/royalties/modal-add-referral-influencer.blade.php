@@ -95,7 +95,6 @@
                     placeholder="Pilih Tanggal"
                     wire:model.live='expiredDate'
                     />
-                    <small class="text-muted">Default System : +14 Dari Hari Ini</small>
                 </div>
 
                 <div class="col-lg-6 col-12 mb-1">
@@ -144,6 +143,7 @@
                     type="submit"
                     :disabled="$isSubmitActivated && !$errors->any() ? false : true"
                     >
+                    <x-vuexy.items.colored-spinner color="light" wire:loading wire:target='saveReferralCode'/>
                     Simpan
                     </x-buttons.basic>
 

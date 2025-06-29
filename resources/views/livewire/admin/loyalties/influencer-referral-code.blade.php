@@ -80,9 +80,9 @@
                                     </x-vuexy.buttons.dropdown-item>
                                 @else
                                     <x-vuexy.buttons.dropdown-item
-                                    wire:click="setIdDeleteInfluencer()"
+                                    wire:click="dispatch('event-delete-referral-code', {'id' : '{{ Crypt::encrypt($referral->id) }}' })"
                                     data-bs-toggle="modal"
-                                    data-bs-target="#modalDeleteInfluencer">
+                                    data-bs-target="#modalDeleteReferralCode">
                                         Hapus
                                     </x-vuexy.buttons.dropdown-item>
                                 @endif
@@ -136,6 +136,10 @@
     <livewire:components.modals.admin.royalties.modal-add-referral-influencer modalId="modalAddEditReferralInfluencer" :listInfluencers="$listInfluencers"/>
     <!--#Modal Add/Edit Referral Code-->
 
+    <!--Modal Delete Referral Code-->
+    <livewire:components.modals.admin.royalties.modal-delete-referral-code-influencer modalId="modalDeleteReferralCode"/>
+    <!--#Modal Delete Referral Code-->
+
     @push('vendorScripts')
         <script src="{{ asset('style/app-assets/vendors/js/extensions/toastr.min.js') }}"></script>
     @endpush
@@ -177,6 +181,30 @@
                 setTimeout(function () {
                     toastr['info'](
                     'Edit Kode Referral Berhasil',
+                    'OK!',
+                    {
+                        showMethod: 'slideDown',
+                        hideMethod: 'slideUp',
+                        closeButton: true,
+                        tapToDismiss: true,
+                        rtl: isRtl
+                    }
+                    );
+                }, 500);
+            });
+        </script>
+        <!--#Toast Success Edit Referral Code-->
+
+        <!--Toast Success Edit Referral Code-->
+        <script data-navigate-once>
+            window.addEventListener('delete-referral-code-success', function () {
+                'use strict';
+                var isRtl = $('html').attr('data-textdirection') === 'rtl';
+
+                // On load Toast
+                setTimeout(function () {
+                    toastr['warning'](
+                    'Hapus Kode Referral Berhasil',
                     'OK!',
                     {
                         showMethod: 'slideDown',

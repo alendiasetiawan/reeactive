@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Crypt;
 class ModalAddReferralInfluencer extends Component
 {
     //String
-    public $modalType, $modalId, $referralCode, $expiredDate, $discount, $selectedId = null, $influencerName;
+    public $modalType, $modalId, $referralCode, $expiredDate, $discount, $influencerName;
     //Integer
-    public $influencerId = '', $usedLimit;
+    public $influencerId = '', $usedLimit, $decryptedId;
     //Boolean
     public $status, $isSubmitActivated = false;
     //Collection
@@ -39,14 +39,14 @@ class ModalAddReferralInfluencer extends Component
 
         //Try to decrypt id
         try {
-            $this->selectedId = Crypt::decrypt($id);
+            $this->decryptedId = Crypt::decrypt($id);
         } catch (\Throwable $th) {
             session()->flash('error-selected-id', 'Stop! Dilarang melakukan modifikasi ID Paramater');
         }
 
         //When id is decrypted, run query and set value to form
         try {
-            $this->queryReferral = InfluencerReferralQuery::fetchDetailReferral($this->selectedId);
+            $this->queryReferral = InfluencerReferralQuery::fetchDetailReferral($this->decryptedId);
             $this->influencerId = $this->queryReferral->influencer_id;
             $this->referralCode = $this->queryReferral->code;
             $this->expiredDate = $this->queryReferral->expired_date;
@@ -79,7 +79,7 @@ class ModalAddReferralInfluencer extends Component
     public function saveReferralCode() {
         try {
             InfluencerReferral::updateOrCreate([
-                'id' => $this->selectedId
+                'id' => $this->decryptedId
             ], [
                 'influencer_id' => $this->influencerId,
                 'code' => $this->referralCode,
