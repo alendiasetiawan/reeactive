@@ -39,17 +39,13 @@
     </div>
 
     <!--List Influencer-->
-    <div class="row @if($isMobile) scroller5 @else scroller6 @endif">
-
-        <!--Loading Indicator-->
-        <x-items.loading-dots class="mb-1" wire:loading wire:target='loadMore'/>
-        <!--#Loading Indicator-->
-
+    <div class="row @if(!$isMobile) scroller6 @endif">
         @forelse ($this->listInfluencers as $influencer)
-            <div class="col-lg-4 col-md-6 col-12" wire:key='inf-{{ $influencer->id }}' wire:loading.remove wire:target='loadMore'>
+            <div class="col-lg-4 col-md-6 col-12" wire:key='inf-{{ $influencer->id }}'>
                 <x-vuexy.cards.apply-job
                 color="primary">
                     <x-slot:title>{{ $influencer->name }}</x-slot:title>
+
                     <x-slot:subTitle>
                         @if ($influencer->phone)
                             +{{ $influencer->country_code }}{{ $influencer->phone }}
@@ -144,8 +140,6 @@
                                 <div>
                                     <span>{{ $referral->total_referral_registered }} Member</span>
                                 </div>
-                                {{-- <span>{{ $referral->code }}</span>
-                                <span>{{ $referral->total_referral_registered }} Member</span> --}}
                             </div>
                         @empty
                             <em>Belum memiliki kode referral</em>
@@ -162,7 +156,10 @@
 
         <!--Button Load More-->
         @if ($this->listInfluencers->hasMorePages())
-            <div class="col-12 text-center">
+            <div wire:loading wire:target='loadMore'>
+                <x-vuexy.items.loading-dots/>
+            </div>
+            <div class="col-12 text-center" wire:loading.remove wire:target='loadMore'>
                 <x-buttons.outline-secondary wire:click='loadMore'>
                     Tampilkan Lagi
                 </x-buttons.outline-secondary>

@@ -12,7 +12,11 @@
                 <div class="col-lg-6 col-12 mb-1">
                     <x-vuexy.inputs.label>Nomor Whatsapp</x-vuexy.inputs.label>
                     <x-vuexy.inputs.basic-merge>
-                        <x-slot:icon>+62</x-slot:icon>
+                        <x-slot:icon>
+                            <a class="text-dark" wire:click="$dispatch('open-country-code-list')" data-bs-toggle="modal" data-bs-target="#modalCountryCode">
+                                +{{ $countryCode }}
+                            </a>
+                        </x-slot:icon>
                         <x-vuexy.inputs.number placeholder="8572836492" wire:model.live.debounce.350ms='phoneNumber' inputmode="numeric"
                         oninput="this.value = this.value.replace(/^0+/, '').replace(/[^0-9]/g, '')"/>
                     </x-vuexy.inputs.basic-merge>
@@ -53,9 +57,13 @@
             <div class="row">
                 <div class="col-12">
                     <x-buttons.basic color="primary" type="submit" :disabled="$isSubmitActivated && !$errors->any() ? false : true">Simpan</x-buttons.basic>
-                    <x-buttons.outline-secondary data-bs-dismiss="modal" type="button">Batal</x-buttons.outline-secondary>
+                    <x-buttons.outline-secondary data-bs-dismiss="modal" type="reset">Batal</x-buttons.outline-secondary>
                 </div>
             </div>
         </form>
     </x-modals.basic-modal>
+
+    <!--Country Code Lists Modal-->
+    <livewire:components.modals.country-code-list modalId="modalCountryCode"/>
+    <!--#Country Code Lists Modal-->
 </div>
