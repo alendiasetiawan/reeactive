@@ -56,7 +56,7 @@
     <!--Loading indicator when filter influencer is selected-->
 
     <!--List Referral Code-->
-    <div class="row @if($isMobile) scroller5 @else scroller6 @endif" wire:loading.remove wire:target='selectedInfluencerId'>
+    <div class="row @if(!$isMobile) scroller6 @endif" wire:loading.remove wire:target='selectedInfluencerId'>
         @forelse ($this->paginateReferralCodes as $referral)
             <div class="col-lg-4 col-md-6 col-12" wire:key="code-{{ $referral->id }}">
                 <x-vuexy.cards.role-card>
