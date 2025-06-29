@@ -89,7 +89,7 @@
                     </x-vuexy.inputs.radio>
                 </div>
 
-                <div class="col-lg-6 col-12 mb-1" wire:ignore>
+                <div class="col-lg-6 col-12 mb-1">
                     <x-inputs.label>Tanggal Expired</x-inputs.label>
                     <x-vuexy.inputs.date-min-today
                     placeholder="Pilih Tanggal"
