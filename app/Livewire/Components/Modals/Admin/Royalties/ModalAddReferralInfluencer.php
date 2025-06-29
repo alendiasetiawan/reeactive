@@ -47,6 +47,7 @@ class ModalAddReferralInfluencer extends Component
         //When id is decrypted, run query and set value to form
         try {
             $this->queryReferral = InfluencerReferralQuery::fetchDetailReferral($this->decryptedId);
+            $this->isSubmitActivated = true;
             $this->influencerId = $this->queryReferral->influencer_id;
             $this->referralCode = $this->queryReferral->code;
             $this->expiredDate = $this->queryReferral->expired_date;
