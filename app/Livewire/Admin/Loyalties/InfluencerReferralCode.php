@@ -22,12 +22,12 @@ class InfluencerReferralCode extends Component
     //Collection
     public $listInfluencers;
 
-    #[Computed]
+    #[Computed (persist: true)]
     public function paginateReferralCodes() {
         return InfluencerReferralQuery::paginateReferralCodes($this->limitData, $this->selectedInfluencerId);
     }
 
-    #[Computed]
+    #[Computed (persist: true)]
     public function totalReferralCode() {
         return InfluencerReferral::count();
     }
@@ -38,9 +38,21 @@ class InfluencerReferralCode extends Component
         $this->listInfluencers = InfluencerQuery::listActiveInfluencers();
     }
 
+    //HOOK - Execute when property is changed
+    public function updated($property) {
+        if ($property == 'selectedInfluencerId') {
+            $this->unsetCachedProperty();
+        }
+    }
+
     //ACTION - Load more data
     public function loadMore() {
-        $this->limitData += 9;
+        $this->limitData += 1;
+        $this->unsetCachedProperty();
+    }
+
+    //ACTION - Flush cached property
+    public function unsetCachedProperty() {
         unset($this->paginateReferralCodes);
     }
 

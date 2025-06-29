@@ -11,8 +11,32 @@
 
     <x-modals.basic-modal id="{{ $modalId }}" wire:ignore.self>
         <x-slot:modalTitle>
-            {{ $modalType == 'add' ? 'Tambah Kode Referral' : 'Edit Kode Referral' }}
+            {{ $modalType == 'Add' ? 'Tambah Kode Referral' : 'Edit Kode Referral' }}
         </x-slot:modalTitle>
+
+        <!--Exception when id is modified-->
+        @if (session('error-selected-id'))
+            <div class="row">
+                <div class="col-12">
+                    <x-alerts.main-alert color="danger">
+                        {{ session('error-selected-id') }}
+                    </x-alerts.main-alert>
+                </div>
+            </div>
+        @endif
+        <!--#Exception when id is modified-->
+
+        <!--Exception when failed to load set value-->
+        @if (session('error-set-value'))
+            <div class="row">
+                <div class="col-12">
+                    <x-alerts.main-alert color="danger">
+                        {{ session('error-set-value') }}
+                    </x-alerts.main-alert>
+                </div>
+            </div>
+        @endif
+        <!--#Exception when failed to load set value-->
 
         <form wire:submit='saveReferralCode'>
             <!--Fields-->
@@ -22,12 +46,16 @@
                         Nama Influencer
                         <span class="text-danger">*</span>
                     </x-inputs.label>
-                    <x-vuexy.inputs.vuexy-select wire:model.live='influencerId'>
-                        <x-vuexy.inputs.vuexy-select-option value="" disabled>--Pilih--</x-vuexy.inputs.vuexy-select-option>
-                        @foreach ($listInfluencers as $influencer)
-                            <x-vuexy.inputs.vuexy-select-option value="{{ $influencer->id }}">{{ $influencer->name }}</x-vuexy.inputs.vuexy-select-option>
-                        @endforeach
-                    </x-vuexy.inputs.vuexy-select>
+                    @if ($modalType == 'Add')
+                        <x-vuexy.inputs.vuexy-select wire:model.live='influencerId'>
+                            <x-vuexy.inputs.vuexy-select-option value="" disabled>--Pilih--</x-vuexy.inputs.vuexy-select-option>
+                            @foreach ($listInfluencers as $influencer)
+                                <x-vuexy.inputs.vuexy-select-option value="{{ $influencer->id }}">{{ $influencer->name }}</x-vuexy.inputs.vuexy-select-option>
+                            @endforeach
+                        </x-vuexy.inputs.vuexy-select>
+                    @else
+                        <x-vuexy.inputs.text wire:model='influencerName' disabled/>
+                    @endif
                 </div>
 
                 <div class="col-lg-6 col-12 mb-1">
@@ -121,7 +149,7 @@
 
                     <x-buttons.outline-secondary
                     data-bs-dismiss="modal"
-                    type="reset"
+                    type="button"
                     >
                     Batal
                     </x-buttons.outline-secondary>

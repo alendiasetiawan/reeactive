@@ -40,11 +40,6 @@
 
     <!--List Influencer-->
     <div class="row @if($isMobile) scroller5 @else scroller6 @endif">
-
-        <!--Loading Indicator-->
-        <x-items.loading-dots class="mb-1" wire:loading wire:target='loadMore'/>
-        <!--#Loading Indicator-->
-
         @forelse ($this->listInfluencers as $influencer)
             <div class="col-lg-4 col-md-6 col-12" wire:key='inf-{{ $influencer->id }}' wire:loading.remove wire:target='loadMore'>
                 <x-vuexy.cards.apply-job
@@ -145,8 +140,6 @@
                                 <div>
                                     <span>{{ $referral->total_referral_registered }} Member</span>
                                 </div>
-                                {{-- <span>{{ $referral->code }}</span>
-                                <span>{{ $referral->total_referral_registered }} Member</span> --}}
                             </div>
                         @empty
                             <em>Belum memiliki kode referral</em>

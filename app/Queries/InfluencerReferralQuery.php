@@ -16,4 +16,12 @@ class InfluencerReferralQuery
         ->latest()
         ->paginate($limitData);
     }
+
+    //Fetch detail referral with it's owner
+    public static function fetchDetailReferral($id) {
+        return InfluencerReferral::join('influencers', 'influencer_referrals.influencer_id', 'influencers.id')
+        ->select('influencer_referrals.*', 'influencers.name as influencer_name')
+        ->where('influencer_referrals.id', $id)
+        ->first();
+    }
 }
