@@ -21,7 +21,7 @@
                 <x-cards.apply-job color="primary" wire:key='{{ $member->id }}'>
                     <x-slot:avatarIcon>{{ $loop->iteration }}</x-slot:avatarIcon>
                     <x-slot:title>{{ Str::excerpt($member->member_name, '', ['radius' => $isMobile ? 20 : 25]) }}</x-slot:title>
-                    <x-slot:subTitle>{{ \Carbon\Carbon::parse($member->created)->isoFormat('lll') }}</x-slot:subTitle>
+                    <x-slot:subTitle>{{ \Carbon\Carbon::parse($member->created_at)->isoFormat('lll') }}</x-slot:subTitle>
                     <x-slot:label>
                         @if ($member->notif == 1)
                             <x-badges.light-badge color="success">Sudah</x-badges.light-badge>
