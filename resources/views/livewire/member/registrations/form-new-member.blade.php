@@ -294,8 +294,9 @@
                                                 <div class="form-check form-check-primary form-check-inline">
                                                     <input class="form-check-input" type="checkbox" id="poin-satu" wire:model='poinSatu'>
                                                     <label class="form-check-label" for="poin-satu">
-                                                        <b>Program Large Group</b> : Pembelian paket (30 sesi) berlaku selama <b>2,5 bulan</b> masa training |
-                                                        <b>Program Small Group</b> : Pembelian paket (10 Sesi)
+                                                        Program <b>Large Group</b> : Pembelian paket <b>30 sesi (2,5 bulan atau 10 pekan)</b>
+                                                        <br/>
+                                                        Program <b>Small Group</b> : Pembelian paket <b>10 Sesi (1,5 bulan atau 6 pekan)</b>
                                                     </label>
                                                     <small class="text-danger"><b>@error('poinSatu') {{ $message }} @enderror</b></small>
                                                 </div>
