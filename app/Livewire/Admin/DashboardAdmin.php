@@ -84,10 +84,10 @@ class DashboardAdmin extends Component
         $this->isRequestClass = ClassModel::where('class_status', 'Pending')->orWhere('class_status_eksternal', 'Pending')->exists();
 
         //Logic for workshop registration
-        $workshopQuery = $batchService->workshopBatchQuery();
-        $workshopBatchId = $workshopQuery->id;
-        $this->workshopOpen = WorkshopBatch::where('batch_status', 'Open')->exists();
-        $this->allWorkshopRegistration = WorkshopRegistration::where('workshop_batch_id', $workshopBatchId)->get();
+        // $workshopQuery = $batchService->workshopBatchQuery();
+        // $workshopBatchId = $workshopQuery->id;
+        // $this->workshopOpen = WorkshopBatch::where('batch_status', 'Open')->exists();
+        // $this->allWorkshopRegistration = WorkshopRegistration::where('workshop_batch_id', $workshopBatchId)->get();
 
         //Logic for percent renewal
         $batches = Batch::orderBy('id', 'desc')->limit(2)->get();

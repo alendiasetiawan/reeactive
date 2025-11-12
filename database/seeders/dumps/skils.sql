@@ -1,0 +1,57 @@
+-- -------------------------------------------------------------
+-- TablePlus 6.7.3(640)
+--
+-- https://tableplus.com/
+--
+-- Database: u957899853_reeactive
+-- Generation Time: 2025-11-12 10:43:50.4290
+-- -------------------------------------------------------------
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+
+INSERT INTO `coach_skills` (`id`, `coach_code`, `skill_name`, `created_at`, `updated_at`) VALUES
+(1, '81284746374', 'S1 Kepelatihan Olahraga', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(2, '81284746374', 'PT Foundation', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(3, '81284746374', 'GO IFEX', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(4, '81284746374', 'X Fitness First Indonesia', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(7, '8979034958', 'S1 Kepelatihan Olahraga', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(8, '8979034958', 'X Celebrity Fitness', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(9, '82127788784', 'S1 Ilmu Olahraga', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(10, '82127788784', 'X Celebrity Fitness', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(11, '82127788784', 'X FitnCo Bandung', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(12, '82127788784', 'X Fitness20', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(13, '82127788784', 'X 20 FIT', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(14, '82120858812', 'S1 Kepelatihan Olahraga', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(15, '82120858812', 'S2 Pendidikan Olahraga', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(16, '82120858812', 'X Celebrity Fitness', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(17, '85774827925', 'S1 Kepelatihan Olahraga', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(18, '85774827925', 'PT Foundation', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(19, '85774827925', 'GO IFEX', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(20, '85774827925', 'X Fitness First Indonesia', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(25, '87825749786', 'S1 Kepelatihan Olahraga', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(26, '87825749786', 'X Fitness First Indonesia', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(27, '87825749786', 'X F45', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(28, '81222266771', 'To coach, to train and to educate clients based on their needs and particular goals', '2024-04-18 05:53:58', '2024-04-18 05:53:58'),
+(29, '85810522631', 'Functional Training', '2025-09-07 10:39:21', '2025-09-07 10:39:21'),
+(30, '85810522631', 'Strength & Conditioning', '2025-09-07 10:39:21', '2025-09-07 10:39:21'),
+(31, '85810522631', 'Strength Training for Seniors', '2025-09-07 10:39:21', '2025-09-07 10:39:21'),
+(32, '85810522631', 'Safe Exercise for Postpartum', '2025-09-07 10:39:21', '2025-09-07 10:39:21');
+
+
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
